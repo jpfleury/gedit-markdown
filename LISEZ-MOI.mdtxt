@@ -1,0 +1,99 @@
+# gedit-markdown
+
+## Introduction
+
+gedit-markdown est un ensemble de fichiers permettant d'ajouter le support de [Markdown][1] dans gedit, l'éditeur de texte par défaut de Gnome. (D'ailleurs, ce présent fichier est écrit à l'aide de la syntaxe Markdown.)
+
+Plus précisément, gedit-markdown ajoute:
+
+- un type MIME pour les fichiers Markdown ainsi que la reconnaissance de l'extension `.mdtxt`;
+- de la coloration syntaxique des fichiers Markdown dans gedit ainsi que des extraits de code;
+- l'extension *Markdown Preview* pour gedit.
+
+[1]: http://michelf.com/projets/php-markdown/concepts/
+
+## Licence
+
+gedit-markdown est distribué suivant les termes de la GNU General Public License telle que publiée par la Free Software Foundation: soit la version 3 de cette licence, soit (à votre gré) toute version ultérieure. Voir le fichier gpl.txt pour la version officielle de la licence, et le fichier gpl-3.0.fr.txt pour une traduction francophone non officielle.
+
+## Dépendances et suggestions
+
+- Pour utiliser les extraits de code de Markdown, il faut activer dans gedit l'extension *Extraits de code* dans *Éditions > Préférences > Greffons*.
+- Pour utiliser l'extension *Markdown Preview*, il faut pouvoir accepter des extensions pour gedit en Python. Je ne pense pas que ça cause de problème. Ça doit être le cas par défaut la plupart du temps.
+
+## Installation
+
+**Note importante: ce logiciel est développé sous Ubuntu et a été testé avec succès sous Ubuntu 8.10. Je ne peux garantir que la marche à suivre pour l'installation est identique sur toutes les distributions GNU/Linux, ni même que ça fonctionne partout. :-)**
+
+- Télécharger l'archive de la dernière version de gedit-markdown sur <http://www.jpfleury.net/gedit-markdown>.
+
+- Décompresser l'archive. Dans une console (dans le même dossier que celui où se trouve l'archive):
+
+		tar xvf nom-de-l_archive.tar.gz
+
+- Toujours dans la console, lancer l'installation:
+
+		gedit-markdown/gedit-markdown.sh installer
+
+Le support de Markdown sera ajouté à l'utilisateur courant (l'installation se fait donc sans les droits du superadministrateur). Le dossier `gedit-markdown` créé par l'extraction de l'archive peut être effacé ou mis à la corbeille après l'installation.
+
+## Désinstallation
+
+- Dans une console, lancer la désinstallation:
+
+		gedit-markdown/gedit-markdown.sh desinstaller
+
+## Utilisation
+
+Si gedit est ouvert, redémarrez-le. Ensuite, aller dans *Éditions > Préférences > Greffons* et activez *Markdown Preview*. Maintenant vous trouverez dans le menu *Outils* une action *Markdown Preview*, qui fera s'afficher l'aperçu du document courant dans le panneau inférieur (s'assurer que ce panneau est affiché en allant dans le menu *Éditions*).
+
+Pour la coloration syntaxique, elle devrait s'activer automatiquement pour les fichiers reconnus comme étant des fichiers Markdown (extension `.mdtxt`), sinon choisir la coloration à la mitaine en allant dans *Affichage > Mode de coloration > Balisage* et cocher *Markdown*.
+
+## Précisions ou limitations
+
+- Markdown n'a pas d'extension officielle. J'ai donc fait un choix arbitraire en lui assignant l'extension `.mdtxt`. Markdown n'a pas non plus de type mime officiel. Je lui ai assigné `text/x-markdown`. Ces choix me semblent quand même valables.
+
+- Puisqu'il est possible d'ajouter du code HTML directement dans un texte écrit en Markdown, j'ai ajouté à la coloration syntaxique du Markdown celle pour le HTML. Il faut cependant savoir que selon la syntaxe officielle Markdown, du code Markdown dans un environnement HTML n'est pas transformé, il est affiché tel quel. Cependant, gedit-markdown fait présentement colorer syntaxiquement le code Markdown dans du HTML. Il faut se rappeller que ça ne devrait pas être le cas.
+
+- Markdown permet d'écrire du code dans un paragraphe en entourant le code d'un accent grave (`). Pour écrire un ou des accents graves dans le code, on doit entourer le code d'un nombre d'accents au moins supérieur de un au nombre maximal d'accents qui se suivent à l'intérieur du code. Exemples: ``du code entouré de 2 accents de chaque côté et comportant 1 accent ` à l'intérieur``, ```du code entouré de 3 accents de chaque côté et comportant 2 accents de suite `` à l'intérieur```, `du code sans accent à l'intérieur`. Selon Markdown, on peut entourer le code d'un nombre quelconque d'accents, pourvu que ce nombre soit identique de part et d'autre du code et qu'il soit supérieur au nombre d'accents qui se suivent à l'intérieur du code. Cependant, gedit-markdown supporte la coloration jusqu'à 3 accents de part et d'autre du code.
+
+- Selon Markdown, pour écrire plusieurs paragraphes dans des listes, il faut indenter chaque paragraphe. Il y a donc conflit au plan de la coloration syntaxique entre un paragraphe indenté à l'intérieur d'une liste (4 espaces ou une tabulation) et une ligne de code indentée en dehors d'une liste (également 4 espaces ou une tabulation). La coloration en dehors de liste prime, ce qui signifie qu'un paragraphe à l'intérieur de liste va s'afficher comme du code. Cette limitation concerne quelques autres éléments, comme les citations à l'intérieur de liste. Je ne sais pas trop comment résoudre ce problème, étant donné qu'il n'est pas possible (en tout cas de ce que je connais de la coloration sous GtkSourceView 2) de savoir dans quel contexte on se situe et de faire dépendre la coloration d'une ligne de ce qui se trouve sur des lignes précédentes.
+
+- J'ai voulu utiliser une coloration syntaxique qui se rapproche du rendu par défaut du HTML, par exemple de l'italique pour une emphase légère, des liens soulignés, etc., le tout sans devoir créer un fichier de style personnalisé dans `/usr/share/gtksourceview-2.0/styles` (ce qui forcerait les utilisateurs à choisir dans gedit le style personnalisé). Il y a donc quelques rendus imparfaits, comme l'emphase forte qui est en gras MAIS AUSSI en vert. Cette limitation est dépendante de la résolution du bogue <http://bugzilla.gnome.org/show_bug.cgi?id=573653>.
+
+## Coordonnées
+
+- Auteur: Jean-Philippe Fleury
+- Courriel: <contact@jpfleury.net>
+- Site web: <http://www.jpfleury.net/gedit-markdown>
+
+## Changements et versions
+
+### gedit-markdown 1.0, 2009/03/13
+
+Première version de gedit-markdown. Création de fichiers et intégration de cinq fichiers existants, pour commencer les fichiers `markdown.xml` et `markdown.lang`, écrits par Ulrik Sverdrup. Voir <http://users.student.lth.se/f04us/wiki/hacks/gedit_markdown_syntax/>. Voici les modifications apportées au fichier original `markdown.lang`:
+
+- Passage à GtkSourceView 2 selon la [documentation disponible sur le site de Gnome](http://live.gnome.org/Gedit/NewLanguage).
+- Ajout de la coloration pour un retour à la ligne `<br />` (deux espace ou plus à la fin d'une ligne).
+- Les marqueurs de titre `#` doivent commencer la ligne (pas d'espace avant) et il doit y avoir au moins un autre caractère différent.
+- Ajout des citations.
+- Au plus 3 espaces après un marqueur de liste.
+- Ajout des symboles `-` et `+` pour les listes.
+- Précision du regex de la ligne horizontale.
+- Correction du regex por un lien (diverses précisions apportées pour une meilleure conformité à Markdown).
+- Ajout de la coloration pour les images.
+- Précision du regex pour les 2 types d'emphase (par exemple, pas d'espace autour des mots à emphaser, sinon les symboles `*` et `_` n'ont pas de signification d'emphase).
+- Ajout de la coloration pour les caractères échapés (``\`*_{}[]()#+-.!``).
+- Ajout de la coloration pour le code HTML.
+- Suppression de la coloration pour le contexte `WikiLink`, étant donné que ça ne fait pas partie de Markdown.
+- Changement de style pour certains contextes, pour un rendu plus proche du HTML par défaut (exemple: l'emphase en italique).
+- Renommage du contexte hash-header en atx-header, et création du contexte setext-header.
+- Changement du mimetype pour `text/x-markdown`.
+- Ajout de l'extension (`globs`) `*.mdtxt`.
+- Ajout pour Markdown du type de commentaire HTML.
+
+Les trois autres fichiers déjà existants intégrés à gedit-markdown sont ceux de l'[extension pour gedit Markdown Preview][2] de Michele Campeotto. Modification effectuée au fichier `markdownpreview.py`:
+
+- Correction du bogue d'affichage avec les accents.
+
+[2]: http://live.gnome.org/Gedit/MarkdownSupport
