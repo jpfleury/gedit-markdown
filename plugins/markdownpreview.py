@@ -23,7 +23,8 @@ import gtk
 import gtkhtml2
 import markdown
 
-HTML_TEMPLATE = """<html><head><style type="text/css">
+HTML_TEMPLATE = """<html><head><meta http-equiv="content-type"
+content="text/html; charset=UTF-8" /><style type="text/css">
 body { background-color: #fff; padding: 8px; }
 p, div { margin: 0em; }
 p + p, p + div, div + p, div + div { margin-top: 0.8em; }
