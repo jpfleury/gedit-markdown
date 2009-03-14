@@ -1,0 +1,8 @@
+<snippets language="markdown"><snippet><text>[${1:1}]: ${2:address}
+</text><tag>ref</tag><description>Reference</description><accelerator /></snippet><snippet><text>[${1:NewPage}][${2:1}] </text><tag>lnk</tag><description>Link</description><accelerator /></snippet><snippet><text>[$GEDIT_SELECTED_TEXT][${1:id}]	</text><tag /><description>Wrap selection in link w/ ref</description><accelerator>&lt;Control&gt;&lt;Alt&gt;l</accelerator></snippet><snippet><text>${1:Header}
+-----------</text><tag>hd</tag><description>Header Underlined II</description><accelerator /></snippet><snippet><text>![${1:alt-text}](${2:URI})</text><tag>img</tag><description>Image</description><accelerator /></snippet><snippet><text>* $1
+* $2
+${3:lst}</text><tag>lst</tag><description>Unordered list</description><accelerator /></snippet><snippet><text>${1:Header}
+===========
+</text><tag>Hd</tag><description>Header Underlined I</description><accelerator /></snippet><snippet><text>${1:#} ${2:title} $1
+</text><tag>hhd</tag><description>Header Hashed</description><accelerator /></snippet><snippet><text>[$GEDIT_SELECTED_TEXT](${1:URL})</text><tag /><description>Wrap selection in link inline</description><accelerator>&lt;Control&gt;&lt;Alt&gt;l</accelerator></snippet><snippet><text>[${1:NewPage}](${2:URL}) </text><tag>lnki</tag><description>Link inline</description><accelerator /></snippet></snippets>

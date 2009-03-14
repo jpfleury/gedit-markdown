@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+<language _name="Markdown" version="1.0" _section="Markup" mimetypes="text/x-mdwn text/plain">
+
+<!-- Markdown syntax support for gtksourceview-1.0
+  Author: Ulrik Sverdrup <ulrik.sverdrup@gmail.com>
+  Version: v3, 19 June 2007
+  License: GPL v2 or any later version, and LGPL v2.1 or any later version
+  You are welcome to help!
+  -->
+
+	<pattern-item _name="Emphasis" style="Preprocessor">
+		<regex>(\*[^*\n]*\*)|(_[^_\n]*_)</regex>
+	</pattern-item>
+	
+	<pattern-item _name="Strong Emphasis" style="Data Type">
+		<regex>(\*\*[^*\n]*\*\*)|(__[^_\n]*__)</regex>
+	</pattern-item>
+
+	<pattern-item _name="Link" style="String">
+		<regex>(\[[^]]+\] ?\[[A-Za-z 0-9]+\])|(\[[^]]+\] ?\([^)]+\))</regex>
+	</pattern-item>
+	
+	<pattern-item _name="WikiLink" style="Link">
+		<regex>\[\[[^\n]+\]\]</regex>
+	</pattern-item>
+	
+		
+	<string _name = "Link address" style = "String" end-at-line-end = "TRUE">
+		<start-regex> *\[[A-Za-z 0-9]+\]:</start-regex>
+		<end-regex>$</end-regex>
+	</string>
+	
+	<pattern-item _name="List item" style="Keyword">
+		<regex>(^ *\*[ \t]+)|(^ *[0-9]+\.[ \t]+)</regex>
+	</pattern-item>
+	
+	
+	<pattern-item _name="Hash Header" style="Data Type">
+		<regex>^ *[#]+[^\n]*$</regex>
+	</pattern-item>
+	
+	<pattern-item _name="Line" style="Data Type">
+		<regex>^[ \t]*[-=]+[ \t]*$</regex>
+	</pattern-item>
+	
+	<pattern-item _name="Automatic link" style="String" end-at-line-end = "TRUE">
+		<regex>(&lt;[A-Za-z._0-9]+@[A-Za-z0-9]+.[A-Za-z]+&gt;)|(&lt;[a-z]+://[^ \n]+&gt;)</regex>
+	</pattern-item>
+
+	<line-comment _name = "Code block" style= "Comment">
+		<start-regex>^    |^\t</start-regex>
+		<end-regex>$</end-regex>
+	</line-comment>
+	
+	<pattern-item _name="Inline Code" style="Comment">
+		<regex>`[^`]*`</regex>
+	</pattern-item>
+
+</language>
