@@ -34,11 +34,13 @@ redemarrer_nautilus ()
 	read choix
 	
 	if [[ $choix == 1 ]]; then
-		echo "Redémarrage de Nautilus"
-		killall nautilus && nautilus
+		echo -e "Redémarrage de Nautilus\n"
+		killall nautilus
+		nautilus &> /tmp/gedit-markdown_redemarrer_nautilus.log &
+		sleep 2
 	
 	else
-		echo "Nautilus ne sera pas redémarré maintenant. Ceci ne vous empêche pas d'utiliser déjà Markdown dans gedit s'il s'agit d'une installation."
+		echo -e "Nautilus ne sera pas redémarré maintenant (ceci ne vous empêche pas d'utiliser déjà Markdown dans gedit s'il s'agit d'une installation de gedit-markdown).\n"
 	fi
 }
 
