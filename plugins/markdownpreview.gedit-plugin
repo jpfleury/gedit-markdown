@@ -1,0 +1,9 @@
+[Gedit Plugin]
+Loader=python
+Module=markdownpreview
+IAge=2
+Name=Markdown Preview
+Description=Show the HTML version of the Markdown text you're editing
+Authors=Michele Campeotto <micampe@micampe.it>
+Copyright=Copyright © 2006 Michele Campeotto
+Website=http://micampe.it
