@@ -69,18 +69,12 @@ MA 02110-1301, USA.
 			<match>^( {4}|\t)[ \t]*[^ \t]+.*$</match>
 		</context>
 		
-		<context id="inline-code-1">
-			<match>(^|[^`\\])(`[^`]+(`{2,}[^`]+)*`)([^`]|$)</match>
-			<include>
-				<context sub-pattern="2" style-ref="code"/>
-			</include>
+		<context id="inline-code-1" style-ref="code">
+			<match>(?&lt;!`)`[^`]+(`{2,}[^`]+)*`(?!`)</match>
 		</context>
 		
-		<context id="inline-code-2">
-			<match>(^|[^`\\])(``[^`]+((`|`{3,})[^`]+)*``)([^`]|$)</match>
-			<include>
-				<context sub-pattern="2" style-ref="code"/>
-			</include>
+		<context id="inline-code-2" style-ref="code">
+			<match>(?&lt;!`)``[^`]+((`|`{3,})[^`]+)*``(?!`)</match>
 		</context>
 		
 		<context id="inline-code">
@@ -114,20 +108,12 @@ MA 02110-1301, USA.
 			<match>!\%{link}</match>
 		</context>
 		
-		<context id="emphasis">
-			<match>((^|[^*])(\*[^* \t]+([^*]*[^* \t]+)?\*)([^*]|$))|((^|[^_])(_[^_ \t]+([^_]*[^_ \t]+)?_)([^_]|$))</match>
-			<include>
-				<context sub-pattern="3" style-ref="emphasis"/>
-				<context sub-pattern="8" style-ref="emphasis"/>
-			</include>
+		<context id="emphasis" style-ref="emphasis">
+			<match>((?&lt;!\*)\*[^* \t]+([^*]*[^* \t]+)?\*(?!\*))|((?&lt;!_)_[^_ \t]+([^_]*[^_ \t]+)?_(?!_))</match>
 		</context>
 		
-		<context id="strong-emphasis">
-			<match>((^|[^*])(\*\*[^* \t]+([ \t]*\*?([ \t]+\*)*[ \t]*[^* \t]+)*\*\*)([^*]|$))|((^|[^_])(__[^_ \t]+([ \t]*_?([ \t]+_)*[ \t]*[^_ \t]+)*__)([^_]|$))</match>
-			<include>
-				<context sub-pattern="3" style-ref="strong-emphasis"/>
-				<context sub-pattern="9" style-ref="strong-emphasis"/>
-			</include>
+		<context id="strong-emphasis" style-ref="strong-emphasis">
+			<match>((?&lt;!\*)\*\*[^* \t]+([ \t]*\*?([ \t]+\*)*[ \t]*[^* \t]+)*\*\*(?!\*))|((?&lt;!_)__[^_ \t]+([ \t]*_?([ \t]+_)*[ \t]*[^_ \t]+)*__(?!_))</match>
 		</context>
 		
 		<context id="escape" style-ref="escape">
