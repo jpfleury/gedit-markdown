@@ -45,8 +45,6 @@ MA 02110-1301, USA.
 	<definitions>
 		<define-regex id="link">\[[^]]*\]\([^)]*\)|((\[[^]]+\] ?\[[^]]*\])|(\[\] ?\[[^]]+\]))</define-regex>
 		
-		
-		
 		<context id="atx-header" style-ref="header">
 			<match>^#+[^#]+.*$</match>
 		</context>
@@ -72,21 +70,14 @@ MA 02110-1301, USA.
 		</context>
 		
 		<context id="inline-code-1">
-			<match>(^|[^`\\])(`[^`]+`)([^`]|$)</match>
+			<match>(^|[^`\\])(`[^`]+(`{2,}[^`]+)*`)([^`]|$)</match>
 			<include>
 				<context sub-pattern="2" style-ref="code"/>
 			</include>
 		</context>
 		
 		<context id="inline-code-2">
-			<match>(^|[^`])(``([^`]+(`?[^`]+)*)+``)([^`]|$)</match>
-			<include>
-				<context sub-pattern="2" style-ref="code"/>
-			</include>
-		</context>
-		
-		<context id="inline-code-3">
-			<match>(^|[^`])(```([^`]+(`{0,2}[^`]+)*)+```)([^`]|$)</match>
+			<match>(^|[^`\\])(``[^`]+((`|`{3,})[^`]+)*``)([^`]|$)</match>
 			<include>
 				<context sub-pattern="2" style-ref="code"/>
 			</include>
@@ -96,7 +87,6 @@ MA 02110-1301, USA.
 			<include>
 				<context ref="inline-code-1"/>
 				<context ref="inline-code-2"/>
-				<context ref="inline-code-3"/>
 			</include>
 		</context>
 		

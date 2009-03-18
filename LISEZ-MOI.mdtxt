@@ -55,7 +55,21 @@ Pour la coloration syntaxique, elle devrait s'activer automatiquement pour les f
 
 - Puisqu'il est possible d'ajouter du code HTML directement dans un texte écrit en Markdown, j'ai ajouté à la coloration syntaxique du Markdown celle pour le HTML. Il faut cependant savoir que selon la syntaxe officielle Markdown, du code Markdown dans un environnement HTML n'est pas transformé, il est affiché tel quel. Cependant, gedit-markdown fait présentement colorer syntaxiquement le code Markdown dans du HTML. Il faut se rappeller que ça ne devrait pas être le cas.
 
-- Markdown permet d'écrire du code dans un paragraphe en entourant le code d'un accent grave (`). Pour écrire un ou des accents graves dans le code, on doit entourer le code d'un nombre d'accents au moins supérieur de un au nombre maximal d'accents qui se suivent à l'intérieur du code. Exemples: ``du code entouré de 2 accents de chaque côté et comportant 1 accent ` à l'intérieur``, ```du code entouré de 3 accents de chaque côté et comportant 2 accents de suite `` à l'intérieur```, `du code sans accent à l'intérieur`. Selon Markdown, on peut entourer le code d'un nombre quelconque d'accents, pourvu que ce nombre soit identique de part et d'autre du code et qu'il soit supérieur au nombre d'accents qui se suivent à l'intérieur du code. Cependant, gedit-markdown supporte la coloration jusqu'à 3 accents de part et d'autre du code.
+- Markdown permet d'écrire du code dans un paragraphe en entourant le code d'un accent grave (\`), ou de plusieurs, pourvu que le nombre soit identique de part et d'autre, et qu'il n'y ait pas dans le code un nombre identique d'accents qui se suivent. Exemples:
+
+		`lorem lorem lorem lorem`
+		
+		`lorem lorem `` lorem lorem`
+		
+		`lorem lorem ````` lorem lorem`
+		
+		``lorem lorem lorem lorem``
+		
+		``lorem lorem ` lorem lorem``
+		
+		``lorem lorem ````` lorem lorem``
+
+	Prendre note que gedssit-markdown supporte la coloration jusqu'à 2 accents de part et d'autre du code.
 
 - Selon Markdown, pour écrire plusieurs paragraphes dans des listes, il faut indenter chaque paragraphe. Il y a donc conflit au plan de la coloration syntaxique entre un paragraphe indenté à l'intérieur d'une liste (4 espaces ou une tabulation) et une ligne de code indentée en dehors d'une liste (également 4 espaces ou une tabulation). La coloration en dehors de liste prime, ce qui signifie qu'un paragraphe à l'intérieur de liste va s'afficher comme du code. Cette limitation concerne quelques autres éléments, comme les citations à l'intérieur de liste. Je ne sais pas trop comment résoudre ce problème, étant donné qu'il n'est pas possible (en tout cas de ce que je connais de la coloration sous GtkSourceView 2) de savoir dans quel contexte on se situe et de faire dépendre la coloration d'une ligne de ce qui se trouve sur des lignes précédentes.
 
