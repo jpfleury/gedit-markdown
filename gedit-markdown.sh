@@ -18,6 +18,11 @@
 # ce programme; si ce n'est pas le cas, consultez
 # <http://www.gnu.org/licenses/>.
 
+# Localisation
+export TEXTDOMAINDIR=`dirname "$0"`/locale
+export TEXTDOMAIN=gedit-markdown
+. gettext.sh
+
 # Variables
 rep_language_specs=~/.local/share/gtksourceview-2.0/language-specs
 rep_mime=~/.local/share/mime
@@ -30,24 +35,24 @@ ficSupp=( "${ficPrecompil[@]}" "$rep_language_specs/markdown.lang" "$rep_mime_pa
 
 redemarrer_nautilus ()
 {
-	echo -en "Nautilus doit être redémarré pour que les modifications apportées à la base de données des types MIME soient prises en compte. NOTE: les fenêtres ou onglets de Nautilus déjà ouverts seront perdus.\n\n1 Redémarrer Nautilus maintenant.\n2 Ne pas redémarrer Nautilus maintenant et attendre le prochain redémarrage de ma session ou de l'ordinateur.\n\nSaisir votre choix [1/2] (2 par défaut): "
+	gettext "Nautilus doit être redémarré pour que les modifications apportées à la base de données des types MIME soient prises en compte. NOTE: les fenêtres ou onglets de Nautilus déjà ouverts seront perdus.\\n\\n1 Redémarrer Nautilus maintenant.\\n2 Ne pas redémarrer Nautilus maintenant et attendre le prochain redémarrage de ma session ou de l'ordinateur.\\n\\nSaisir votre choix [1/2] (2 par défaut): "; echo -en
 	read choix
 	
 	if [[ $choix == 1 ]]; then
-		echo -e "Redémarrage de Nautilus\n"
+		gettext "Redémarrage de Nautilus\\n"; echo -e
 		killall nautilus
 		nautilus &> /tmp/gedit-markdown_redemarrer_nautilus.log &
 		sleep 2
 	
 	else
-		echo -e "Nautilus ne sera pas redémarré maintenant (ceci ne vous empêche pas d'utiliser déjà Markdown dans gedit s'il s'agit d'une installation de gedit-markdown).\n"
+		gettext "Nautilus ne sera pas redémarré maintenant (ceci ne vous empêche pas d'utiliser déjà Markdown dans gedit s'il s'agit d'une installation de gedit-markdown).\\n"; echo -e
 	fi
 }
 
 cd `dirname "$0"`
 
 if [[ $1 == "installer" ]]; then
-	echo "Copie des fichiers"
+	gettext "Copie des fichiers"; echo
 	
 	# Création des répertoires s'ils n'existent pas déjà
 	mkdir -p $rep_language_specs
@@ -68,16 +73,16 @@ if [[ $1 == "installer" ]]; then
 	cp -a plugins/* $rep_plugins
 	cp -a snippets/* $rep_snippets
 	
-	echo "Mise à jour de la base de données MIME"
+	gettext "Mise à jour de la base de données MIME"; echo
 	# Mise à jour de la base de données MIME
 	update-mime-database $rep_mime
 	redemarrer_nautilus
 	
-	echo "Installation terminée. Veuillez redémarrer gedit s'il est ouvert."
+	gettext "Installation terminée. Veuillez redémarrer gedit s'il est ouvert."; echo
 	exit 0
 
 elif [[ $1 == "desinstaller" ]]; then
-	echo "Suppression des fichiers"
+	gettext "Suppression des fichiers"; echo
 	# Suppression des fichiers
 	for i in "${ficSupp[@]}"; do
 		if [ -f $i ]; then
@@ -85,16 +90,17 @@ elif [[ $1 == "desinstaller" ]]; then
 		fi
 	done
 	
-	echo "Mise à jour de la base de données MIME"
+	gettext "Mise à jour de la base de données MIME"; echo
 	# Mise à jour de la base de données MIME
 	update-mime-database $rep_mime
 	redemarrer_nautilus
 	
-	echo "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert."
+	gettext "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert."; echo
 	exit 0
 
 else
-	echo -e "Usage: $0 [installer | desinstaller]"
+	eval_gettext "Usage: "; echo -n
+	echo "$0 [installer | desinstaller]"
 	exit 1
 fi
 

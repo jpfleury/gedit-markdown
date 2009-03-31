@@ -21,6 +21,12 @@ gedit-markdown est distribué suivant les termes de la GNU General Public Licens
 - Pour utiliser les extraits de code de Markdown, il faut activer dans gedit l'extension *Extraits de code* dans *Éditions > Préférences > Greffons*.
 - Pour utiliser l'extension *Markdown Preview*, il faut pouvoir accepter des extensions pour gedit en Python. Je ne pense pas que ça cause de problème. Ça doit être le cas par défaut la plupart du temps.
 
+## Localisation
+
+Les messages de l'installateur sont localisables depuis la version 1.1. Toute personne intéressée à effectuer une traduction peut donc copier le fichier `gedit-markdown.pot` situé dans le répertoire `locale`, le renommer en `LANGUE.po`, traduire les phrases contenues dans le fichier et m'envoyer le fichier `.po`.
+
+Pour l'instant, gedit-markdown est disponible en français.
+
 ## Installation
 
 **Note importante: ce logiciel est développé sous Ubuntu et a été testé avec succès sous Ubuntu 8.10. Je ne peux garantir que la marche à suivre pour l'installation est identique sur toutes les distributions GNU/Linux, ni même que ça fonctionne partout. :-)**
@@ -85,5 +91,6 @@ Pour la coloration syntaxique, elle devrait s'activer automatiquement pour les f
 
 *Note: pour la liste des changements, voir le fichier `ChangeLog` dans l'archive du logiciel.*
 
+- gedit-markdown 1.1, 2009-03-31
 - gedit-markdown 1.0.1, 2009-03-17
 - gedit-markdown 1.0, 2009-03-14
