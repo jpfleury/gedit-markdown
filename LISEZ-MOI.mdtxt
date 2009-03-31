@@ -29,7 +29,7 @@ gedit-markdown est distribué suivant les termes de la GNU General Public Licens
 
 - Décompresser l'archive. Dans une console (dans le même dossier que celui où se trouve l'archive):
 
-		tar xvf nom-de-l_archive.tar.gz
+		tar xvf nom-de-l_archive.tbz2
 
 - Toujours dans la console, lancer l'installation:
 
@@ -78,36 +78,12 @@ Pour la coloration syntaxique, elle devrait s'activer automatiquement pour les f
 ## Coordonnées
 
 - Auteur: Jean-Philippe Fleury
-- Courriel: <contact@jpfleury.net>
 - Site web: <http://www.jpfleury.net/gedit-markdown>
+- Contact: <http://www.jpfleury.net/contact>
 
 ## Changements et versions
 
-### gedit-markdown 1.0, 2009/03/13
+*Note: pour la liste des changements, voir le fichier `ChangeLog` dans l'archive du logiciel.*
 
-Première version de gedit-markdown. Création de fichiers et intégration de cinq fichiers existants, pour commencer les fichiers `markdown.xml` et `markdown.lang`, écrits par Ulrik Sverdrup. Voir <http://users.student.lth.se/f04us/wiki/hacks/gedit_markdown_syntax/>. Voici les modifications apportées au fichier original `markdown.lang`:
-
-- Passage à GtkSourceView 2 selon la [documentation disponible sur le site de Gnome](http://live.gnome.org/Gedit/NewLanguage).
-- Ajout de la coloration pour un retour à la ligne `<br />` (deux espace ou plus à la fin d'une ligne).
-- Les marqueurs de titre `#` doivent commencer la ligne (pas d'espace avant) et il doit y avoir au moins un autre caractère différent.
-- Ajout des citations.
-- Au plus 3 espaces après un marqueur de liste.
-- Ajout des symboles `-` et `+` pour les listes.
-- Précision du regex de la ligne horizontale.
-- Correction du regex por un lien (diverses précisions apportées pour une meilleure conformité à Markdown).
-- Ajout de la coloration pour les images.
-- Précision du regex pour les 2 types d'emphase (par exemple, pas d'espace autour des mots à emphaser, sinon les symboles `*` et `_` n'ont pas de signification d'emphase).
-- Ajout de la coloration pour les caractères échapés (``\`*_{}[]()#+-.!``).
-- Ajout de la coloration pour le code HTML.
-- Suppression de la coloration pour le contexte `WikiLink`, étant donné que ça ne fait pas partie de Markdown.
-- Changement de style pour certains contextes, pour un rendu plus proche du HTML par défaut (exemple: l'emphase en italique).
-- Renommage du contexte hash-header en atx-header, et création du contexte setext-header.
-- Changement du mimetype pour `text/x-markdown`.
-- Ajout de l'extension (`globs`) `*.mdtxt`.
-- Ajout pour Markdown du type de commentaire HTML.
-
-Les trois autres fichiers déjà existants intégrés à gedit-markdown sont ceux de l'[extension pour gedit Markdown Preview][2] de Michele Campeotto. Modification effectuée au fichier `markdownpreview.py`:
-
-- Correction du bogue d'affichage avec les accents.
-
-[2]: http://live.gnome.org/Gedit/MarkdownSupport
+- gedit-markdown 1.0.1, 2009-03-17
+- gedit-markdown 1.0, 2009-03-14

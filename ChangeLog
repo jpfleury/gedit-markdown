@@ -1,0 +1,75 @@
+2009-03-17  Jean-Philippe Fleury  <contact@jpfleury.net>
+
+	Utilisation d'assertions au début et à la fin du regex du code en ligne et des emphases. Avantage: ça ne consomme pas de caractère, 
+	donc ça corrige le bogue de deux codes ou emphases séparées par une seule espace (avant, ce n'était pas possible). Exemple:
+	
+	*a* *b*
+	
+	Les deux sont bien colorées, alors qu'avant seule la première emphase l'était.
+
+2009-03-17  Jean-Philippe Fleury  <contact@jpfleury.net>
+
+	Correction dans le regex du code en ligne (\`). En fait , je pensais qu'il fallait de part et d'atre du code un nombre d'accents au 
+	moins supérieur de un au nombre d'accents de suite à l'intérieur du code. Exemple:
+	
+	``code ` code``
+	
+	mais non. Un eu très bien écrire ceci:
+	
+	``code ``` code``
+	
+	Aussi, j'ai enlevé la coloration pour 3 accents de part et d'autre du code, pour ne conserver que la coloration pour un ou deux 
+	accents.
+
+2009-03-14  Jean-Philippe Fleury  <contact@jpfleury.net>
+
+	Redémarrage de Nautilus en arrière-plan + redirection de la sortie dans un fichier log.
+
+2009-03-14  Jean-Philippe Fleury  <contact@jpfleury.net>
+
+	Ajout des fichiers créés par moi pour gedit-markdown.
+
+2009-03-14  Jean-Philippe Fleury  <contact@jpfleury.net>
+
+	Modification effectuée au fichier markdownpreview.py:
+	
+	- Correction du bogue d'affichage avec les accents (déclaration de l'UTF-8 dans l'en-tête de la structure HTML).
+
+2009-03-14  Jean-Philippe Fleury  <contact@jpfleury.net>
+
+	Ajout des fichiers originaux de l'extension Markdown Preview de Michele Campeotto. Voir 
+	http://live.gnome.org/Gedit/MarkdownSupport
+
+2009-03-14  Jean-Philippe Fleury  <contact@jpfleury.net>
+
+	Modifications apportées aux fichiers d'Ulrik Sverdrup. Pour le fichier markdown.xml, j'ai seulement ajouté une en-tête de 
+	licence. Pour le fichier markdown.lang, voici les modifications apportées:
+	
+	- Passage à GtkSourceView 2 selon la [documentation disponible sur le site de 
+	Gnome](http://live.gnome.org/Gedit/NewLanguage).
+	- Ajout de la coloration pour un retour à la ligne `<br />` (deux espace ou plus à la fin d'une ligne).
+	- Les marqueurs de titre `#` doivent commencer la ligne (pas d'espace avant) et il doit y avoir au moins un autre caractère 
+	différent.
+	- Ajout des citations.
+	- Au plus 3 espaces après un marqueur de liste.
+	- Ajout des symboles `-` et `+` pour les listes.
+	- Précision du regex de la ligne horizontale.
+	- Correction du regex por un lien (diverses précisions apportées pour une meilleure conformité à Markdown).
+	- Ajout de la coloration pour les images.
+	- Précision du regex pour les 2 types d'emphase (par exemple, pas d'espace autour des mots à emphaser, sinon les symboles 
+	`*` et `_` n'ont pas de signification d'emphase).
+	- Ajout de la coloration pour les caractères échapés (``\`*_{}[]()#+-.!``).
+	- Ajout de la coloration pour le code HTML.
+	- Suppression de la coloration pour le contexte `WikiLink`, étant donné que ça ne fait pas partie de Markdown.
+	- Changement de style pour certains contextes, pour un rendu plus proche du HTML par défaut (exemple: l'emphase en 
+	italique).
+	- Renommage du contexte hash-header en atx-header, et création du contexte setext-header.
+	- Changement du mimetype pour `text/x-markdown`.
+	- Ajout de l'extension (`globs`) `*.mdtxt`.
+	- Ajout pour Markdown du type de commentaire HTML.
+
+2009-03-14  Jean-Philippe Fleury  <contact@jpfleury.net>
+
+	Ajout des fichiers originaux markdown.lang et markdown.xml d'Ulrik Sverdrup. Voir 
+	http://users.student.lth.se/f04us/wiki/hacks/gedit_markdown_syntax/
+
