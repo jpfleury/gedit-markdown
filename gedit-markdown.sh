@@ -35,7 +35,14 @@ ficSupp=( "${ficPrecompil[@]}" "$rep_language_specs/markdown.lang" "$rep_mime_pa
 
 redemarrer_nautilus ()
 {
-	gettext "Nautilus doit être redémarré pour que les modifications apportées à la base de données des types MIME soient prises en compte. NOTE: les fenêtres ou onglets de Nautilus déjà ouverts seront perdus.\\n\\n1 Redémarrer Nautilus maintenant.\\n2 Ne pas redémarrer Nautilus maintenant et attendre le prochain redémarrage de ma session ou de l'ordinateur.\\n\\nSaisir votre choix [1/2] (2 par défaut): "; echo -en
+	gettext ""\
+"Nautilus doit être redémarré pour que les modifications apportées à la base\\n"\
+"de données des types MIME soient prises en compte. NOTE: les fenêtres ou\\n"\
+"onglets de Nautilus déjà ouverts seront perdus.\\n\\n"\
+"1 Redémarrer Nautilus maintenant.\\n"\
+"2 Ne pas redémarrer Nautilus maintenant et attendre le prochain redémarrage\\n"\
+"de ma session ou de l'ordinateur.\\n\\n"\
+"Saisir votre choix [1/2] (2 par défaut): "; echo -en
 	read choix
 	
 	if [[ $choix == 1 ]]; then
@@ -45,7 +52,9 @@ redemarrer_nautilus ()
 		sleep 2
 	
 	else
-		gettext "Nautilus ne sera pas redémarré maintenant (ceci ne vous empêche pas d'utiliser déjà Markdown dans gedit s'il s'agit d'une installation de gedit-markdown).\\n"; echo -e
+		gettext "Nautilus ne sera pas redémarré maintenant (ceci ne vous\\n"\
+		"empêche pas d'utiliser déjà Markdown dans gedit s'il s'agit d'une\\n"\
+		"installation de gedit-markdown).\\n"; echo -e
 	fi
 }
 
