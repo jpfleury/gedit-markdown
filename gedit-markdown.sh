@@ -11,10 +11,10 @@
 
 # Ce programme est distribué dans l'espoir qu'il vous sera utile, mais SANS
 # AUCUNE GARANTIE: sans même la garantie implicite de COMMERCIALISABILITÉ
-# ni d'ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence Générale
-# Publique GNU pour plus de détails.
+# ni d'ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence publique
+# générale GNU pour plus de détails.
 
-# Vous devriez avoir reçu une copie de la Licence Générale Publique GNU avec
+# Vous devriez avoir reçu une copie de la Licence publique générale GNU avec
 # ce programme; si ce n'est pas le cas, consultez
 # <http://www.gnu.org/licenses/>.
 

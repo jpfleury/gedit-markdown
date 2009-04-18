@@ -14,7 +14,7 @@ Plus précisément, gedit-markdown ajoute:
 
 ## Licence
 
-gedit-markdown est distribué suivant les termes de la GNU General Public License telle que publiée par la Free Software Foundation: soit la version 3 de cette licence, soit (à votre gré) toute version ultérieure. Voir le fichier gpl.txt pour la version officielle de la licence, et le fichier gpl-3.0.fr.txt pour une traduction francophone non officielle.
+gedit-markdown est distribué suivant les termes de la GNU General Public License telle que publiée par la Free Software Foundation: soit la version 3 de cette licence, soit (à votre gré) toute version ultérieure. Voir le fichier gpl-3.0.txt pour la version officielle de la licence, et le fichier gpl-3.0.fr.txt pour une traduction francophone non officielle.
 
 ## Dépendances et suggestions
 
@@ -89,8 +89,4 @@ Pour la coloration syntaxique, elle devrait s'activer automatiquement pour les f
 
 ## Changements et versions
 
-*Note: pour la liste des changements, voir le fichier `ChangeLog` dans l'archive du logiciel.*
-
-- gedit-markdown 1.1, 2009-03-31
-- gedit-markdown 1.0.1, 2009-03-17
-- gedit-markdown 1.0, 2009-03-14
+Pour la liste des changements, voir le fichier `ChangeLog` dans l'archive du logiciel.

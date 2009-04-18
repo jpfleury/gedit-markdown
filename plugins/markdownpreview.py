@@ -1,20 +1,22 @@
-# markdownpreview.py - HTML preview of Markdown formatted text in gedit
-#
-# Copyright (C) 2005 - Michele Campeotto
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
-# 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# Le fichier markdownpreview.py fait partie de markdownpreview.
+# HTML preview of Markdown formatted text in gedit
+# Auteur: Michele Campeotto
+# Copyright © Michele Campeotto, 2005, 2006.
+# Copyright © Jean-Philippe Fleury, 2009. <contact@jpfleury.net>
+
+# Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
+# modifier suivant les termes de la GNU General Public License telle que
+# publiée par la Free Software Foundation: soit la version 3 de cette
+# licence, soit (à votre gré) toute version ultérieure.
+
+# Ce programme est distribué dans l'espoir qu'il vous sera utile, mais SANS
+# AUCUNE GARANTIE: sans même la garantie implicite de COMMERCIALISABILITÉ
+# ni d'ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence publique
+# générale GNU pour plus de détails.
+
+# Vous devriez avoir reçu une copie de la Licence publique générale GNU avec
+# ce programme; si ce n'est pas le cas, consultez
+# <http://www.gnu.org/licenses/>.
 
 import gedit
 
