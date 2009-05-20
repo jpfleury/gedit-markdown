@@ -36,32 +36,43 @@ ficSupp=( "${ficPrecompil[@]}" "$rep_language_specs/markdown.lang" "$rep_mime_pa
 redemarrer_nautilus ()
 {
 	echo -en $(gettext ""\
-"Nautilus doit être redémarré pour que les modifications apportées à la base\\n"\
-"de données des types MIME soient prises en compte. NOTE: les fenêtres ou\\n"\
-"onglets de Nautilus déjà ouverts seront perdus.\\n\\n"\
-"1 Redémarrer Nautilus maintenant.\\n"\
-"2 Ne pas redémarrer Nautilus maintenant et attendre le prochain redémarrage\\n"\
-"de ma session ou de l'ordinateur.\\n\\n"\
-"Saisir votre choix [1/2] (2 par défaut): ")
+"Nautilus doit être redémarré pour que les modifications apportées à la base\n"\
+"de données des types MIME soient prises en compte. NOTE: les fenêtres ou\n"\
+"onglets de Nautilus déjà ouverts seront perdus.\n"\
+"\n"\
+"\t1 Redémarrer Nautilus maintenant.\n"\
+"\t2 Ne pas redémarrer Nautilus maintenant et attendre le prochain\n"\
+"\tredémarrage de la session ou de l'ordinateur.\n"\
+"\n"\
+"Saisissez votre choix [1/2] (2 par défaut):")
+	echo -n " "
 	read choix
 	
+	echo ""
 	if [[ $choix == 1 ]]; then
-		echo -e $(gettext "Redémarrage de Nautilus\\n")
+		echo $(gettext "Redémarrage de Nautilus")
 		killall nautilus
 		nautilus &> /tmp/gedit-markdown_redemarrer_nautilus.log &
-		sleep 2
+		sleep 4
 	
 	else
-		echo -e $(gettext "Nautilus ne sera pas redémarré maintenant (ceci ne vous\\n"\
-		"empêche pas d'utiliser déjà Markdown dans gedit s'il s'agit d'une\\n"\
-		"installation de gedit-markdown).\\n")
+		echo -e $(gettext "Nautilus ne sera pas redémarré maintenant (ceci ne vous\n"\
+"empêche pas d'utiliser déjà Markdown dans gedit s'il s'agit d'une\n"\
+"installation de gedit-markdown).")
 	fi
 }
 
 cd `dirname "$0"`
 
 if [[ $1 == "installer" ]]; then
+	echo -en "\033[1m"
+	echo -en "#########################\n##\n## "
+	echo $(gettext "Installation de gedit-markdown")
+	echo -e "##\n#########################\n"
+	echo -n $(gettext "Étape 1")
+	echo -n ": "
 	echo $(gettext "Copie des fichiers")
+	echo -en "\033[22m"
 	
 	# Création des répertoires s'ils n'existent pas déjà
 	mkdir -p $rep_language_specs
@@ -82,16 +93,31 @@ if [[ $1 == "installer" ]]; then
 	cp -a plugins/* $rep_plugins
 	cp -a snippets/* $rep_snippets
 	
+	echo -en "\033[1m"
+	echo ""
+	echo -n $(gettext "Étape 2")
+	echo -n ": "
 	echo $(gettext "Mise à jour de la base de données MIME")
+	echo -en "\033[22m"
 	# Mise à jour de la base de données MIME
 	update-mime-database $rep_mime
 	redemarrer_nautilus
 	
+	echo -en "\033[1m"
+	echo ""
 	echo $(gettext "Installation terminée. Veuillez redémarrer gedit s'il est ouvert.")
+	echo -en "\033[22m"
 	exit 0
 
 elif [[ $1 == "desinstaller" ]]; then
+	echo -en "\033[1m"
+	echo -en "#########################\n##\n## "
+	echo $(gettext "Désinstallation de gedit-markdown")
+	echo -e "##\n#########################\n"
+	echo -n $(gettext "Étape 1")
+	echo -n ": "
 	echo $(gettext "Suppression des fichiers")
+	echo -en "\033[22m"
 	# Suppression des fichiers
 	for i in "${ficSupp[@]}"; do
 		if [ -f $i ]; then
@@ -99,17 +125,27 @@ elif [[ $1 == "desinstaller" ]]; then
 		fi
 	done
 	
+	echo -en "\033[1m"
+	echo ""
+	echo -n $(gettext "Étape 2")
+	echo -n ": "
 	echo $(gettext "Mise à jour de la base de données MIME")
+	echo -en "\033[22m"
 	# Mise à jour de la base de données MIME
 	update-mime-database $rep_mime
 	redemarrer_nautilus
 	
+	echo -en "\033[1m"
+	echo ""
 	echo $(gettext "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert.")
+	echo -en "\033[22m"
 	exit 0
 
 else
-	echo -n $(eval_gettext "Usage: ")
-	echo "$0 [installer | desinstaller]"
+	echo -en "\033[1m"
+	echo -n $(gettext "Usage")
+	echo ": $0 [installer | desinstaller]"
+	echo -en "\033[22m"
 	exit 1
 fi
 
