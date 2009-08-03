@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 # Le fichier markdownpreview.py fait partie de markdownpreview.
 # HTML preview of Markdown formatted text in gedit
 # Auteur: Michele Campeotto
