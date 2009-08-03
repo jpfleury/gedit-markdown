@@ -8,7 +8,7 @@ Plus précisément, gedit-markdown ajoute:
 
 - un type MIME pour les fichiers Markdown ainsi que la reconnaissance de l'extension `.mdtxt`;
 - de la coloration syntaxique des fichiers Markdown dans gedit ainsi que des extraits de code;
-- l'extension *Markdown Preview* pour gedit.
+- le greffon *Markdown Preview* pour gedit.
 
 [1]: http://michelf.com/projets/php-markdown/concepts/
 
@@ -18,8 +18,8 @@ gedit-markdown est distribué suivant les termes de la GNU General Public Licens
 
 ## Dépendances et suggestions
 
-- Pour utiliser les extraits de code de Markdown, il faut activer dans gedit l'extension *Extraits de code* dans *Éditions > Préférences > Greffons*.
-- Pour utiliser l'extension *Markdown Preview*, il faut pouvoir accepter des extensions pour gedit en Python. Je ne pense pas que ça cause de problème. Ça doit être le cas par défaut la plupart du temps.
+- Pour utiliser les extraits de code de Markdown, il faut activer dans gedit le greffon *Extraits de code* dans *Éditions > Préférences > Greffons*.
+- Pour utiliser le greffon *Markdown Preview*, il faut pouvoir accepter des extensions pour gedit en Python. Je ne pense pas que ça cause de problème. Ça doit être le cas par défaut la plupart du temps.
 
 ## Localisation
 
