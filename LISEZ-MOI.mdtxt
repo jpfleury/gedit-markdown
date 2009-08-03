@@ -1,31 +1,31 @@
 # gedit-markdown
 
-## Introduction
+## Téléchargement
 
-gedit-markdown est un ensemble de fichiers permettant d'ajouter le support de [Markdown][1] dans gedit, l'éditeur de texte par défaut de Gnome. (D'ailleurs, ce présent fichier est écrit à l'aide de la syntaxe Markdown.)
+[Lien rapide de téléchargement de gedit-markdown.](http://www.jpfleury.net/gedit-markdown#attachments)
+
+## Qu'est-ce que gedit-markdown?
+
+gedit-markdown est un ensemble de fichiers permettant d'ajouter le support du [Markdown][1] dans gedit, l'éditeur de texte par défaut de Gnome.
 
 Plus précisément, gedit-markdown ajoute:
 
 - un type MIME pour les fichiers Markdown ainsi que la reconnaissance de l'extension `.mdtxt`;
-- de la coloration syntaxique des fichiers Markdown dans gedit ainsi que des extraits de code;
+- la coloration syntaxique des fichiers Markdown dans gedit ainsi que des extraits de code;
 - le greffon *Markdown Preview* pour gedit.
 
 [1]: http://michelf.com/projets/php-markdown/concepts/
-
-## Licence
-
-gedit-markdown est distribué suivant les termes de la GNU General Public License telle que publiée par la Free Software Foundation: soit la version 3 de cette licence, soit (à votre gré) toute version ultérieure. Voir le fichier gpl-3.0.txt pour la version officielle de la licence, et le fichier gpl-3.0.fr.txt pour une traduction francophone non officielle.
-
-## Dépendances et suggestions
-
-- Pour utiliser les extraits de code de Markdown, il faut activer dans gedit le greffon *Extraits de code* dans *Éditions > Préférences > Greffons*.
-- Pour utiliser le greffon *Markdown Preview*, il faut pouvoir accepter des extensions pour gedit en Python. Je ne pense pas que ça cause de problème. Ça doit être le cas par défaut la plupart du temps.
 
 ## Localisation
 
 Les messages de l'installateur sont localisables depuis la version 1.1. Toute personne intéressée à effectuer une traduction peut donc copier le fichier `gedit-markdown.pot` situé dans le répertoire `locale`, le renommer en `LANGUE.po`, traduire les phrases contenues dans le fichier et m'envoyer le fichier `.po`.
 
 Pour l'instant, gedit-markdown est disponible en français.
+
+## Dépendances
+
+- Pour utiliser les extraits de code de Markdown, il faut activer dans gedit le greffon *Extraits de code* dans *Éditions > Préférences > Greffons*.
+- Pour utiliser le greffon *Markdown Preview*, il faut pouvoir accepter des extensions pour gedit en Python. Je ne pense pas que ça cause de problème. Ça doit être le cas par défaut la plupart du temps.
 
 ## Installation
 
@@ -85,11 +85,21 @@ Pour la coloration syntaxique, elle devrait s'activer automatiquement pour les f
 
 Voir <http://www.jpfleury.net/galeries-d-images/captures-d-ecran/gedit-markdown>
 
-## Coordonnées
+## Problèmes ou suggestions
+
+Pour faire part d'un problème d'utilisation avec gedit-markdown ou pour proposer une fonctionnalité, il y a trois possibilités:
+
+- laisser un [commentaire sur la page de gedit-markdown](http://www.jpfleury.net/gedit-markdown);
+- envoyer un [message à partir du formulaire de contact](http://www.jpfleury.net/contact);
+- ou faire un [rapport de bogue sur Launchpad](https://bugs.launchpad.net/gedit-markdown).
+
+## Coordonnées et licence
 
 - Auteur: Jean-Philippe Fleury
 - Site web: <http://www.jpfleury.net/gedit-markdown>
 - Contact: <http://www.jpfleury.net/contact>
+
+gedit-markdown est distribué suivant les termes de la GNU General Public License telle que publiée par la Free Software Foundation: soit la version 3 de cette licence, soit (à votre gré) toute version ultérieure. Voir le fichier gpl-3.0.txt pour la version officielle de la licence, et le fichier gpl-3.0.fr.txt pour une traduction francophone non officielle.
 
 ## Changements et versions
 
