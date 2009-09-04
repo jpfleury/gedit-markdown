@@ -24,6 +24,7 @@ Pour l'instant, gedit-markdown est disponible en français.
 
 ## Dépendances
 
+- L'installateur a été fait pou GNU/Linux. Je suppose qu'une bonne partie des fichiers de gedit-markdown doit être valide et utilisable pour gedit sous Windows, par exemple la coloration syntaxique. Cependant, je n'ai pas du tout fait de recherche en ce sens.
 - Pour utiliser les extraits de code de Markdown, il faut activer dans gedit le greffon *Extraits de code* dans *Éditions > Préférences > Greffons*.
 - Pour utiliser le greffon *Markdown Preview*, il faut pouvoir accepter des extensions pour gedit en Python. Je ne pense pas que ça cause de problème. Ça doit être le cas par défaut la plupart du temps.
 
@@ -33,7 +34,7 @@ Pour l'instant, gedit-markdown est disponible en français.
 
 - Télécharger l'archive de la dernière version de gedit-markdown sur <http://www.jpfleury.net/gedit-markdown>.
 
-- Décompresser l'archive. Dans une console (dans le même dossier que celui où se trouve l'archive):
+- Décompresser l'archive. Dans une console sous GNU/Linux (dans le même dossier que celui où se trouve l'archive):
 
 		tar xvf nom-de-l_archive.tbz2
 
