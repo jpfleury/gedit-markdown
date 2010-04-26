@@ -101,7 +101,7 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		
 		# Remove the menu action
 		manager = window.get_ui_manager()
-		manager.remove_action_ui(windowdata["ui_id"])
+		manager.remove_ui(windowdata["ui_id"])
 		manager.remove_action_group(windowdata["action_group"])
 		
 		# Remove the bottom panel
