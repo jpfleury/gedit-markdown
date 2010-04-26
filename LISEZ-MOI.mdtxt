@@ -84,15 +84,16 @@ Pour la coloration syntaxique, elle devrait s'activer automatiquement pour les f
 
 ## Captures d'écran
 
-Voir <http://www.jpfleury.net/galeries-d-images/captures-d-ecran/gedit-markdown>
+Visitez la [galerie de captures d'écran de gedit-markdown](http://www.jpfleury.net/galeries/captures-d-ecran/gedit-markdown).
 
 ## Problèmes ou suggestions
 
-Pour faire part d'un problème d'utilisation avec gedit-markdown ou pour proposer une fonctionnalité, il y a trois possibilités:
+Pour faire part d'un problème d'utilisation avec gedit-markdown, proposer une fonctionnalité ou poser une question, il y a quelques possibilités:
 
 - laisser un [commentaire sur la page de gedit-markdown](http://www.jpfleury.net/gedit-markdown);
 - envoyer un [message à partir du formulaire de contact](http://www.jpfleury.net/contact);
-- ou faire un [rapport de bogue sur Launchpad](https://bugs.launchpad.net/gedit-markdown).
+- faire un [rapport de bogue sur Launchpad](https://bugs.launchpad.net/gedit-markdown);
+- ou poser une [question sur Launchpad](https://answers.launchpad.net/gedit-markdown).
 
 ## Coordonnées et licence
 
@@ -104,7 +105,7 @@ gedit-markdown est distribué suivant les termes de la GNU General Public Licens
 
 ## Développement
 
-`bzr` est utilisé pour le versionnage des fichiers. [La version de développement est disponible sur Launchpad](https://code.launchpad.net/gedit-markdown).
+`bzr` est utilisé pour le versionnage des fichiers. [La version de développement est disponible sur Launchpad.](https://code.launchpad.net/gedit-markdown)
 
 ## Changements et versions
 
