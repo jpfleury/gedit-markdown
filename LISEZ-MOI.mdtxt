@@ -24,13 +24,21 @@ Pour l'instant, gedit-markdown est disponible en français.
 
 ## Dépendances
 
-- L'installateur a été fait pou GNU/Linux. Je suppose qu'une bonne partie des fichiers de gedit-markdown doit être valide et utilisable pour gedit sous Windows, par exemple la coloration syntaxique. Cependant, je n'ai pas du tout fait de recherche en ce sens.
-- Pour utiliser les extraits de code de Markdown, il faut activer dans gedit le greffon *Extraits de code* dans *Éditions > Préférences > Greffons*.
-- Pour utiliser le greffon *Markdown Preview*, il faut pouvoir accepter des extensions pour gedit en Python. Je ne pense pas que ça cause de problème. Ça doit être le cas par défaut la plupart du temps.
+- L'installateur a été fait pour GNU/Linux. Sous Windows XP, seule la coloration syntaxique fonctionne, et doit être installée à la main.
+
+- Pour utiliser les extraits de code de Markdown, il faut activer dans gedit le greffon *Extraits de code* dans *Édition > Préférences > Greffons*.
+
+- À partir de la version 10.04 d'Ubuntu, le paquet `python-gtkhtml2` a été retiré des dépôts. Or, le greffon *Markdown Preview* dépend de ce paquet. Vous pouvez installer gedit-markdown et ne pas utliser ce greffon, mais si vous voulez l'utiliser, il faut télécharger une [version antérieure de `python-gtkhtml2`](http://packages.ubuntu.com/karmic/python-gtkhtml2) et l'installer manuellement. Pour récupérer le paquet dans une console sous GNU/Linux:
+
+		wget http://security.ubuntu.com/ubuntu/pool/main/g/gnome-python-extras/python-gtkhtml2_2.25.3-3ubuntu1.9.10.1_i386.deb
+
+	Ensuite, cliquer sur le fichier téléchargé. Un installateur devrait vous guider. Après l'installation, le fichier peut être supprimé.
 
 ## Installation
 
-**Note importante: ce logiciel est développé sous Ubuntu et a été testé avec succès sous Ubuntu 8.10. Je ne peux garantir que la marche à suivre pour l'installation est identique sur toutes les distributions GNU/Linux, ni même que ça fonctionne partout. :-)**
+### GNU/Linux
+
+**Note importante: ce logiciel est développé sous Ubuntu et a été testé avec succès sous différentes versions d'Ubuntu. Je ne peux garantir que la marche à suivre pour l'installation est identique sur toutes les distributions GNU/Linux, ni même que ça fonctionne partout.**
 
 - Télécharger l'archive de la dernière version de gedit-markdown sur <http://www.jpfleury.net/gedit-markdown>.
 
@@ -44,15 +52,29 @@ Pour l'instant, gedit-markdown est disponible en français.
 
 Le support de Markdown sera ajouté à l'utilisateur courant (l'installation se fait donc sans les droits du superadministrateur). Le dossier `gedit-markdown` créé par l'extraction de l'archive peut être effacé ou mis à la corbeille après l'installation.
 
+### Windows XP
+
+Il n'y a qu'un fichier à copier, car seule la coloration syntaxique fonctionne. Dans l'archive de gedit-markdown, trouver le fichier suivant:
+
+	language-specs/markdown.lang
+
+et le copier dans le dossier suivant:
+
+	C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
+
+ce qui donne au final:
+
+	C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\markdown.lang
+
 ## Désinstallation
 
-- Dans une console, lancer la désinstallation:
+Dans une console sous GNU/Linux, lancer la désinstallation:
 
-		gedit-markdown/gedit-markdown.sh desinstaller
+	gedit-markdown/gedit-markdown.sh desinstaller
 
 ## Utilisation
 
-Si gedit est ouvert, redémarrez-le. Ensuite, aller dans *Éditions > Préférences > Greffons* et activez *Markdown Preview*. Maintenant vous trouverez dans le menu *Outils* une action *Markdown Preview*, qui fera s'afficher l'aperçu du document courant dans le panneau inférieur (s'assurer que ce panneau est affiché en allant dans le menu *Éditions*).
+Si gedit est ouvert, redémarrez-le. Ensuite, aller dans *Édition > Préférences > Greffons* et activez *Markdown Preview*. Maintenant vous trouverez dans le menu *Outils* une action *Markdown Preview*, qui fera s'afficher l'aperçu du document courant dans le panneau inférieur (s'assurer que ce panneau est affiché en allant dans le menu *Affichage*).
 
 Pour la coloration syntaxique, elle devrait s'activer automatiquement pour les fichiers reconnus comme étant des fichiers Markdown (extension `.mdtxt`), sinon choisir la coloration à la mitaine en allant dans *Affichage > Mode de coloration > Balisage* et cocher *Markdown*.
 
@@ -78,7 +100,7 @@ Pour la coloration syntaxique, elle devrait s'activer automatiquement pour les f
 
 	Prendre note que gedit-markdown supporte la coloration jusqu'à 2 accents de part et d'autre du code.
 
-- Selon Markdown, pour écrire plusieurs paragraphes dans des listes, il faut indenter chaque paragraphe. Il y a donc conflit au plan de la coloration syntaxique entre un paragraphe indenté à l'intérieur d'une liste (4 espaces ou une tabulation) et une ligne de code indentée en dehors d'une liste (également 4 espaces ou une tabulation). La coloration en dehors de liste prime, ce qui signifie qu'un paragraphe à l'intérieur de liste va s'afficher comme du code. Cette limitation concerne quelques autres éléments, comme les citations à l'intérieur de liste. Je ne sais pas trop comment résoudre ce problème, étant donné qu'il n'est pas possible (en tout cas de ce que je connais de la coloration sous GtkSourceView 2) de savoir dans quel contexte on se situe et de faire dépendre la coloration d'une ligne de ce qui se trouve sur des lignes précédentes.
+- Selon la syntaxe Markdown, pour écrire plusieurs paragraphes dans des listes, il faut indenter chaque paragraphe. Il y a donc conflit au plan de la coloration syntaxique entre un paragraphe indenté à l'intérieur d'une liste (4 espaces ou une tabulation) et une ligne de code indentée en dehors d'une liste (également 4 espaces ou une tabulation). La coloration en dehors de liste prime, ce qui signifie qu'un paragraphe à l'intérieur de liste va s'afficher comme du code. Cette limitation concerne quelques autres éléments, comme les citations à l'intérieur de liste. Je ne sais pas trop comment résoudre ce problème, étant donné qu'il n'est pas possible (en tout cas de ce que je connais de la coloration sous GtkSourceView 2) de savoir dans quel contexte on se situe et de faire dépendre la coloration d'une ligne de ce qui se trouve sur des lignes précédentes.
 
 - J'ai voulu utiliser une coloration syntaxique qui se rapproche du rendu par défaut du HTML, par exemple de l'italique pour une emphase légère, des liens soulignés, etc., le tout sans devoir créer un fichier de style personnalisé dans `/usr/share/gtksourceview-2.0/styles` (ce qui forcerait les utilisateurs à choisir dans gedit le style personnalisé). Il y a donc quelques rendus imparfaits, comme l'emphase forte qui est en gras MAIS AUSSI en vert. Cette limitation est dépendante de la résolution du bogue <http://bugzilla.gnome.org/show_bug.cgi?id=573653>.
 
