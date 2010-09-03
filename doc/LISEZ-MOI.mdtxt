@@ -1,10 +1,4 @@
-# gedit-markdown
-
-## Téléchargement
-
-[Lien rapide de téléchargement de gedit-markdown.](http://www.jpfleury.net/gedit-markdown#attachments)
-
-## Qu'est-ce que gedit-markdown?
+## Aperçu
 
 gedit-markdown est un ensemble de fichiers permettant d'ajouter le support du [Markdown][1] dans gedit, l'éditeur de texte par défaut de Gnome.
 
@@ -16,11 +10,9 @@ Plus précisément, gedit-markdown ajoute:
 
 [1]: http://michelf.com/projets/php-markdown/concepts/
 
-## Localisation
+<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple1.png" width="750" height="565" alt="Coloration syntaxique du Markdown dans gedit." />
 
-Les messages de l'installateur sont localisables depuis la version 1.1. Toute personne intéressée à effectuer une traduction peut donc copier le fichier `gedit-markdown.pot` situé dans le répertoire `locale`, le renommer en `LANGUE.po`, traduire les phrases contenues dans le fichier et m'envoyer le fichier `.po`.
-
-Pour l'instant, gedit-markdown est disponible en français.
+<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple1.png" width="750" height="565" alt="Aperçu en HTML du code Markdown dans gedit." />
 
 ## Dépendances
 
@@ -38,19 +30,17 @@ Pour l'instant, gedit-markdown est disponible en français.
 
 ### GNU/Linux
 
-**Note importante: ce logiciel est développé sous Ubuntu et a été testé avec succès sous différentes versions d'Ubuntu. Je ne peux garantir que la marche à suivre pour l'installation est identique sur toutes les distributions GNU/Linux, ni même que ça fonctionne partout.**
+- [Télécharger l'archive de la dernière version.](http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip)
+- Décompresser l'archive.
+- Lancer le script d'installation.
 
-- Télécharger l'archive de la dernière version de gedit-markdown sur <http://www.jpfleury.net/gedit-markdown>.
+Voici les commandes pour effectuer toutes ces étapes dans une console sous GNU/Linux:
 
-- Décompresser l'archive. Dans une console sous GNU/Linux (dans le même dossier que celui où se trouve l'archive):
+	wget http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip
+	unzip gedit-markdown.zip
+	gedit-markdown/gedit-markdown.sh installer
 
-		tar xvf nom-de-l_archive.tbz2
-
-- Toujours dans la console, lancer l'installation:
-
-		gedit-markdown/gedit-markdown.sh installer
-
-Le support de Markdown sera ajouté à l'utilisateur courant (l'installation se fait donc sans les droits du superadministrateur). Le dossier `gedit-markdown` créé par l'extraction de l'archive peut être effacé ou mis à la corbeille après l'installation.
+Le support de Markdown sera ajouté à l'utilisateur courant (l'installation se fait donc sans les droits d'administration). Le dossier `gedit-markdown` créé par l'extraction de l'archive peut être effacé ou mis à la corbeille après l'installation.
 
 ### Windows XP
 
@@ -104,31 +94,40 @@ Pour la coloration syntaxique, elle devrait s'activer automatiquement pour les f
 
 - J'ai voulu utiliser une coloration syntaxique qui se rapproche du rendu par défaut du HTML, par exemple de l'italique pour une emphase légère, des liens soulignés, etc., le tout sans devoir créer un fichier de style personnalisé dans `/usr/share/gtksourceview-2.0/styles` (ce qui forcerait les utilisateurs à choisir dans gedit le style personnalisé). Il y a donc quelques rendus imparfaits, comme l'emphase forte qui est en gras MAIS AUSSI en vert. Cette limitation est dépendante de la résolution du bogue <http://bugzilla.gnome.org/show_bug.cgi?id=573653>.
 
-## Captures d'écran
+## Localisation
 
-Visitez la [galerie de captures d'écran de gedit-markdown](http://www.jpfleury.net/galeries/captures-d-ecran/gedit-markdown).
+Les messages de l'installateur sont localisables depuis la version 1.1. Toute personne intéressée à effectuer une traduction peut donc copier le fichier `gedit-markdown.pot` situé dans le répertoire `locale`, le renommer en `LANGUE.po`, traduire les phrases contenues dans le fichier et m'envoyer le fichier `.po`.
 
-## Problèmes ou suggestions
-
-Pour faire part d'un problème d'utilisation avec gedit-markdown, proposer une fonctionnalité ou poser une question, il y a quelques possibilités:
-
-- laisser un [commentaire sur la page de gedit-markdown](http://www.jpfleury.net/gedit-markdown);
-- envoyer un [message à partir du formulaire de contact](http://www.jpfleury.net/contact);
-- faire un [rapport de bogue sur Launchpad](https://bugs.launchpad.net/gedit-markdown);
-- ou poser une [question sur Launchpad](https://answers.launchpad.net/gedit-markdown).
-
-## Coordonnées et licence
-
-- Auteur: Jean-Philippe Fleury
-- Site web: <http://www.jpfleury.net/gedit-markdown>
-- Contact: <http://www.jpfleury.net/contact>
-
-gedit-markdown est distribué suivant les termes de la GNU General Public License telle que publiée par la Free Software Foundation: soit la version 3 de cette licence, soit (à votre gré) toute version ultérieure. Voir le fichier gpl-3.0.txt pour la version officielle de la licence, et le fichier gpl-3.0.fr.txt pour une traduction francophone non officielle.
+Pour l'instant, gedit-markdown est disponible en français.
 
 ## Développement
 
-`bzr` est utilisé pour le versionnage des fichiers. [La version de développement est disponible sur Launchpad.](https://code.launchpad.net/gedit-markdown)
+Le logiciel bazaar est utilisé pour le versionnage des fichiers. Une copie de la version de développement peut être récupérée avec la commande suivante:
 
-## Changements et versions
+	bzr branch lp:~jpfle/+junk/gedit-markdown
 
-Pour la liste des changements, voir le fichier `ChangeLog` dans l'archive du logiciel.
+## Licence
+
+Auteur: Jean-Philippe Fleury <contact@jpfleury.net>  
+Copyright © Jean-Philippe Fleury
+
+Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
+modifier suivant les termes de la GNU General Public License telle que
+publiée par la Free Software Foundation: soit la version 3 de cette
+licence, soit (à votre gré) toute version ultérieure.
+
+Ce programme est distribué dans l'espoir qu'il vous sera utile, mais SANS
+AUCUNE GARANTIE: sans même la garantie implicite de COMMERCIALISABILITÉ
+ni d'ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence publique
+générale GNU pour plus de détails.
+
+Vous devriez avoir reçu une copie de la Licence publique générale GNU avec
+ce programme; si ce n'est pas le cas, consultez
+<http://www.gnu.org/licenses/>.
+
+### Matériel tierce
+
+- [**Coloration syntaxique et extraits de code d'Ulrik Sverdrup**](http://users.student.lth.se/f04us/wiki/hacks/gedit_markdown_syntax/): les fichiers originaux `markdown.lang` et `markdown.xml` d'Ulrik Sverdrup sont sous double licence GPL version 2 ou toute version ultérieure/LGPL version 2.1 ou toute version ultérieure. Je les ai modifiés.
+
+- [**Markdown Preview**](http://live.gnome.org/Gedit/MarkdownSupport): le greffon original est sous licence GPL version 2 ou toute vesion ultérieure. Je l'ai légèrement modifié.
+
