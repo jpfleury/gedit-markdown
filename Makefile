@@ -4,6 +4,9 @@
 ##
 ########################################################################
 
+# Dossier de publication.
+dossierPub=gedit-markdown
+
 # Dernière version, représentée par la dernière étiquette.
 version:=$(shell bzr tags | sort -k2n,2n | tail -n 1 | cut -d ' ' -f 1)
 
@@ -17,7 +20,7 @@ version:=$(shell bzr tags | sort -k2n,2n | tail -n 1 | cut -d ' ' -f 1)
 generer: po mo
 
 # Crée l'archive; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles. À faire après un `bzr tag ...` pour la sortie d'une nouvelle version.
-publier: archive
+publier: fichiersSurBureau
 
 ########################################################################
 ##
@@ -25,32 +28,27 @@ publier: archive
 ##
 ########################################################################
 
-archive: menage-archive ChangeLog version.txt
-	bzr export -r tag:$(version) gedit-markdown
-	mv doc/ChangeLog gedit-markdown/doc
-	mv doc/version.txt gedit-markdown/doc
-	$(MAKE) mo-archive
-	rm -f gedit-markdown/Makefile
-	zip -rv gedit-markdown.zip gedit-markdown
-	rm -rf gedit-markdown
+archive: changelog versionTxt
+	bzr export -r tag:$(version) $(dossierPub)
+	cp doc/ChangeLog $(dossierPub)/doc
+	cp doc/version.txt $(dossierPub)/doc
+	$(MAKE) moArchive
+	rm -f $(dossierPub)/Makefile
+	zip -qr gedit-markdown.zip $(dossierPub)
+	rm -rf $(dossierPub)
 
-ChangeLog: menage-ChangeLog
+changelog:
 	# Est basé sur <http://telecom.inescporto.pt/~gjc/gnulog.py>. Ne pas oublier de mettre ce fichier dans le dossier des extensions de bazaar, par exemple `~/.bazaar/plugins/`.
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r1..tag:$(version) > doc/ChangeLog
 
-menage-archive:
-	rm -f gedit-markdown.zip
+fichiersSurBureau: archive
+	cp doc/ChangeLog $(cheminBureau)
+	mv gedit-markdown.zip $(cheminBureau)
 
-menage-ChangeLog:
-	rm -f doc/ChangeLog
-
-menage-pot:
+menagePot:
 	rm -f locale/gedit-markdown.pot
 	# À faire, sinon `xgettext -j` va planter en précisant que le fichier est introuvable.
 	touch locale/gedit-markdown.pot
-
-menage-version.txt:
-	rm -f doc/version.txt
 
 mo:
 	for po in $(shell find locale/ -iname *.po);\
@@ -58,8 +56,8 @@ mo:
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
 
-mo-archive:
-	for po in $(shell find gedit-markdown/locale/ -iname *.po);\
+moArchive:
+	for po in $(shell find $(dossierPub)/locale/ -iname *.po);\
 	do\
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
@@ -72,12 +70,12 @@ po: pot
 		mv tempo $$po;\
 	done
 
-pot: menage-pot
+pot: menagePot
 	find ./ -iname "gedit-markdown.sh" -exec xgettext -j -o locale/gedit-markdown.pot --from-code=UTF-8 -L shell {} \;
 
 push:
 	bzr push lp:~jpfle/+junk/gedit-markdown
 
-version.txt: menage-version.txt
+versionTxt:
 	echo $(version) > doc/version.txt
 
