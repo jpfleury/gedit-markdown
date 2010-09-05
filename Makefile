@@ -4,6 +4,9 @@
 ##
 ########################################################################
 
+# Chemin vers le bureau.
+cheminBureau:=$(shell xdg-user-dir DESKTOP)
+
 # Dossier de publication.
 dossierPub=gedit-markdown
 
