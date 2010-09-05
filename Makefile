@@ -37,6 +37,7 @@ archive: changelog versionTxt
 	cp doc/version.txt $(dossierPub)/doc
 	$(MAKE) moArchive
 	rm -f $(dossierPub)/Makefile
+	rm -rf $(dossierPub)/src
 	zip -qr gedit-markdown.zip $(dossierPub)
 	rm -rf $(dossierPub)
 

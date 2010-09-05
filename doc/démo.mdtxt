@@ -1,0 +1,36 @@
+# Titre de niveau 1
+
+## Titre de niveau 2
+
+### Titre de niveau 3 ###
+
+Démo de la coloration syntaxique avec gedit-markdown. Voici une liste:
+
+- Item de liste avec le symbole -
++ Item de liste avec le symbole +
+* Item de liste avec le symbole *
+
+Voici du code:
+
+	Code de type bloc
+	Plus de code
+
+Voici maintenant du `code en ligne`. Il est aussi possible d'utiliser l'*emphase légère* ou l'**emphase forte**, ou bien de citer:
+
+>Voici une citation, un peu
+>comme dans les courriels.
+
+Continuons avec un retour à la ligne  
+forcé. Les liens ont aussi leur syntaxe:
+
+- un exemple: <http://www.jpfleury.net/logiciels/gedit-markdown.php>
+- un autre exemple: [gedit-markdown](http://www.jpfleury.net/logiciels/gedit-markdown.php)
+- un autre exemple: [gedit-markdown][1]
+- il ne faudrait pas oublier les images: ![Texte alternatif](fichier.png)
+
+[1]: http://www.jpfleury.net/logiciels/gedit-markdown.php
+
+On peut également échapper des caractères, comme \` ou \*. Terminons avec une ligne horizontale:
+
+----
+
