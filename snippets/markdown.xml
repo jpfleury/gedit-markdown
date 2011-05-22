@@ -1,84 +1,109 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-Le fichier markdown.xml fait partie de gedit-markdown.
-Auteur: Ulrik Sverdrup <ulrik.sverdrup@gmail.com>
-Copyright © Ulrik Sverdrup, 2007.
 
-Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
-modifier suivant les termes de la GNU General Public License telle que
-publiée par la Free Software Foundation: soit la version 3 de cette
-licence, soit (à votre gré) toute version ultérieure.
+ Authors: Ulrik Sverdrup, Jean-Philippe Fleury
+ Copyright (C) 2007 Ulrik Sverdrup <ulrik.sverdrup@gmail.com>
+ Copyright (C) 2009-2011 Jean-Philippe Fleury <contact@jpfleury.net>
 
-Ce programme est distribué dans l'espoir qu'il vous sera utile, mais SANS
-AUCUNE GARANTIE: sans même la garantie implicite de COMMERCIALISABILITÉ
-ni d'ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence publique
-générale GNU pour plus de détails.
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Library General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
 
-Vous devriez avoir reçu une copie de la Licence publique générale GNU avec
-ce programme; si ce n'est pas le cas, consultez
-<http://www.gnu.org/licenses/>.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Library General Public License for more details.
+
+ You should have received a copy of the GNU Library General Public
+ License along with this library; if not, write to the
+ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ Boston, MA 02111-1307, USA.
+
 -->
-<snippets language="markdown">
-  <snippet>
-    <text><![CDATA[[${1:1}]: ${2:address}
+<snippets language="Markdown">
+  <snippet id="atx-header">
+    <text><![CDATA[${1:#} ${2:Header} $1
+
 ]]></text>
-    <tag>ref</tag>
-    <description>Reference</description>
+    <tag>h</tag>
+    <description>Header (atx-style)</description>
   </snippet>
-  <snippet>
-    <text><![CDATA[[${1:NewPage}][${2:1}] ]]></text>
-    <tag>lnk</tag>
-    <description>Link</description>
-  </snippet>
-  <snippet>
-    <text><![CDATA[[$GEDIT_SELECTED_TEXT][${1:id}]	]]></text>
-    <description>Wrap selection in link w/ ref</description>
-    <accelerator><![CDATA[<Control><Alt>l]]></accelerator>
-  </snippet>
-  <snippet>
+  <snippet id="setext-header-1">
     <text><![CDATA[${1:Header}
------------]]></text>
-    <tag>hd</tag>
-    <description>Header Underlined II</description>
+===============
+
+]]></text>
+    <tag>Hs</tag>
+    <description>Header 1 (setext-style)</description>
   </snippet>
-  <snippet>
-    <text><![CDATA[![${1:alt-text}](${2:URI})]]></text>
-    <tag>img</tag>
-    <description>Image</description>
+  <snippet id="setext-header-2">
+    <text><![CDATA[${1:Header}
+---------------
+
+]]></text>
+    <tag>hs</tag>
+    <description>Header 2 (setext-style)</description>
   </snippet>
-  <snippet>
+  <snippet id="horizontal-rule">
+    <text><![CDATA[***************
+
+$0]]></text>
+    <tag>hr</tag>
+    <description>Horizontal Rule</description>
+  </snippet>
+  <snippet id="unordered-list">
     <text><![CDATA[* $1
 * $2
-${3:lst}]]></text>
-    <tag>lst</tag>
-    <description>Unordered list</description>
-  </snippet>
-  <snippet>
-    <text><![CDATA[${1:Header}
-===========
+* $3
+* $4
+
 ]]></text>
-    <tag>Hd</tag>
-    <description>Header Underlined I</description>
+    <tag>ul</tag>
+    <description>Unordered List</description>
   </snippet>
-  <snippet>
-    <text><![CDATA[${1:#} ${2:title} $1
+  <snippet id="ordered-list">
+    <text><![CDATA[1. $1
+2. $2
+3. $3
+4. $4
+
 ]]></text>
-    <tag>hhd</tag>
-    <description>Header Hashed</description>
+    <tag>ol</tag>
+    <description>Ordered List</description>
   </snippet>
-  <snippet>
-    <text><![CDATA[[$GEDIT_SELECTED_TEXT](${1:URL})]]></text>
-    <description>Wrap selection in link inline</description>
-    <accelerator><![CDATA[<Control><Alt>l]]></accelerator>
+  <snippet id="code-span">
+    <text><![CDATA[\`${1:$GEDIT_SELECTED_TEXT}\`]]></text>
+    <tag>code</tag>
+    <description>Wrap Selection as Code Span</description>
+    <accelerator><![CDATA[<Shift><Alt>c]]></accelerator>
   </snippet>
-  <snippet>
-    <text><![CDATA[[${1:NewPage}](${2:URL}) ]]></text>
-    <tag>lnki</tag>
-    <description>Link inline</description>
+  <snippet id="inline-link">
+    <text><![CDATA[[${1:$GEDIT_SELECTED_TEXT}](${2:URL})]]></text>
+    <tag>a</tag>
+    <description>Wrap Selection as Inline Link</description>
+    <accelerator><![CDATA[<Shift><Alt>a]]></accelerator>
   </snippet>
-  <snippet>
-    <text><![CDATA[\`$0\`]]></text>
-    <tag>c</tag>
-    <description>code en ligne</description>
+  <snippet id="reference-link">
+    <text><![CDATA[[${1:$GEDIT_SELECTED_TEXT}][${2:link label}]]]></text>
+    <tag>aref</tag>
+    <description>Wrap Selection as Reference Link</description>
+    <accelerator><![CDATA[<Shift><Alt>r]]></accelerator>
+  </snippet>
+  <snippet id="link-label">
+    <text><![CDATA[[${1:link label}]: ${2:URL}
+]]></text>
+    <tag>label</tag>
+    <description>Link Label</description>
+  </snippet>
+  <snippet id="inline-image">
+    <text><![CDATA[![${1:alt text}](${2:URL})]]></text>
+    <tag>img</tag>
+    <description>Inline Image</description>
+  </snippet>
+  <snippet id="reference-image">
+    <text><![CDATA[![${1:alt text}][${2:image label}]]]></text>
+    <tag>iref</tag>
+    <description>Reference Image</description>
   </snippet>
 </snippets>

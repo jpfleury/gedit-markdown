@@ -1,14 +1,21 @@
-# Titre de niveau 1
+Titre de niveau 1 (style Setext)
+================================
 
-## Titre de niveau 2
+## Titre de niveau 2 (style atx)
 
-### Titre de niveau 3 ###
+### Titre de niveau 3 (style atx) ###
 
-Démo de la coloration syntaxique avec gedit-markdown. Voici une liste:
+Démo de la coloration syntaxique avec gedit-markdown.
 
-- Item de liste avec le symbole -
-+ Item de liste avec le symbole +
-* Item de liste avec le symbole *
+Voici des listes:
+
+- Item de liste non ordonnée avec le symbole -
++ Item de liste non ordonnée avec le symbole +
+* Item de liste non ordonnée avec le symbole *
+
+1. Item de liste ordonnée
+2. Item de liste ordonnée
+3. Item de liste ordonnée
 
 Voici du code:
 
@@ -17,20 +24,32 @@ Voici du code:
 
 Voici maintenant du `code en ligne`. Il est aussi possible d'utiliser l'*emphase légère* ou l'**emphase forte**, ou bien de citer:
 
->Voici une citation, un peu
->comme dans les courriels.
+> Voici une citation, un peu
+> comme dans les courriels.
+
+Ajoutons une ligne horizontale:
+
+----------
 
 Continuons avec un retour à la ligne  
 forcé. Les liens ont aussi leur syntaxe:
 
-- un exemple: <http://www.jpfleury.net/logiciels/gedit-markdown.php>
-- un autre exemple: [gedit-markdown](http://www.jpfleury.net/logiciels/gedit-markdown.php)
-- un autre exemple: [gedit-markdown][1]
-- il ne faudrait pas oublier les images: ![Texte alternatif](fichier.png)
+- Lien automatique: <http://www.jpfleury.net/logiciels/gedit-markdown.php>
+- Lien incorporé au texte: le logiciel [gedit-markdown](http://www.jpfleury.net/logiciels/gedit-markdown.php "Attribut title optionnel") permet d'ajouter le support du Markdown à l'éditeur de texte gedit.
+- Lien par référence: le logiciel [gedit-markdown][1] permet entre autres d'utiliser la coloration syntaxique du Markdown dans gedit.
+
+Il ne faudrait pas oublier les images:
+
+- Image incorporée au texte: le logo du logiciel Squeletml est ![Squeletml](http://www.squeletml.net/fichiers/squeletml-logo.png)
+- Image par référence: le logo de Squeletml est ![Squeletml][logo squeletml]
+
+Le lien par référence créé dans une liste ci-dessus peut être défini n'importe où dans le texte, par exemple ici:
 
 [1]: http://www.jpfleury.net/logiciels/gedit-markdown.php
 
-On peut également échapper des caractères, comme \` ou \*. Terminons avec une ligne horizontale:
+Même chose en ce qui concerne l'image par référence:
 
-----
+[logo squeletml]: http://www.squeletml.net/fichiers/squeletml-logo.png "Attribut title optionnel"
+
+On peut également échapper des caractères, par exemple: \`ceci n'est pas du code, car les accents graves sont échappés\`.
 

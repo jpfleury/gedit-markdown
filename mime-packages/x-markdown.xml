@@ -2,7 +2,7 @@
 <!--
 Le fichier x-markdown.xml fait partie de gedit-markdown.
 Auteur: Jean-Philippe Fleury <contact@jpfleury.net>
-Copyright © Jean-Philippe Fleury, 2009.
+Copyright © Jean-Philippe Fleury, 2009, 2011.
 
 Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 modifier suivant les termes de la GNU General Public License telle que
@@ -19,10 +19,10 @@ ce programme; si ce n'est pas le cas, consultez
 <http://www.gnu.org/licenses/>.
 -->
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
-	<mime-type type="text/x-markdown">
-		<comment>Markdown document</comment>
-		<comment xml:lang="fr">document Markdown</comment>
-		<sub-class-of type="text/plain"/>
-		<glob pattern="*.mdtxt"/>
-	</mime-type>
+  <mime-type type="text/x-markdown">
+    <comment>Markdown document</comment>
+    <comment xml:lang="fr">document Markdown</comment>
+    <sub-class-of type="text/plain"/>
+    <glob pattern="*.markdown;*.md;*.mdtxt"/>
+  </mime-type>
 </mime-info>
