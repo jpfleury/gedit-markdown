@@ -1,6 +1,6 @@
 [Gedit Plugin]
 Loader=python
-Module=markdownpreview
+Module=markdown-preview
 IAge=2
 Name=Markdown Preview
 Name[fr]=Aperçu Markdown
