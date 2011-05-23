@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gedit-markdown\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-23 17:18-0400\n"
+"POT-Creation-Date: 2011-05-23 17:43-0400\n"
 "PO-Revision-Date: 2011-05-23 16:36-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -51,32 +51,32 @@ msgstr "Installation of gedit-markdown"
 msgid "Étape 1: Copie des fichiers"
 msgstr "Step 1: Copy files"
 
-#: gedit-markdown.sh:90 gedit-markdown.sh:122
+#: gedit-markdown.sh:92 gedit-markdown.sh:124
 msgid "Étape terminée."
 msgstr ""
 
-#: gedit-markdown.sh:93 gedit-markdown.sh:125
+#: gedit-markdown.sh:95 gedit-markdown.sh:127
 msgid "Étape 2: Mise à jour de la base de données MIME"
 msgstr "Step 2: Update the MIME database"
 
-#: gedit-markdown.sh:100
+#: gedit-markdown.sh:102
 msgid "Installation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 "Installation successful. Please restart gedit (if it's already running)."
 
-#: gedit-markdown.sh:107
+#: gedit-markdown.sh:109
 msgid "Désinstallation de gedit-markdown"
 msgstr "Uninstallation of gedit-markdown"
 
-#: gedit-markdown.sh:109
+#: gedit-markdown.sh:111
 msgid "Étape 1: Suppression des fichiers"
 msgstr "Step 1: Remove files"
 
-#: gedit-markdown.sh:132
+#: gedit-markdown.sh:134
 msgid "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 "Uninstallation successful. Please restart gedit (if it's already running)."
 
-#: gedit-markdown.sh:138
+#: gedit-markdown.sh:140
 msgid "Usage: "
 msgstr "Usage: "

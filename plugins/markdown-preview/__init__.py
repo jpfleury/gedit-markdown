@@ -21,6 +21,7 @@
 # ce programme; si ce n'est pas le cas, consultez
 # <http://www.gnu.org/licenses/>.
 
+import os
 import gedit
 import sys
 import gtk
@@ -32,7 +33,7 @@ from gpdefs import *
 try:
 	APP_NAME = 'markdown-preview'
 	LOCALE_PATH = os.path.dirname(__file__) + '/locale'
-	gettext.bindtextdomain(APP_NAME, GP_LOCALEDIR)
+	gettext.bindtextdomain(APP_NAME, LOCALE_PATH)
 	_ = lambda s: gettext.dgettext(APP_NAME, s);
 except:
 	_ = lambda s: s
