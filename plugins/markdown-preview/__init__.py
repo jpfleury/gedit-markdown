@@ -31,7 +31,7 @@ from gpdefs import *
 
 try:
 	APP_NAME = 'markdown-preview'
-	LOCALE_PATH = os.path.dirname(__file__) + '/markdown-preview-locale'
+	LOCALE_PATH = os.path.dirname(__file__) + '/locale'
 	gettext.bindtextdomain(APP_NAME, GP_LOCALEDIR)
 	_ = lambda s: gettext.dgettext(APP_NAME, s);
 except:

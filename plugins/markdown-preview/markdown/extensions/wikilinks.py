@@ -78,7 +78,7 @@ Dependencies:
 * [Markdown 2.0+](http://www.freewisdom.org/projects/python-markdown/)
 '''
 
-import markdown
+import __init__ as markdown
 import re
 
 def build_url(label, base, end):

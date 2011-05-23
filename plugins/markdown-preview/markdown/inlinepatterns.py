@@ -41,7 +41,7 @@ So, we apply the expressions in the following order:
 * finally we apply strong and emphasis
 """
 
-import markdown
+import __init__ as markdown
 import re
 from urlparse import urlparse, urlunparse
 import sys

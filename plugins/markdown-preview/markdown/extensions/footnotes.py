@@ -24,7 +24,7 @@ Example:
 """
 
 import re, markdown
-from markdown import etree
+from __init__ import etree
 
 FN_BACKLINK_TEXT = "zz1337820767766393qq"
 NBSP_PLACEHOLDER =  "qq3936677670287331zz"

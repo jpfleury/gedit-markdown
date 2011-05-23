@@ -9,7 +9,7 @@ processing.
 """
 
 
-import markdown
+import __init__ as markdown
 
 class Processor:
     def __init__(self, markdown_instance=None):

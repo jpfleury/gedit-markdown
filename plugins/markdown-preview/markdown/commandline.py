@@ -6,7 +6,7 @@ The rest of the code is specifically for handling the case where Python
 Markdown is called from the command line.
 """
 
-import markdown
+import __init__ as markdown
 import sys
 import logging
 from logging import DEBUG, INFO, WARN, ERROR, CRITICAL

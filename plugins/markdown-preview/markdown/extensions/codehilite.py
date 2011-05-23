@@ -20,7 +20,7 @@ Dependencies:
 
 """
 
-import markdown
+import __init__ as markdown
 
 # --------------- CONSTANTS YOU MIGHT WANT TO MODIFY -----------------
 

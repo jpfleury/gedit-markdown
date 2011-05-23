@@ -39,10 +39,10 @@ redemarrerNautilus()
 "Nautilus doit être redémarré pour que les modifications apportées à la base\n"\
 "de données partagée MIME-Info soient prises en compte.\n"\
 "\n"\
-"\t1 Redémarrer Nautilus maintenant (les fenêtres ou les onglets déjà ouverts\n"
-"de Nautilus seront perdus).\n"\
-"\t2 Ne pas redémarrer Nautilus maintenant et attendre le prochain\n"\
-"\tredémarrage de la session ou de l'ordinateur.\n"\
+"\t1\tRedémarrer Nautilus maintenant (les fenêtres ou les onglets déjà ouverts\n"\
+"\t\tde Nautilus seront perdus).\n"\
+"\t2\tNe pas redémarrer Nautilus maintenant et attendre le prochain\n"\
+"\t\tredémarrage de la session ou de l'ordinateur.\n"\
 "\n"\
 "Saisissez votre choix [1/2] (2 par défaut): ")
 	read choix
@@ -68,12 +68,12 @@ redemarrerNautilus()
 cd `dirname "$0"`
 
 if [[ $1 == "installer" || $1 == "install" ]]; then
-	echo -en "\033[1m"
+	echo -e "\033[1m"
 	echo -en "########################################\n##\n## "
 	echo $(gettext "Installation de gedit-markdown")
 	echo -e "##\n########################################\n"
 	echo $(gettext "Étape 1: Copie des fichiers")
-	echo -en "\033[22m"
+	echo -e "\033[22m"
 	
 	# Création des répertoires s'ils n'existent pas déjà.
 	mkdir -p $cheminLanguageSpecs
@@ -85,27 +85,31 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	cp language-specs/markdown.lang $cheminLanguageSpecs
 	cp mime-packages/x-markdown.xml $cheminMimePackages
 	cp -r plugins/* $cheminPlugins
+	rm $cheminPluginsMarkdownPreview/locale/markdown-preview.pot
+	find $cheminPluginsMarkdownPreview/locale/ -name '*.po' -exec rm -f {} \;
 	cp snippets/markdown.xml $cheminSnippets
+	
+	echo $(gettext "Étape terminée.")
 	
 	echo -e "\033[1m"
 	echo $(gettext "Étape 2: Mise à jour de la base de données MIME")
-	echo -en "\033[22m"
+	echo -e "\033[22m"
 	# Mise à jour de la base de données MIME.
 	update-mime-database $cheminMime
 	redemarrerNautilus $1
 	
 	echo -e "\033[1m"
 	echo $(gettext "Installation terminée. Veuillez redémarrer gedit s'il est ouvert.")
-	echo -en "\033[22m"
+	echo -e "\033[22m"
 	
 	exit 0
 elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
-	echo -en "\033[1m"
+	echo -e "\033[1m"
 	echo -en "########################################\n##\n## "
 	echo $(gettext "Désinstallation de gedit-markdown")
 	echo -e "##\n########################################\n"
 	echo $(gettext "Étape 1: Suppression des fichiers")
-	echo -en "\033[22m"
+	echo -e "\033[22m"
 	
 	# Suppression des fichiers.
 	for i in "${fichiersAsupprimer[@]}"; do
@@ -117,16 +121,19 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 	# Suppression du sous-dossier du greffon.
 	rm -rf $cheminPluginsMarkdownPreview
 	
+	echo $(gettext "Étape terminée.")
+	
 	echo -e "\033[1m"
 	echo $(gettext "Étape 2: Mise à jour de la base de données MIME")
-	echo -en "\033[22m"
+	echo -e "\033[22m"
 	# Mise à jour de la base de données MIME.
 	update-mime-database $cheminMime
 	redemarrerNautilus $1
 	
 	echo -e "\033[1m"
 	echo $(gettext "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert.")
-	echo -en "\033[22m"
+	echo -e "\033[22m"
+	
 	exit 0
 else
 	echo -en "\033[1m"

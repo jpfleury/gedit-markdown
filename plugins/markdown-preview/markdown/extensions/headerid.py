@@ -65,8 +65,8 @@ Dependencies:
 
 """
 
-import markdown
-from markdown import etree
+import __init__ as markdown
+from __init__ import etree
 import re
 from string import ascii_lowercase, digits, punctuation
 

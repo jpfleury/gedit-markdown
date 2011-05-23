@@ -1,4 +1,4 @@
-import markdown
+import __init__ as markdown
 import re
 
 def isString(s):

@@ -8,8 +8,8 @@ Dependencies:
 * [Markdown 2.0+](http://www.freewisdom.org/projects/python-markdown/)
 
 """
-import markdown
-from markdown import etree
+import __init__ as markdown
+from __init__ import etree
 import re
 
 class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):

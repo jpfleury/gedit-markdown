@@ -1,5 +1,5 @@
 
-from markdown import message, CRITICAL
+from __init__ import message, CRITICAL
 import sys
 
 ## Import

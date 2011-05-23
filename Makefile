@@ -52,34 +52,57 @@ fichiersSurBureau: archive
 
 menagePot:
 	rm -f locale/gedit-markdown.pot
+	rm -f plugins/markdown-preview/locale/markdown-preview.pot
 	# À faire, sinon `xgettext -j` va planter en précisant que le fichier est introuvable.
 	touch locale/gedit-markdown.pot
+	touch plugins/markdown-preview/locale/markdown-preview.pot
 
 mo:
-	for po in $(shell find locale/ -iname *.po);\
+	for po in $(shell find locale/ -name *.po);\
+	do\
+		msgfmt -o $${po%\.*}.mo $$po;\
+	done
+	for po in $(shell find plugins/markdown-preview/locale/ -name *.po);\
 	do\
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
 
 moArchive:
-	for po in $(shell find $(dossierPub)/locale/ -iname *.po);\
+	for po in $(shell find $(dossierPub)/locale/ -name *.po);\
+	do\
+		msgfmt -o $${po%\.*}.mo $$po;\
+	done
+	for po in $(shell find $(dossierPub)/plugins/markdown-preview/locale/ -name *.po);\
 	do\
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
 
 po: pot
-	for po in $(shell find ./ -iname *.po);\
+	for po in $(shell find locale/ -name *.po);\
 	do\
 		msgmerge -o tempo $$po locale/gedit-markdown.pot;\
 		rm $$po;\
 		mv tempo $$po;\
 	done
+	for po in $(shell find plugins/markdown-preview/locale/ -name *.po);\
+	do\
+		msgmerge -o tempo $$po plugins/markdown-preview/locale/markdown-preview.pot;\
+		rm $$po;\
+		mv tempo $$po;\
+	done
 
 pot: menagePot
-	find ./ -iname "gedit-markdown.sh" -exec xgettext -j -o locale/gedit-markdown.pot --from-code=UTF-8 -L shell {} \;
+	xgettext -j -o locale/gedit-markdown.pot --from-code=UTF-8 -L shell gedit-markdown.sh
+	xgettext -j -o plugins/markdown-preview/locale/markdown-preview.pot -L Python plugins/markdown-preview/__init__.py
 
 push:
 	bzr push lp:~jpfle/+junk/gedit-markdown
+
+# Modifie l'import du module `markdown` dans Python Markdown. À faire lors d'une mise à jour des fichiers.
+pythonMarkdown:
+	find plugins/markdown-preview/markdown/ -name '*.py' \
+	-exec sed -i 's/^import markdown$$/import __init__ as markdown/g' {} \; \
+	-exec sed -i 's/^from markdown import /from __init__ import /g' {} \;
 
 versionTxt:
 	echo $(version) > doc/version.txt

@@ -20,7 +20,7 @@ Copyright 2008 - [Waylan Limberg](http://achinghead.com)
 """
 
 import markdown, re
-from markdown import etree
+from __init__ import etree
 
 
 class DefListProcessor(markdown.blockprocessors.BlockProcessor):

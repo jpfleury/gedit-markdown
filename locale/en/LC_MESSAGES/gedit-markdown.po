@@ -1,23 +1,23 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Translation in English.
+# Copyright (C) 2011 Jean-Philippe Fleury <contact@jpfleury.net>
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: gedit-markdown\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-05-23 17:18-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2011-05-23 16:36-0400\n"
+"Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
+"Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: gedit-markdown.sh:38
+#, fuzzy
 msgid ""
 "Nautilus doit être redémarré pour que les modifications apportées à la base"
 "\\nde données partagée MIME-Info soient prises en compte.\\n\\n"
@@ -26,26 +26,30 @@ msgid ""
 "Nautilus maintenant et attendre le prochain\\n\\t\\tredémarrage de la "
 "session ou de l'ordinateur.\\n\\nSaisissez votre choix [1/2] (2 par défaut): "
 msgstr ""
+"Nautilus must be restarted to see the changes about MIME database.\\n\\n\\t1 "
+"Restart Nautilus now (all open Nautilus windows or tabs will be lost).\\n"
+"\\t2 Don't restart Nautilus now, and wait next computer rebooting or session "
+"restarting.\\n\\nEnter choice [1/2] (default is 2): "
 
 #: gedit-markdown.sh:53
 msgid "Redémarrage de Nautilus."
-msgstr ""
+msgstr "Restarting Nautilus."
 
 #: gedit-markdown.sh:58
 msgid "Nautilus ne sera pas redémarré maintenant."
-msgstr ""
+msgstr "Nautilus will not be restarted."
 
 #: gedit-markdown.sh:61
 msgid "Vous pouvez quand même utiliser dès maintenant Markdown dans gedit."
-msgstr ""
+msgstr "Note that you can use right now Markdown with gedit."
 
 #: gedit-markdown.sh:73
 msgid "Installation de gedit-markdown"
-msgstr ""
+msgstr "Installation of gedit-markdown"
 
 #: gedit-markdown.sh:75
 msgid "Étape 1: Copie des fichiers"
-msgstr ""
+msgstr "Step 1: Copy files"
 
 #: gedit-markdown.sh:90 gedit-markdown.sh:122
 msgid "Étape terminée."
@@ -53,24 +57,26 @@ msgstr ""
 
 #: gedit-markdown.sh:93 gedit-markdown.sh:125
 msgid "Étape 2: Mise à jour de la base de données MIME"
-msgstr ""
+msgstr "Step 2: Update the MIME database"
 
 #: gedit-markdown.sh:100
 msgid "Installation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
+"Installation successful. Please restart gedit (if it's already running)."
 
 #: gedit-markdown.sh:107
 msgid "Désinstallation de gedit-markdown"
-msgstr ""
+msgstr "Uninstallation of gedit-markdown"
 
 #: gedit-markdown.sh:109
 msgid "Étape 1: Suppression des fichiers"
-msgstr ""
+msgstr "Step 1: Remove files"
 
 #: gedit-markdown.sh:132
 msgid "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
+"Uninstallation successful. Please restart gedit (if it's already running)."
 
 #: gedit-markdown.sh:138
 msgid "Usage: "
-msgstr ""
+msgstr "Usage: "

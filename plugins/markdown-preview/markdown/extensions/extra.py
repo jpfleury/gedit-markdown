@@ -27,7 +27,7 @@ when you upgrade to any future version of Python-Markdown.
 
 """
 
-import markdown
+import __init__ as markdown
 
 extensions = ['fenced_code',
               'footnotes',
