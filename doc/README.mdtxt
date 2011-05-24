@@ -1,0 +1,152 @@
+<p lang="fr"><em><a hreflang="fr" href="http://www.jpfleury.net/logiciels/gedit-markdown.php">Lire cette description en français.</a></em></p>
+
+## Overview
+
+gedit-markdown adds support for [Markdown][] in gedit, the default Gnome text editor.
+
+Specifically, it adds:
+
+- MIME type for Markdown files, and file extension association (`.markdown`, `.md` and `.mdtxt`);
+- Markdown syntax highlighting and snippets in gedit;
+- plugin *Markdown Preview* for gedit, previewing in HTML the currently opened file.
+
+[Markdown]: http://daringfireball.net/projects/markdown/
+
+<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple1.jpg" width="685" height="466" alt="Markdown syntax highlighting in gedit." />
+
+***************
+
+<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple2.jpg" width="685" height="492" alt="Markdown Preview in gedit." />
+
+## Requirements
+
+- gedit-markdown is shipped with an installer for GNU/Linux. On Windows XP, only syntax highlighting works, and must be installed by hand.
+
+- To use Markdown snippets, activate the plugin *Snippets* in *Edit > Preferences > Plugins*.
+
+## Installation
+
+### GNU/Linux
+
+- [Download the latest version of gedit-markdown.](http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip)
+- Extract the archive.
+- Run the installer.
+
+Here are commands for all these steps in a GNU/Linux terminal:
+
+	wget http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip
+	unzip gedit-markdown.zip
+	gedit-markdown/gedit-markdown.sh install
+
+Markdown support will be added for the current user (so no need root privileges). The folder `gedit-markdown` created by the extraction can be deleted after installation.
+
+### Windows XP
+
+Only one file must be copied, because only syntax highlighting works. In the extracted folder, find the following file:
+
+	language-specs/markdown.lang
+
+and copy it in the following folder:
+
+	C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
+
+so we have in the end:
+
+	C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\markdown.lang
+
+## Uninstallation
+
+In a GNU/Linux terminal, run the uninstaller:
+
+	gedit-markdown/gedit-markdown.sh uninstall
+
+## Usage
+
+Restart gedit if it's already running. Then, go to *Edit > Preferences > Plugins* and activate *Markdown Preview*. An item *Markdown Preview* will be added in the menu *Tools*, and can be used to display in the bottom panel a preview in HTML of the currently opened file. The keyboard shortcut *Ctrl+Alt+m* does the same.
+
+About syntax highlighting, it should automatically be activated for files recognized as Markdown files (extensions `.markdown`, `.md` or `.mdtxt`), otherwise choose it manually by going to *View > Highlight Mode > Markup* and selecting *Markdown*.
+
+## Details and limitations
+
+There's no official Markdown file extension, so I did some research on actual
+usage by text editors, implementations' documentation or other stuff.
+
+## Actual usage review ##
+
+- There's no official Markdown file extension. I did some [research on actual usage][ext], which led me to choose extensions `.markdown`, `.md` and `.mdtxt`.
+
+- There's no official Markdown MIME type either. I chose `text/x-markdown`.
+
+- Since HTML code can be directly used in a text written in Markdown, HTML syntax highlighting was added to Markdown syntax highlighting. However, keep in mind that, even if it's highlighted, Markdown syntax within HTML blocks (e.g. `<div>`) is not processed.
+
+- Within a paragraph, text wrapped with backticks indicates a code span. Markdown allows to use one or more backticks to wrap text, provided that the number is identical on both sides, and the same number of consecutive backticks is not present within the text. Examples:
+
+		`lorem lorem lorem lorem`
+		
+		`lorem lorem `` lorem lorem`
+		
+		`lorem lorem ````` lorem lorem`
+		
+		``lorem lorem lorem lorem``
+		
+		``lorem lorem ` lorem lorem``
+		
+		``lorem lorem ````` lorem lorem``
+
+	Syntax highlighting in gedit supports code span highlighting with up to 2 backticks surrounding text.
+
+- According to the Markdown syntax, to write several paragraphs in a list item, you have to indent each paragraph. Example:
+
+		- Item A (paragraph 1).
+
+			Item A (paragraph 2).
+
+			Item A (paragraph 3).
+
+		- Item B.
+
+	So there is a conflict in terms of syntax highlighting between an indented paragraph inside a list item (4 spaces or 1 tab) and an indented line of code outside a list (also 4 spaces or 1 tab). In this language file, since a full context analysis can't be done (because line break can't be used in regex), the choice was made ​​to favor the standard highlighting outside lists for every situations with indentation.
+
+- I tried to use a highlighting similar to the default HTML rendering, e.g. italics for emphasis, underlined URL, etc. without having to create a custom style in `/usr/share/gtksourceview-2.0/styles`(which would force users to manually select it in gedit). Therefore, there are some imperfect rendering, e.g. strong emphasis that is bold BUT ALSO red. This limitation is dependent on the resolution of the bug ["Add support for general Bold, Emphasis and other text styles in syntax"][bug].
+
+[ext]: https://bugzilla.gnome.org/show_bug.cgi?id=384446#c6
+[bug]: http://bugzilla.gnome.org/show_bug.cgi?id=441595
+
+## Localization
+
+- gedit-markdown installer is translatable since version 1.1. Anyone interested in the translation can copy the file `gedit-markdown.pot` in the folder `locale`, rename it to `LANG.po`, translate all strings and send me the result.
+
+- Similarly, the plugin *Markdown Preview* is also localizable. The file containing strings to be translated is `plugins/markdown-preview/locale/markdown-preview.pot`.
+
+For now, gedit-markdown is available in French and English.
+
+## Development
+
+bazaar is used for revision control. You can get a copy of the development version with the following command:
+
+	bzr branch lp:~jpfle/+junk/gedit-markdown
+
+## License
+
+Author: Jean-Philippe Fleury <contact@jpfleury.net>  
+Copyright © Jean-Philippe Fleury, 2009-2011.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+### Included scripts
+
+- The plugin *Markdown Preview* shipped with gedit-markdown is a modification of the [plugin of the same name written by Michele Campeotto][Markdown Preview], under the GPL v2 or any later version, and uses [Python Markdown][], under the BSD-style license.
+
+[Markdown Preview]: http://live.gnome.org/Gedit/MarkdownSupport
+[Python Markdown]: http://www.freewisdom.org/projects/python-markdown/

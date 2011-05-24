@@ -1,3 +1,5 @@
+<p lang="en"><em><a hreflang="en" href="http://www.jpfleury.net/en/software/gedit-markdown.php">Read this description in English.</a></em></p>
+
 ## Aperçu
 
 gedit-markdown est un ensemble de fichiers ajoutant le support du langage [Markdown][] dans gedit, l'éditeur de texte par défaut de Gnome.
@@ -70,7 +72,7 @@ En ce qui concerne la coloration syntaxique, elle devrait s'activer automatiquem
 
 - Markdown n'a pas non plus de type mime officiel. Je lui ai assigné `text/x-markdown`.
 
-- Puisqu'il est possible d'ajouter du code HTML directement dans un texte écrit en Markdown, j'ai ajouté à la coloration syntaxique du Markdown celle du HTML. Il faut cependant avoir en tête que selon la syntaxe officielle, du code Markdown dans un environnement HTML n'est pas transformé, il est affiché tel quel. Cependant, gedit-markdown fait présentement colorer syntaxiquement le code Markdown dans du HTML. Il faut se rappeller que ça ne devrait pas être le cas.
+- Puisqu'il est possible d'ajouter du code HTML directement dans un texte écrit en Markdown, j'ai ajouté à la coloration syntaxique du Markdown celle du HTML. Il faut cependant avoir en tête que selon la syntaxe officielle, du code Markdown dans un environnement HTML n'est pas transformé, il est affiché tel quel. Cependant, gedit-markdown fait présentement colorer syntaxiquement le code Markdown dans du HTML. Il faut se rappeler que ça ne devrait pas être le cas.
 
 - Markdown permet d'écrire du code dans un paragraphe. Pour ce faire, le code doit être entouré d'un accent grave (\`), ou de plusieurs, pourvu que le nombre soit identique de part et d'autre, et qu'il n'y ait pas dans le code un nombre identique d'accents qui se suivent. Exemples:
 
@@ -140,7 +142,7 @@ ce programme; si ce n'est pas le cas, consultez
 
 ### Matériel tierce
 
-- Le greffon d'aperçu Markdown est basé sur [Markdown Preview][], sous licence GPL version 2 ou toute vesion ultérieure, et sur [Python Markdown][], sous licence de style BSD;
+- Le greffon d'aperçu Markdown est basé sur [Markdown Preview][], sous licence GPL version 2 ou toute version ultérieure, et sur [Python Markdown][], sous licence de style BSD.
 
 [Markdown Preview]: http://live.gnome.org/Gedit/MarkdownSupport
 [Python Markdown]: http://www.freewisdom.org/projects/python-markdown/
