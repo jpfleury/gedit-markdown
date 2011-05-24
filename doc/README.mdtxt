@@ -1,4 +1,4 @@
-<p lang="fr"><em><a hreflang="fr" href="http://www.jpfleury.net/logiciels/gedit-markdown.php">Lire cette description en français.</a></em></p>
+<p lang="fr"><strong><a hreflang="fr" href="http://www.jpfleury.net/logiciels/gedit-markdown.php">Lire cette description en français.</a></strong></p>
 
 ## Overview
 
@@ -68,11 +68,6 @@ About syntax highlighting, it should automatically be activated for files recogn
 
 ## Details and limitations
 
-There's no official Markdown file extension, so I did some research on actual
-usage by text editors, implementations' documentation or other stuff.
-
-## Actual usage review ##
-
 - There's no official Markdown file extension. I did some [research on actual usage][ext], which led me to choose extensions `.markdown`, `.md` and `.mdtxt`.
 
 - There's no official Markdown MIME type either. I chose `text/x-markdown`.
@@ -105,7 +100,7 @@ usage by text editors, implementations' documentation or other stuff.
 
 		- Item B.
 
-	So there is a conflict in terms of syntax highlighting between an indented paragraph inside a list item (4 spaces or 1 tab) and an indented line of code outside a list (also 4 spaces or 1 tab). In this language file, since a full context analysis can't be done (because line break can't be used in regex), the choice was made ​​to favor the standard highlighting outside lists for every situations with indentation.
+	So there is a conflict in terms of syntax highlighting between an indented paragraph inside a list item (4 spaces or 1 tab) and an indented line of code outside a list (also 4 spaces or 1 tab). For Markdown syntax highlighting, since a full context analysis can't be done (because line break can't be used in regex), the choice was made ​​to favor the standard highlighting outside lists for every situations with indentation.
 
 - I tried to use a highlighting similar to the default HTML rendering, e.g. italics for emphasis, underlined URL, etc. without having to create a custom style in `/usr/share/gtksourceview-2.0/styles`(which would force users to manually select it in gedit). Therefore, there are some imperfect rendering, e.g. strong emphasis that is bold BUT ALSO red. This limitation is dependent on the resolution of the bug ["Add support for general Bold, Emphasis and other text styles in syntax"][bug].
 
@@ -116,7 +111,7 @@ usage by text editors, implementations' documentation or other stuff.
 
 - gedit-markdown installer is translatable since version 1.1. Anyone interested in the translation can copy the file `gedit-markdown.pot` in the folder `locale`, rename it to `LANG.po`, translate all strings and send me the result.
 
-- Similarly, the plugin *Markdown Preview* is also localizable. The file containing strings to be translated is `plugins/markdown-preview/locale/markdown-preview.pot`.
+- Similarly, the plugin *Markdown Preview* is also localizable. The file containing strings is `plugins/markdown-preview/locale/markdown-preview.pot`.
 
 For now, gedit-markdown is available in French and English.
 
