@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-23 17:43-0400\n"
+"POT-Creation-Date: 2011-05-23 18:45-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gedit-markdown.sh:38
+#: gedit-markdown.sh:39
 msgid ""
 "Nautilus doit être redémarré pour que les modifications apportées à la base"
 "\\nde données partagée MIME-Info soient prises en compte.\\n\\n"
@@ -27,50 +27,51 @@ msgid ""
 "session ou de l'ordinateur.\\n\\nSaisissez votre choix [1/2] (2 par défaut): "
 msgstr ""
 
-#: gedit-markdown.sh:53
+#: gedit-markdown.sh:54
 msgid "Redémarrage de Nautilus."
 msgstr ""
 
-#: gedit-markdown.sh:58
+#: gedit-markdown.sh:59
 msgid "Nautilus ne sera pas redémarré maintenant."
 msgstr ""
 
-#: gedit-markdown.sh:61
+#: gedit-markdown.sh:62
 msgid "Vous pouvez quand même utiliser dès maintenant Markdown dans gedit."
 msgstr ""
 
-#: gedit-markdown.sh:73
+#: gedit-markdown.sh:74
 msgid "Installation de gedit-markdown"
 msgstr ""
 
-#: gedit-markdown.sh:75
+#: gedit-markdown.sh:76
 msgid "Étape 1: Copie des fichiers"
 msgstr ""
 
-#: gedit-markdown.sh:92 gedit-markdown.sh:124
+#: gedit-markdown.sh:93 gedit-markdown.sh:103 gedit-markdown.sh:128
+#: gedit-markdown.sh:138
 msgid "Étape terminée."
 msgstr ""
 
-#: gedit-markdown.sh:95 gedit-markdown.sh:127
+#: gedit-markdown.sh:96 gedit-markdown.sh:131
 msgid "Étape 2: Mise à jour de la base de données MIME"
 msgstr ""
 
-#: gedit-markdown.sh:102
+#: gedit-markdown.sh:106
 msgid "Installation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 
-#: gedit-markdown.sh:109
+#: gedit-markdown.sh:113
 msgid "Désinstallation de gedit-markdown"
 msgstr ""
 
-#: gedit-markdown.sh:111
+#: gedit-markdown.sh:115
 msgid "Étape 1: Suppression des fichiers"
 msgstr ""
 
-#: gedit-markdown.sh:134
+#: gedit-markdown.sh:141
 msgid "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 
-#: gedit-markdown.sh:140
+#: gedit-markdown.sh:147
 msgid "Usage: "
 msgstr ""

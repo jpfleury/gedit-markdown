@@ -21,6 +21,7 @@
 # Localisation.
 export TEXTDOMAINDIR=`dirname "$0"`/locale
 export TEXTDOMAIN=gedit-markdown
+export LANGUAGE=$LANG
 . gettext.sh
 
 # Variables.
@@ -98,6 +99,9 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	update-mime-database $cheminMime
 	redemarrerNautilus $1
 	
+	echo ""
+	echo $(gettext "Étape terminée.")
+	
 	echo -e "\033[1m"
 	echo $(gettext "Installation terminée. Veuillez redémarrer gedit s'il est ouvert.")
 	echo -e "\033[22m"
@@ -129,6 +133,9 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 	# Mise à jour de la base de données MIME.
 	update-mime-database $cheminMime
 	redemarrerNautilus $1
+	
+	echo ""
+	echo $(gettext "Étape terminée.")
 	
 	echo -e "\033[1m"
 	echo $(gettext "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert.")
