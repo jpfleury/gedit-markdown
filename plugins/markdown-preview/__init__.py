@@ -38,19 +38,8 @@ try:
 except:
 	_ = lambda s: s
 
-HTML_TEMPLATE = """<html>
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<style type="text/css">
-			body {background-color: #fff; padding: 8px;}
-			p, div {margin: 0em;}
-			p + p, p + div, div + p, div + div {margin-top: 0.8em;}
-			blockquote {padding-left: 12px; padding-right: 12px;}
-			pre {padding: 12px;}
-		</style>
-	</head>
-	<body>%s</body>
-</html>"""
+# Can be used to add default HTML code (e.g. default header section with CSS).
+HTML_TEMPLATE = "%s"
 
 class MarkdownPreviewPlugin(gedit.Plugin):
 	def __init__(self):
