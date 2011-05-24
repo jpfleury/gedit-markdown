@@ -274,6 +274,7 @@
     -->
     <context id="reference-image">
       <match>(!)\[(.*?)\] ?\[.*?\]</match>
+
       <include>
         <context sub-pattern="1" style-ref="image-marker"/>
         <context sub-pattern="2" style-ref="attribute-value"/>
@@ -319,7 +320,7 @@
          but since line break can't be used in regex, only trailing spaces or tabs
          are matched. -->
     <context id="line-break">
-      <match>[^ \t]+([ \t]{2,})$</match>
+      <match>(?&lt;=[^ \t])([ \t]{2,})$</match>
 
       <include>
         <context sub-pattern="1" style-ref="line-break"/>
