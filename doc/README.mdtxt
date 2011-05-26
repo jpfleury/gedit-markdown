@@ -121,6 +121,10 @@ bazaar is used for revision control. You can get a copy of the development versi
 
 	bzr branch lp:~jpfle/+junk/gedit-markdown
 
+gedit-markdown has an [issue tracker][], on which bug reports and feature requests can be submitted.
+
+[issue tracker]: http://www.jpfleury.net/mantisbt/
+
 ## License
 
 Author: Jean-Philippe Fleury <contact@jpfleury.net>  

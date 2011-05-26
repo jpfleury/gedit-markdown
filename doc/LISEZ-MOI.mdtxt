@@ -121,6 +121,10 @@ Le logiciel bazaar est utilisé pour le versionnage des fichiers. Une copie de l
 
 	bzr branch lp:~jpfle/+junk/gedit-markdown
 
+gedit-markdown dispose également d'un [système de suivi][], sur lequel les rapports de bogues et les suggestions peuvent être soumis.
+
+[système de suivi]: http://www.jpfleury.net/mantisbt/
+
 ## Licence
 
 Auteur: Jean-Philippe Fleury <contact@jpfleury.net>  
