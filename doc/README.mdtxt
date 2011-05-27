@@ -1,4 +1,4 @@
-<p lang="fr"><strong><a hreflang="fr" href="http://www.jpfleury.net/logiciels/gedit-markdown.php">Lire cette description en français.</a></strong></p>
+<p lang="fr"><strong><a hreflang="fr" href="http://www.jpfleury.net/logiciels/gedit-markdown.php">Lire cette page en français.</a></strong></p>
 
 ## Overview
 
@@ -128,7 +128,7 @@ gedit-markdown has an [issue tracker][], on which bug reports and feature reques
 ## License
 
 Author: Jean-Philippe Fleury <contact@jpfleury.net>  
-Copyright © Jean-Philippe Fleury, 2009-2011.
+Copyright © 2009-2011 Jean-Philippe Fleury
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
