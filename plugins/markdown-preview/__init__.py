@@ -28,6 +28,7 @@ import gtk
 import webkit
 import markdown
 import gettext
+from ConfigParser import SafeConfigParser
 from gpdefs import *
 
 try:
@@ -41,12 +42,25 @@ except:
 # Can be used to add default HTML code (e.g. default header section with CSS).
 HTML_TEMPLATE = "%s"
 
+# Configuration.
+CONFIG_PATH = os.path.dirname(__file__) + '/config.ini'
+parser = SafeConfigParser()
+parser.read(CONFIG_PATH)
+markdownVersion = parser.get('markdown', 'version')
+
+# Tab title.
+
+tabTitle = _("Markdown Preview")
+
+if markdownVersion == "extra":
+	tabTitle = _("Markdown Extra Preview")
+
 class MarkdownPreviewPlugin(gedit.Plugin):
 	def __init__(self):
 		gedit.Plugin.__init__(self)
 	
 	def activate(self, window):
-		action = ("Markdown Preview", None, _("Markdown Preview"), "<Control><Alt>M",
+		action = ("Markdown Preview", None, tabTitle, "<Control><Alt>M",
 		          _("Update the HTML preview"), lambda x, y: self.update_preview(y))
 		
 		# Store data in the window object.
@@ -67,7 +81,7 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		bottom_panel = window.get_bottom_panel()
 		image = gtk.Image()
 		image.set_from_icon_name("gnome-mime-text-html", gtk.ICON_SIZE_MENU)
-		bottom_panel.add_item(scrolled_window, _("Markdown Preview"), image)
+		bottom_panel.add_item(scrolled_window, tabTitle, image)
 		bottom_panel.show()
 		
 		windowdata["bottom_panel"] = scrolled_window
@@ -114,7 +128,12 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 			end = doc.get_iter_at_mark(doc.get_selection_bound())
 		
 		text = doc.get_text(start, end)
-		html = HTML_TEMPLATE % (markdown.markdown(text), )
+		
+		if markdownVersion == "extra":
+			html = HTML_TEMPLATE % (markdown.markdown(text, extensions=['fenced_code', 'footnotes', 'headerid', 'def_list', 'tables', 'abbr',]), )
+		else:
+			html = HTML_TEMPLATE % (markdown.markdown(text), )
+		
 		p = windowdata["bottom_panel"].get_placement()
 		html_doc = windowdata["html_doc"]
 		html_doc.load_string(html, "text/html", "utf-8", "file:///")

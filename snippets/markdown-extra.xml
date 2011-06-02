@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+ Author: Jean-Philippe Fleury
+ Copyright (C) 2011 Jean-Philippe Fleury <contact@jpfleury.net>
+
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Library General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later version.
+
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Library General Public License for more details.
+
+ You should have received a copy of the GNU Library General Public
+ License along with this library; if not, write to the
+ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ Boston, MA 02111-1307, USA.
+
+-->
+<snippets language="Markdown Extra">
+  <snippet id="atx-header">
+    <text><![CDATA[${1:#} ${2:Header} $1
+
+]]></text>
+    <tag>h</tag>
+    <description>Header (atx-style)</description>
+  </snippet>
+  <snippet id="setext-header-1">
+    <text><![CDATA[${1:Header}
+===============
+
+]]></text>
+    <tag>Hs</tag>
+    <description>Header 1 (setext-style)</description>
+  </snippet>
+  <snippet id="setext-header-2">
+    <text><![CDATA[${1:Header}
+---------------
+
+]]></text>
+    <tag>hs</tag>
+    <description>Header 2 (setext-style)</description>
+  </snippet>
+  <snippet id="horizontal-rule">
+    <text><![CDATA[***************
+
+$0]]></text>
+    <tag>hr</tag>
+    <description>Horizontal Rule</description>
+  </snippet>
+  <snippet id="unordered-list">
+    <text><![CDATA[* $1
+* $2
+* $3
+* $4
+
+]]></text>
+    <tag>ul</tag>
+    <description>Unordered List</description>
+  </snippet>
+  <snippet id="ordered-list">
+    <text><![CDATA[1. $1
+2. $2
+3. $3
+4. $4
+
+]]></text>
+    <tag>ol</tag>
+    <description>Ordered List</description>
+  </snippet>
+  <snippet id="code-span">
+    <text><![CDATA[\`${1:$GEDIT_SELECTED_TEXT}\`]]></text>
+    <tag>code</tag>
+    <description>Wrap Selection as Code Span</description>
+    <accelerator><![CDATA[<Shift><Alt>c]]></accelerator>
+  </snippet>
+  <snippet id="inline-link">
+    <text><![CDATA[[${1:$GEDIT_SELECTED_TEXT}](${2:URL})]]></text>
+    <tag>a</tag>
+    <description>Wrap Selection as Inline Link</description>
+    <accelerator><![CDATA[<Shift><Alt>a]]></accelerator>
+  </snippet>
+  <snippet id="reference-link">
+    <text><![CDATA[[${1:$GEDIT_SELECTED_TEXT}][${2:link label}]]]></text>
+    <tag>aref</tag>
+    <description>Wrap Selection as Reference Link</description>
+    <accelerator><![CDATA[<Shift><Alt>r]]></accelerator>
+  </snippet>
+  <snippet id="link-label">
+    <text><![CDATA[[${1:link label}]: ${2:URL}
+]]></text>
+    <tag>label</tag>
+    <description>Link Label</description>
+  </snippet>
+  <snippet id="inline-image">
+    <text><![CDATA[![${1:alt text}](${2:URL})]]></text>
+    <tag>img</tag>
+    <description>Inline Image</description>
+  </snippet>
+  <snippet id="reference-image">
+    <text><![CDATA[![${1:alt text}][${2:image label}]]]></text>
+    <tag>iref</tag>
+    <description>Reference Image</description>
+  </snippet>
+</snippets>

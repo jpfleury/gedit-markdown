@@ -99,12 +99,6 @@ pot: menagePot
 push:
 	bzr push lp:~jpfle/+junk/gedit-markdown
 
-# Modifie l'import du module `markdown` dans Python Markdown. À faire lors d'une mise à jour des fichiers.
-pythonMarkdown:
-	find plugins/markdown-preview/markdown/ -name '*.py' \
-	-exec sed -i 's/^import markdown$$/import __init__ as markdown/g' {} \; \
-	-exec sed -i 's/^from markdown import /from __init__ import /g' {} \;
-
 versionTxt:
 	echo $(version) > doc/version.txt
 

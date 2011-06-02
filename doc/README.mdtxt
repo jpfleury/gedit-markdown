@@ -2,7 +2,7 @@
 
 ## Overview
 
-gedit-markdown adds support for [Markdown][] in gedit, the default Gnome text editor.
+gedit-markdown adds support for [Markdown][] (or [Markdown Extra][]) in gedit, the default Gnome text editor.
 
 Specifically, it adds:
 
@@ -11,6 +11,7 @@ Specifically, it adds:
 - plugin *Markdown Preview* for gedit, previewing in HTML the currently opened file.
 
 [Markdown]: http://daringfireball.net/projects/markdown/
+[Markdown Extra]: http://michelf.com/projects/php-markdown/extra/
 
 <img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple1.jpg" width="685" height="708" alt="Markdown syntax highlighting in gedit." />
 
@@ -22,6 +23,8 @@ Specifically, it adds:
 
 - gedit-markdown is shipped with an installer for GNU/Linux. On Windows XP, only syntax highlighting works, and must be installed by hand.
 
+- The installer will copy the plugin «Markdown Preview» only if Python 2.6 or any later version is present on the system.
+
 - To use Markdown snippets, activate the plugin *Snippets* in *Edit > Preferences > Plugins*.
 
 ## Installation
@@ -30,19 +33,25 @@ Specifically, it adds:
 
 - [Download the latest version of gedit-markdown.](http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip)
 - Extract the archive.
-- Run the installer.
+- Run the installer for the desired version (Markdown or Markdown Extra).
 
-Here are commands for all these steps in a GNU/Linux terminal:
+Here are commands for all these steps in a GNU/Linux terminal for **Markdown**:
 
 	wget http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip
 	unzip gedit-markdown.zip
 	gedit-markdown/gedit-markdown.sh install
 
+Here are commands for **Markdown Extra**.
+
+	wget http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip
+	unzip gedit-markdown.zip
+	gedit-markdown/gedit-markdown.sh install extra
+
 Markdown support will be added for the current user (so no need root privileges). The folder `gedit-markdown` created by the extraction can be deleted after installation.
 
 ### Windows XP
 
-Only one file must be copied, because only syntax highlighting works. In the extracted folder, find the following file:
+Only one file must be copied, because only syntax highlighting works. In the extracted folder, find the folder `language-specs`, choose the file corresponding to the Markdown version desired, for example:
 
 	language-specs/markdown.lang
 
@@ -64,7 +73,7 @@ In a GNU/Linux terminal, run the uninstaller:
 
 Restart gedit if it's already running. Then, go to *Edit > Preferences > Plugins* and activate *Markdown Preview*. An item *Markdown Preview* will be added in the menu *Tools*, and can be used to display in the bottom panel a preview in HTML of the currently opened file. The keyboard shortcut *Ctrl+Alt+m* does the same.
 
-About syntax highlighting, it should automatically be activated for files recognized as Markdown files (extensions `.markdown`, `.md` or `.mdtxt`), otherwise choose it manually by going to *View > Highlight Mode > Markup* and selecting *Markdown*.
+About syntax highlighting, it should automatically be activated for files recognized as Markdown files (extensions `.markdown`, `.md` or `.mdtxt`), otherwise choose it manually by going to *View > Highlight Mode > Markup* and selecting *Markdown* (or *Markdown Extra*).
 
 ## Details and limitations
 
@@ -100,7 +109,9 @@ About syntax highlighting, it should automatically be activated for files recogn
 
 		- Item B.
 
-	So there is a conflict in terms of syntax highlighting between an indented paragraph inside a list item (4 spaces or 1 tab) and an indented line of code outside a list (also 4 spaces or 1 tab). For Markdown syntax highlighting, since a full context analysis can't be done (because line break can't be used in regex), the choice was made ​​to favor the standard highlighting outside lists for every situations with indentation.
+	So there is a conflict in terms of syntax highlighting between an indented paragraph inside a list item (4 spaces or 1 tab) and an indented line of code outside a list (also 4 spaces or 1 tab). For Markdown syntax highlighting, since a full context analysis can't be done (because line break can't be used in regex), the choice was made ​​​​to highlight code block only from 2 levels of indentation.
+
+- Blockquote can contain block-level and inline Markdown elements, but gedit-markdown only highlights inline ones (emphasis, link, etc.).
 
 - I tried to use a highlighting similar to the default HTML rendering, e.g. italics for emphasis, underlined URL, etc. without having to create a custom style in `/usr/share/gtksourceview-2.0/styles`(which would force users to manually select it in gedit). Therefore, there are some imperfect rendering, e.g. strong emphasis that is bold BUT ALSO red. This limitation is dependent on the resolution of the bug ["Add support for general Bold, Emphasis and other text styles in syntax"][bug].
 

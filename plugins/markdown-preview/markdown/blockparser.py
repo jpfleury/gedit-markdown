@@ -1,5 +1,5 @@
 
-import __init__ as markdown
+import markdown
 
 class State(list):
     """ Track the current and nested state of the parser. 

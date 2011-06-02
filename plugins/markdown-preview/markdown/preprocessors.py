@@ -8,7 +8,7 @@ complicated.
 """
 
 import re
-import __init__ as markdown
+import markdown
 
 HTML_PLACEHOLDER_PREFIX = markdown.STX+"wzxhzdk:"
 HTML_PLACEHOLDER = HTML_PLACEHOLDER_PREFIX + "%d" + markdown.ETX

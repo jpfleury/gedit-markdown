@@ -13,7 +13,7 @@ as they need to alter how markdown blocks are parsed.
 """
 
 import re
-import __init__ as markdown
+import markdown
 
 class BlockProcessor:
     """ Base class for block processors. 

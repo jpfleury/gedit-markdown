@@ -2,7 +2,7 @@
 
 ## Aperçu
 
-gedit-markdown est un ensemble de fichiers ajoutant le support du langage [Markdown][] dans gedit, l'éditeur de texte par défaut de Gnome.
+gedit-markdown est un ensemble de fichiers ajoutant le support du langage [Markdown][] (ou de la version spéciale [Markdown Extra][]) dans gedit, l'éditeur de texte par défaut de Gnome.
 
 Plus précisément, gedit-markdown ajoute:
 
@@ -11,6 +11,7 @@ Plus précisément, gedit-markdown ajoute:
 - le greffon *Aperçu Markdown* pour gedit, permettant d'afficher un aperçu en HTML du fichier Markdown en cours d'édition.
 
 [Markdown]: http://michelf.com/projets/php-markdown/concepts/
+[Markdown Extra]: http://michelf.com/projets/php-markdown/extra/
 
 <img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple1.jpg" width="685" height="708" alt="Coloration syntaxique du Markdown dans gedit." />
 
@@ -22,6 +23,8 @@ Plus précisément, gedit-markdown ajoute:
 
 - gedit-markdown est livré avec un installateur. Ce dernier a été codé pour GNU/Linux. Sous Windows XP, seule la coloration syntaxique fonctionne, et doit être installée à la main.
 
+- L'installateur va copier le greffon «Markdown Preview» seulement si Python 2.6 ou plus récent est installé.
+
 - Pour utiliser les extraits de code de Markdown, il faut activer dans gedit le greffon *Extraits de code* dans *Édition > Préférences > Greffons*.
 
 ## Installation
@@ -30,19 +33,25 @@ Plus précisément, gedit-markdown ajoute:
 
 - [Télécharger l'archive de la dernière version.](http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip)
 - Décompresser l'archive.
-- Lancer le script d'installation.
+- Lancer le script d'installation en précisant la version désirée (Markdown ou Markdown Extra).
 
-Voici les commandes pour effectuer toutes ces étapes dans une console sous GNU/Linux:
+Voici les commandes pour effectuer toutes ces étapes dans une console sous GNU/Linux pour l'installation de **Markdown**:
 
 	wget http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip
 	unzip gedit-markdown.zip
 	gedit-markdown/gedit-markdown.sh installer
 
+Et voici les commandes pour l'installation de **Markdown Extra**:
+
+	wget http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip
+	unzip gedit-markdown.zip
+	gedit-markdown/gedit-markdown.sh installer extra
+
 Le support de Markdown sera ajouté à l'utilisateur courant (l'installation se fait donc sans les droits d'administration). Le dossier `gedit-markdown` créé par l'extraction de l'archive peut être supprimé après l'installation.
 
 ### Windows XP
 
-Il n'y a qu'un fichier à copier, car seule la coloration syntaxique fonctionne. Dans l'archive de gedit-markdown, trouver le fichier suivant:
+Il n'y a qu'un fichier à copier, car seule la coloration syntaxique fonctionne. Dans l'archive de gedit-markdown, trouver le dossier `language-specs`, choisir le fichier correspondant à la version de Markdown voulue, par exemple:
 
 	language-specs/markdown.lang
 
@@ -64,7 +73,7 @@ Dans une console sous GNU/Linux, lancer le script de désinstallation:
 
 Si gedit est ouvert, redémarrez-le. Ensuite, aller dans *Édition > Préférences > Greffons* et activer *Aperçu Markdown*. Maintenant vous trouverez dans le menu *Outils* une action *Aperçu Markdown*, qui affichera l'aperçu en HTML du document courant dans le panneau inférieur. Le raccourci-clavier *Ctrl+Alt+m* peut aussi être utilisé pour effectuer la même chose.
 
-En ce qui concerne la coloration syntaxique, elle devrait s'activer automatiquement pour les fichiers reconnus comme étant des fichiers Markdown (extensions `.markdown`, `.md` ou `.mdtxt`), sinon choisir la coloration en allant dans *Affichage > Mode de coloration > Balisage* et cocher *Markdown*.
+En ce qui concerne la coloration syntaxique, elle devrait s'activer automatiquement pour les fichiers reconnus comme étant des fichiers Markdown (extensions `.markdown`, `.md` ou `.mdtxt`), sinon choisir la coloration en allant dans *Affichage > Mode de coloration > Balisage* et cocher *Markdown* (ou *Markdown Extra*).
 
 ## Précisions ou limitations
 
@@ -72,7 +81,7 @@ En ce qui concerne la coloration syntaxique, elle devrait s'activer automatiquem
 
 - Markdown n'a pas non plus de type mime officiel. Je lui ai assigné `text/x-markdown`.
 
-- Puisqu'il est possible d'ajouter du code HTML directement dans un texte écrit en Markdown, j'ai ajouté à la coloration syntaxique du Markdown celle du HTML. Il faut cependant avoir en tête que selon la syntaxe officielle, du code Markdown dans un environnement HTML n'est pas transformé, il est affiché tel quel. Cependant, gedit-markdown fait présentement colorer syntaxiquement le code Markdown dans du HTML. Il faut se rappeler que ça ne devrait pas être le cas.
+- Puisqu'il est possible d'ajouter du code HTML directement dans un texte écrit en Markdown, j'ai ajouté la coloration syntaxique du HTML à celle du Markdown. Il faut cependant avoir en tête que selon la syntaxe officielle, du code Markdown dans un environnement HTML n'est pas transformé, il est affiché tel quel. Cependant, gedit-markdown fait présentement colorer syntaxiquement le code Markdown dans du HTML. Il faut se rappeler que ça ne devrait pas être le cas.
 
 - Markdown permet d'écrire du code dans un paragraphe. Pour ce faire, le code doit être entouré d'un accent grave (\`), ou de plusieurs, pourvu que le nombre soit identique de part et d'autre, et qu'il n'y ait pas dans le code un nombre identique d'accents qui se suivent. Exemples:
 
@@ -100,7 +109,9 @@ En ce qui concerne la coloration syntaxique, elle devrait s'activer automatiquem
 
 		- Item B.
 
-	Il y a donc conflit au plan de la coloration syntaxique entre un paragraphe indenté à l'intérieur d'une liste (quatre espaces ou une tabulation) et une ligne de code indentée en dehors d'une liste (également quatre espaces ou une tabulation). Puisque qu'il n'est pas possible de savoir dans quel contexte une phrase se trouve (le retour à la ligne ne pouvant pas être utilisé dans les expressions rationnelles de la coloration syntaxique), le choix a été fait de privilégier la coloration standard à l'extérieur des listes pour toute situation où une indentation est présente.
+	Il y a donc conflit au plan de la coloration syntaxique entre un paragraphe indenté à l'intérieur d'une liste (quatre espaces ou une tabulation) et une ligne de code indentée en dehors d'une liste (également quatre espaces ou une tabulation). Puisque qu'il n'est pas possible de savoir dans quel contexte une phrase se trouve (le retour à la ligne ne pouvant pas être utilisé dans les expressions rationnelles de la coloration syntaxique), le choix a été fait de colorer une ligne de code seulement à partir de deux niveaux d'indentation.
+
+- Un bloc de citation peut contenir des éléments Markdown de niveaux bloc ou texte, mais gedit-markdown supporte seulement la coloration des éléments de niveau texte (emphase, lien, etc.).
 
 - J'ai tenté d'utiliser une coloration syntaxique qui se rapproche du rendu par défaut du HTML, par exemple de l'italique pour une emphase légère, des URL soulignées, etc., le tout sans devoir créer un fichier de style personnalisé dans `/usr/share/gtksourceview-2.0/styles` (ce qui forcerait les utilisateurs à choisir manuellement dans gedit le style personnalisé). Il y a donc quelques rendus imparfaits, comme l'emphase forte qui est en gras MAIS AUSSI en rouge. Cette limitation est dépendante de la résolution du bogue [<span lang="en">Add support for general Bold, Emphasis and other text styles in syntax</span>][bogue].
 
