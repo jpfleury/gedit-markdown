@@ -513,9 +513,9 @@
     <context id="markdown-extra">
       <include>
         <context ref="markdown-extra-syntax"/>
-        <!-- Note: even if it's highlighted, Markdown syntax within HTML blocks
-             without `markdown` attribute set to 1 (e.g., `<div markdown="1">`) 
-             is not processed. -->
+        <!-- Note: even if it's highlighted, Markdown Extra syntax within HTML blocks
+             without `markdown` attribute set to 1 (e.g., `<div markdown="1">`) is
+             not processed. -->
         <context ref="html:html"/>
       </include>
     </context>

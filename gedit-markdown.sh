@@ -24,16 +24,6 @@ export TEXTDOMAIN=gedit-markdown
 export LANGUAGE=$LANG
 . gettext.sh
 
-# Variables.
-cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
-cheminMime=~/.local/share/mime
-cheminMimePackages=~/.local/share/mime/packages
-cheminPlugins=~/.gnome2/gedit/plugins
-cheminPluginsMarkdownPreview=~/.gnome2/gedit/plugins/markdown-preview
-cheminPythonSitePackages=$(python -m site --user-site)
-cheminSnippets=~/.gnome2/gedit/snippets
-fichiersAsupprimer=( "$cheminLanguageSpecs/markdown.lang" "$cheminLanguageSpecs/markdown-extra.lang" "$cheminMimePackages/x-markdown.xml" "$cheminPlugins/markdown-preview.gedit-plugin" "$cheminSnippets/markdown.xml" "$cheminSnippets/markdown-extra.xml" )
-
 # Fonctions.
 
 redemarrerNautilus()
@@ -99,15 +89,43 @@ vercomp()
 	return 0
 }
 
-# Début du script.
+# Variables.
 
-cd `dirname "$0"`
+cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
+cheminMime=~/.local/share/mime
+cheminMimePackages=~/.local/share/mime/packages
+cheminPlugins=~/.gnome2/gedit/plugins
+cheminPluginsMarkdownPreview=~/.gnome2/gedit/plugins/markdown-preview
+cheminSnippets=~/.gnome2/gedit/snippets
+cheminStyles=~/.local/share/gtksourceview-2.0/styles
 
 markdown=markdown
 
 if [[ $2 == "extra" ]]; then
 	markdown=extra
 fi
+
+versionPython=0
+erreurPython=0
+
+if [ -z $(which python) ]; then
+	erreurPython=1
+else
+	versionPython=$(python -c 'import sys; print(sys.version[:3])')
+	vercomp $versionPython "2.6"
+	
+	if [[ $? == 2 ]]; then
+		erreurPython=1
+	else
+		cheminPythonSitePackages=$(python -m site --user-site)
+	fi
+fi
+
+fichiersAsupprimer=( "$cheminLanguageSpecs/markdown.lang" "$cheminLanguageSpecs/markdown-extra.lang" "$cheminMimePackages/x-markdown.xml" "$cheminPlugins/markdown-preview.gedit-plugin" "$cheminSnippets/markdown.xml" "$cheminSnippets/markdown-extra.xml" "$cheminStyles/classic-markdown.xml" )
+
+# Début du script.
+
+cd `dirname "$0"`
 
 if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo -e "\033[1m"
@@ -125,20 +143,6 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo $(gettext "Étape 1: Vérification des dépendances")
 	echo -e "\033[22m"
 	
-	versionPython=0
-	erreurPython=0
-	
-	if [ -z $(which python) ]; then
-		erreurPython=1
-	else
-		versionPython=$(python -c 'import sys; print(sys.version[:3])')
-		vercomp $versionPython "2.6"
-		
-		if [[ $? == 2 ]]; then
-			erreurPython=1
-		fi
-	fi
-	
 	if [[ $erreurPython == 1 ]]; then
 		echo $(gettext "Le greffon «Markdown Preview» ne sera pas installé, car il nécessite Python 2.6 ou plus récent.")
 	fi
@@ -153,8 +157,8 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	mkdir -p $cheminLanguageSpecs
 	mkdir -p $cheminMimePackages
 	mkdir -p $cheminPlugins
-	mkdir -p $cheminPythonSitePackages
 	mkdir -p $cheminSnippets
+	mkdir -p $cheminStyles
 	
 	# Copie des fichiers.
 	
@@ -176,10 +180,13 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 			sed -i "s/^\(version=\).*$/\1extra/" $cheminPluginsMarkdownPreview/config.ini
 		fi
 		
+		mkdir -p $cheminPythonSitePackages
 		mv $cheminPluginsMarkdownPreview/markdown $cheminPythonSitePackages
 		rm $cheminPluginsMarkdownPreview/locale/markdown-preview.pot
 		find $cheminPluginsMarkdownPreview/locale/ -name '*.po' -exec rm -f {} \;
 	fi
+	
+	cp styles/classic-markdown.xml $cheminStyles
 	
 	echo $(gettext "Étape terminée.")
 	
@@ -214,8 +221,12 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 	done
 	
 	# Suppression des dossiers.
+	
 	rm -rf $cheminPluginsMarkdownPreview
-	rm -rf $cheminPythonSitePackages/markdown
+	
+	if [[ $erreurPython == 0 ]]; then
+		rm -rf $cheminPythonSitePackages/markdown
+	fi
 	
 	echo $(gettext "Étape terminée.")
 	

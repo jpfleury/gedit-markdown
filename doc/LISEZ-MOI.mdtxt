@@ -79,9 +79,11 @@ En ce qui concerne la coloration syntaxique, elle devrait s'activer automatiquem
 
 - Markdown n'a pas d'extension officielle. J'ai tenté de tracer un [portrait de l'utilisation du Markdown][ext], ce qui m'a conduit à choisir les extensions `.markdown`, `.md` et `.mdtxt`.
 
+[ext]: https://bugzilla.gnome.org/show_bug.cgi?id=384446#c6
+
 - Markdown n'a pas non plus de type mime officiel. Je lui ai assigné `text/x-markdown`.
 
-- Puisqu'il est possible d'ajouter du code HTML directement dans un texte écrit en Markdown, j'ai ajouté la coloration syntaxique du HTML à celle du Markdown. Il faut cependant avoir en tête que selon la syntaxe officielle, du code Markdown dans un environnement HTML n'est pas transformé, il est affiché tel quel. Cependant, gedit-markdown fait présentement colorer syntaxiquement le code Markdown dans du HTML. Il faut se rappeler que ça ne devrait pas être le cas.
+- Puisqu'il est possible d'ajouter du code HTML directement dans un texte écrit en Markdown, j'ai ajouté la coloration syntaxique du HTML à celle du Markdown, ce qui a entre autres comme conséquence que le code Markdown dans du HTML est coloré syntaxiqument. Il faut cependant avoir en tête que selon la syntaxe officielle, du code Markdown dans un environnement HTML n'est pas transformé, il est affiché tel quel, et que selon la syntaxe de Markdown Extra, seul le code Markdown dans un bloc possédant un attribut `markdown` dont la valeur est de 1 (par exemple `<div markdown="1">`) est transformé.
 
 - Markdown permet d'écrire du code dans un paragraphe. Pour ce faire, le code doit être entouré d'un accent grave (\`), ou de plusieurs, pourvu que le nombre soit identique de part et d'autre, et qu'il n'y ait pas dans le code un nombre identique d'accents qui se suivent. Exemples:
 
@@ -99,23 +101,28 @@ En ce qui concerne la coloration syntaxique, elle devrait s'activer automatiquem
 
 	Prendre note que gedit-markdown supporte la coloration jusqu'à 2 accents de part et d'autre du code.
 
-- Selon la syntaxe du Markdown, pour écrire plusieurs paragraphes dans un item de liste, il faut indenter chaque paragraphe. Exemple:
+- Il n'est pas possible de savoir dans quel contexte une ligne se trouve (le retour à la ligne ne pouvant pas être utilisé dans les expressions rationnelles de la coloration syntaxique). En voici des conséquences:
 
-		- Item A (paragraphe 1).
+	- Selon la syntaxe du Markdown, pour écrire plusieurs paragraphes dans un item de liste, il faut indenter chaque paragraphe. Exemple:
 
-			Item A (paragraphe 2).
+			- Item A (paragraphe 1).
 
-			Item A (paragraphe 3).
+				Item A (paragraphe 2).
 
-		- Item B.
+				Item A (paragraphe 3).
 
-	Il y a donc conflit au plan de la coloration syntaxique entre un paragraphe indenté à l'intérieur d'une liste (quatre espaces ou une tabulation) et une ligne de code indentée en dehors d'une liste (également quatre espaces ou une tabulation). Puisque qu'il n'est pas possible de savoir dans quel contexte une phrase se trouve (le retour à la ligne ne pouvant pas être utilisé dans les expressions rationnelles de la coloration syntaxique), le choix a été fait de colorer une ligne de code seulement à partir de deux niveaux d'indentation.
+			- Item B.
+
+		Il y a donc conflit au plan de la coloration syntaxique entre un paragraphe indenté à l'intérieur d'une liste (quatre espaces ou une tabulation) et une ligne de code indentée en dehors d'une liste (également quatre espaces ou une tabulation). Le choix a été fait de colorer une ligne de code seulement à partir de deux niveaux d'indentation.
+
+	- Seul le soulignement d'un titre de style Setext est analysé et coloré. Il n'y a donc pas de garanti qu'il s'agit bien d'un soulignement de titre.
+
+	- Avec Markdown Extra, quelques éléments sont analysés et colorés sans certitude qu'ils sont bien dans le bon contexte: l'attribut `id` pour un titre de style Setext, le deux-points séparateur dans une liste de définition et la ligne de séparation d'un tableau.
 
 - Un bloc de citation peut contenir des éléments Markdown de niveaux bloc ou texte, mais gedit-markdown supporte seulement la coloration des éléments de niveau texte (emphase, lien, etc.).
 
 - J'ai tenté d'utiliser une coloration syntaxique qui se rapproche du rendu par défaut du HTML, par exemple de l'italique pour une emphase légère, des URL soulignées, etc., le tout sans devoir créer un fichier de style personnalisé dans `/usr/share/gtksourceview-2.0/styles` (ce qui forcerait les utilisateurs à choisir manuellement dans gedit le style personnalisé). Il y a donc quelques rendus imparfaits, comme l'emphase forte qui est en gras MAIS AUSSI en rouge. Cette limitation est dépendante de la résolution du bogue [<span lang="en">Add support for general Bold, Emphasis and other text styles in syntax</span>][bogue].
 
-[ext]: https://bugzilla.gnome.org/show_bug.cgi?id=384446#c6
 [bogue]: http://bugzilla.gnome.org/show_bug.cgi?id=441595
 
 ## Localisation

@@ -20,6 +20,10 @@
  Boston, MA 02111-1307, USA.
 
 -->
+<!-- Note: this language definition file adds support for Markdown syntax, 
+     described in the following websites:
+     * <http://michelf.com/projets/php-markdown/syntaxe/>
+     * <http://daringfireball.net/projects/markdown/syntax> -->
 <language id="markdown" _name="Markdown" version="2.0" _section="Markup">
   <metadata>
     <!-- Bug against shared-mime-info for Markdown MIME type:
@@ -37,7 +41,7 @@
     <style id="horizontal-rule" _name="Horizontal Rule" map-to="def:type"/>
     <style id="list-marker" _name="List Marker" map-to="def:keyword"/>
     <style id="code" _name="Code" map-to="diff:added-line"/>
-    <style id="blockquote" _name="Blockquote" map-to="def:comment"/>
+    <style id="blockquote-marker" _name="Blockquote Marker" map-to="def:comment"/>
     <style id="url" _name="URL" map-to="def:underlined"/>
     <style id="link-text" _name="Link Text" map-to="def:comment"/>
     <style id="attribute-value" _name="Attribute Value" map-to="def:constant"/>
@@ -102,9 +106,8 @@
          indented paragraph inside a list item (4 spaces or 1 tab) and an
          indented line of code outside a list (also 4 spaces or 1 tab). In this
          language file, since a full context analysis can't be done (because
-         line break can't be used in regex), the choice was made ​​to favor the
-         standard highlighting outside lists for every situations with
-         indentation. -->
+         line break can't be used in regex), the choice was made ​​to highlight 
+         code block only from 2 levels of indentation. -->
 
     <!-- Examples:
          * Item of unordered list
@@ -126,10 +129,10 @@
     </context>
 
     <!-- Example:
-             <em>HTML code</em> displayed <strong>literally</strong>.
+                 <em>HTML code</em> displayed <strong>literally</strong>.
     -->
-    <context id="code-block" style-ref="code">
-      <match>^( {4,}|\t+)[^ \t]+.*</match>
+    <context id="code-block" class="no-spell-check" style-ref="code">
+      <match>^( {8,}|\t{2,})[^ \t]+.*</match>
     </context>
 
     <!-- Note about following code span contexts: within a paragraph, text
@@ -143,7 +146,7 @@
          Here's a literal HTML tag: `<p>`.
          `Here's a code span containing ``backticks``.`
     -->
-    <context id="code-span-1" style-ref="code">
+    <context id="1-backtick-code-span" class="no-spell-check" style-ref="code">
       <match>(?&lt;!`)`[^`]+(`{2,}[^`]+)*`(?!`)</match>
     </context>
 
@@ -152,17 +155,36 @@
          ``The grave accent (`) is used in Markdown to indicate a code span.``
          ``Here's another code span containing ```backticks```.``
     -->
-    <context id="code-span-2" style-ref="code">
+    <context id="2-backticks-code-span" class="no-spell-check" style-ref="code">
       <match>(?&lt;!`)``[^`]+((`|`{3,})[^`]+)*``(?!`)</match>
     </context>
 
-    <!-- Example:
+    <!-- Examples:
          > Quoted text.
+         > Quoted text with `code span`.
     -->
-    <!-- Note: blockquote can contain Markdown syntax elements, but the current
-         language file doesn't highlight them. -->
-    <context id="blockquote" style-ref="blockquote">
-      <match>^ {0,3}&gt;.+</match>
+    <!-- Note: blockquote can contain block-level and inline Markdown elements, 
+         but the current language file only highlights inline ones (emphasis, 
+         link, etc.). -->
+    <context id="blockquote" end-at-line-end="true">
+      <start>^ {0,3}(&gt;)(?=.)</start>
+      
+      <include>
+        <context sub-pattern="1" where="start" style-ref="blockquote-marker"/>
+        <context ref="1-backtick-code-span"/>
+        <context ref="2-backticks-code-span"/>
+        <context ref="automatic-link"/>
+        <context ref="inline-link"/>
+        <context ref="reference-link"/>
+        <context ref="inline-image"/>
+        <context ref="reference-image"/>
+        <context ref="underscores-emphasis"/>
+        <context ref="asterisks-emphasis"/>
+        <context ref="underscores-strong-emphasis"/>
+        <context ref="asterisks-strong-emphasis"/>
+        <context ref="backslash-escape"/>
+        <context ref="line-break"/>
+      </include>
     </context>
 
     <!-- Examples:
@@ -171,7 +193,7 @@
     -->
     <!-- Note: regular expression for URL is taken from function `doAutoLinks`
          from PHP Markdown. See <http://michelf.com/projets/php-markdown/>. -->
-    <context id="automatic-link">
+    <context id="automatic-link" class="no-spell-check">
       <match case-sensitive="false" extended="true">
         &lt;
           (([-a-z0-9%._'+]+@[-a-z0-9.]+\.[a-z]+) | # E-mail.
@@ -180,7 +202,7 @@
       </match>
 
       <include>
-        <context sub-pattern="1" style-ref="url"/>
+        <context sub-pattern="1" style-ref="link-text"/>
       </include>
     </context>
 
@@ -201,8 +223,8 @@
 
       <include>
         <context sub-pattern="1" style-ref="link-text"/>
-        <context sub-pattern="3" style-ref="url"/>
-        <context sub-pattern="4" style-ref="url"/>
+        <context sub-pattern="3" style-ref="url" class="no-spell-check"/>
+        <context sub-pattern="4" style-ref="url" class="no-spell-check"/>
         <context sub-pattern="5" style-ref="attribute-value"/>
       </include>
     </context>
@@ -212,10 +234,11 @@
          [link text] [link label]
     -->
     <context id="reference-link">
-      <match>\[(.*?)\][ \t]?\[.*?\]</match>
+      <match>\[(.*?)\][ \t]?\[(.*?)\]</match>
 
       <include>
         <context sub-pattern="1" style-ref="link-text"/>
+        <context sub-pattern="2" class="no-spell-check"/>
       </include>
     </context>
 
@@ -236,9 +259,9 @@
       </match>
 
       <include>
-        <context sub-pattern="1" style-ref="link-text"/>
-        <context sub-pattern="3" style-ref="url"/>
-        <context sub-pattern="4" style-ref="url"/>
+        <context sub-pattern="1" class="no-spell-check" style-ref="link-text"/>
+        <context sub-pattern="3" class="no-spell-check" style-ref="url"/>
+        <context sub-pattern="4" class="no-spell-check" style-ref="url"/>
         <context sub-pattern="6" style-ref="attribute-value"/>
       </include>
     </context>
@@ -262,8 +285,8 @@
       <include>
         <context sub-pattern="1" style-ref="image-marker"/>
         <context sub-pattern="2" style-ref="attribute-value"/>
-        <context sub-pattern="4" style-ref="url"/>
-        <context sub-pattern="5" style-ref="url"/>
+        <context sub-pattern="4" class="no-spell-check" style-ref="url"/>
+        <context sub-pattern="5" class="no-spell-check" style-ref="url"/>
         <context sub-pattern="6" style-ref="attribute-value"/>
       </include>
     </context>
@@ -273,11 +296,12 @@
          ![alt text] [image label]
     -->
     <context id="reference-image">
-      <match>(!)\[(.*?)\] ?\[.*?\]</match>
+      <match>(!)\[(.*?)\] ?\[(.*?)\]</match>
 
       <include>
         <context sub-pattern="1" style-ref="image-marker"/>
         <context sub-pattern="2" style-ref="attribute-value"/>
+        <context sub-pattern="3" class="no-spell-check"/>
       </include>
     </context>
 
@@ -334,8 +358,8 @@
         <context ref="horizontal-rule"/>
         <context ref="list"/>
         <context ref="code-block"/>
-        <context ref="code-span-1"/>
-        <context ref="code-span-2"/>
+        <context ref="1-backtick-code-span"/>
+        <context ref="2-backticks-code-span"/>
         <context ref="blockquote"/>
         <context ref="automatic-link"/>
         <context ref="inline-link"/>
@@ -358,7 +382,7 @@
       <include>
         <context ref="markdown-syntax"/>
         <!-- Note: even if it's highlighted, Markdown syntax within HTML blocks
-             (e.g. `<div>`) is not processed. -->
+             (e.g., `<div>`) is not processed. -->
         <context ref="html:html"/>
       </include>
     </context>

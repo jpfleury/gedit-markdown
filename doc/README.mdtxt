@@ -79,9 +79,11 @@ About syntax highlighting, it should automatically be activated for files recogn
 
 - There's no official Markdown file extension. I did some [research on actual usage][ext], which led me to choose extensions `.markdown`, `.md` and `.mdtxt`.
 
+[ext]: https://bugzilla.gnome.org/show_bug.cgi?id=384446#c6
+
 - There's no official Markdown MIME type either. I chose `text/x-markdown`.
 
-- Since HTML code can be directly used in a text written in Markdown, HTML syntax highlighting was added to Markdown syntax highlighting. However, keep in mind that, even if it's highlighted, Markdown syntax within HTML blocks (e.g. `<div>`) is not processed.
+- Since HTML code can be directly used in a text written in Markdown, HTML syntax highlighting was added to Markdown syntax highlighting. However, keep in mind that, even if they're highlighted, Markdown syntax within HTML blocks (e.g. `<div>`) and Markdown Extra syntax within HTML blocks without `markdown` attribute set to 1 (e.g., `<div markdown="1">`) are not processed.
 
 - Within a paragraph, text wrapped with backticks indicates a code span. Markdown allows to use one or more backticks to wrap text, provided that the number is identical on both sides, and the same number of consecutive backticks is not present within the text. Examples:
 
@@ -99,23 +101,28 @@ About syntax highlighting, it should automatically be activated for files recogn
 
 	Syntax highlighting in gedit supports code span highlighting with up to 2 backticks surrounding text.
 
-- According to the Markdown syntax, to write several paragraphs in a list item, you have to indent each paragraph. Example:
+- A full context analysis can't be done (because line break can't be used in regex). Here are some consequences:
 
-		- Item A (paragraph 1).
+	- According to the Markdown syntax, to write several paragraphs in a list item, you have to indent each paragraph. Example:
 
-			Item A (paragraph 2).
+			- Item A (paragraph 1).
 
-			Item A (paragraph 3).
+				Item A (paragraph 2).
 
-		- Item B.
+				Item A (paragraph 3).
 
-	So there is a conflict in terms of syntax highlighting between an indented paragraph inside a list item (4 spaces or 1 tab) and an indented line of code outside a list (also 4 spaces or 1 tab). For Markdown syntax highlighting, since a full context analysis can't be done (because line break can't be used in regex), the choice was made ​​​​to highlight code block only from 2 levels of indentation.
+			- Item B.
+
+		So there is a conflict in terms of syntax highlighting between an indented paragraph inside a list item (4 spaces or 1 tab) and an indented line of code outside a list (also 4 spaces or 1 tab). The choice was made ​​​​to highlight code block only from 2 levels of indentation.
+
+	- Only the underline of a Setext-style header is matched and highlighted, so there's no guarantee that it's indeed a title underline.
+
+	- With Markdown Extra, some elements are matched and highlighted with no guarantee that they're in the right context: Setext-style header id attribute, colon used as separator in a definition list and separator line of a table.
 
 - Blockquote can contain block-level and inline Markdown elements, but gedit-markdown only highlights inline ones (emphasis, link, etc.).
 
 - I tried to use a highlighting similar to the default HTML rendering, e.g. italics for emphasis, underlined URL, etc. without having to create a custom style in `/usr/share/gtksourceview-2.0/styles`(which would force users to manually select it in gedit). Therefore, there are some imperfect rendering, e.g. strong emphasis that is bold BUT ALSO red. This limitation is dependent on the resolution of the bug ["Add support for general Bold, Emphasis and other text styles in syntax"][bug].
 
-[ext]: https://bugzilla.gnome.org/show_bug.cgi?id=384446#c6
 [bug]: http://bugzilla.gnome.org/show_bug.cgi?id=441595
 
 ## Localization
