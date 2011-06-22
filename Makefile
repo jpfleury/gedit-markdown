@@ -46,8 +46,8 @@ changelog:
 
 fichiersSurBureau: archive
 	cp doc/ChangeLog $(cheminBureau)
-	cp doc/LISEZ-MOI.mdtxt $(cheminBureau)
-	cp doc/README.mdtxt $(cheminBureau)
+	cp doc/LISEZ-MOI.mkd $(cheminBureau)
+	cp doc/README.mkd $(cheminBureau)
 	mv gedit-markdown.zip $(cheminBureau)
 
 menagePot:
