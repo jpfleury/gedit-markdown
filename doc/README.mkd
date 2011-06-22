@@ -13,11 +13,11 @@ Specifically, it adds:
 [Markdown]: http://daringfireball.net/projects/markdown/
 [Markdown Extra]: http://michelf.com/projects/php-markdown/extra/
 
-<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple1.jpg" width="685" height="708" alt="Markdown syntax highlighting in gedit." />
+<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple1.png" width="684" height="779" alt="Default Markdown syntax highlighting in gedit." />
 
 ***************
 
-<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple2.jpg" width="685" height="655" alt="Markdown Preview in gedit." />
+<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple3.png" width="684" height="886" alt="Markdown Preview in gedit." />
 
 ## Requirements
 
@@ -73,7 +73,9 @@ About syntax highlighting, it should automatically be activated for files recogn
 
 Cette coloration se rapproche du rendu par défaut du HTML, par exemple l'emphase forte et les titres sont en gras et de couleur noire, les liens sont bleus et soulignés, etc.
 
-An optional color scheme is installed by gedit-markdown. To use it, go to *Edit > Preferences > Font & Colors > Color Scheme* in gedit and select *Classic Markdown*. This color scheme is more similar to the default HTML rendering, for example strong emphases and headers are in bold and black font, links are blue and underlined, etc.
+An optional color scheme is installed by gedit-markdown. To use it, go to *Edit > Preferences > Font & Colors > Color Scheme* in gedit and select *Classic Markdown*. This color scheme is more similar to an HTML rendering, for example strong emphases and headers are in bold and black font, links are blue and underlined, etc. Here's a screenshot of a Markdown document highlighted with this color scheme:
+
+<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple2.png" width="684" height="779" alt="Optional color scheme for Markdown syntax highlighting in gedit." />
 
 ## Details and limitations
 

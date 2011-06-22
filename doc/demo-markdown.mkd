@@ -8,7 +8,7 @@ Titre de niveau 1 (style Setext)
 Il est possible d'utiliser une *emphase légère* ou une **emphase forte**. Continuons avec un retour à la ligne  
 forcé. Voici maintenant du `code en ligne`. On peut également échapper des caractères, par exemple \`ceci n'est pas du code, car les accents graves sont échappés\`.
 
-N'oublions pas que du <span class="test">code HTML</span> peut être inséré directement dans un document Markdown.
+N'oublions pas que du <strong>code HTML</strong> peut être inséré directement dans un document Markdown.
 
 Voici à présent une liste non ordonnée:
 
