@@ -22,7 +22,7 @@ Specifically, it adds:
 
 - gedit-markdown is shipped with an installer for GNU/Linux. On Windows XP, only syntax highlighting works, and must be installed by hand.
 
-- The plugin «Markdown Preview» depends on Python 2.6 or any later version and was tested only with gedit 2 (it will possibly not work with gedit 3). Thus, the installer will copy the plugin only if the right versions of Python and gedit are installed.
+- The plugin «Markdown Preview» depends on Python >= 2.6 and was tested only with gedit 2 (it will possibly not work with gedit 3). Thus, the installer will copy the plugin only if the right versions of Python and gedit are installed.
 
 	Other files should theoretically work well with gedit 3 and will therefore be installed regardless of the version of gedit.
 

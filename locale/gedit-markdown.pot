@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-22 00:16-0400\n"
+"POT-Creation-Date: 2011-06-22 01:58-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,64 +17,70 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gedit-markdown.sh:99
+#: gedit-markdown.sh:131
 msgid "Installation de gedit-markdown"
 msgstr ""
 
-#: gedit-markdown.sh:104
-msgid "Étape 1: choix de la syntaxe Markdown à installer"
+#: gedit-markdown.sh:136
+msgid "Étape 1: vérification des dépendances"
 msgstr ""
 
-#: gedit-markdown.sh:107
+#: gedit-markdown.sh:144
+msgid ""
+"Veuillez installer gedit avant de lancer le script d'installation de gedit-"
+"markdown."
+msgstr ""
+
+#: gedit-markdown.sh:150
+msgid ""
+"Le greffon «Markdown Preview» ne sera pas installé, car il dépend de gedit 2 "
+"et de Python >= 2.6."
+msgstr ""
+
+#: gedit-markdown.sh:154 gedit-markdown.sh:181 gedit-markdown.sh:219
+#: gedit-markdown.sh:247
+msgid "Étape terminée."
+msgstr ""
+
+#: gedit-markdown.sh:157
+msgid "Étape 2: choix de la syntaxe Markdown à installer"
+msgstr ""
+
+#: gedit-markdown.sh:160
 msgid ""
 "gedit-markdown peut ajouter le support du langage Markdown standard ou de la"
 "\\nversion spéciale Markdown Extra.\\n\\n\\t1\\tMarkdown standard\\n"
 "\\t2\\tMarkdown Extra\\n\\nSaisissez votre choix [1/2] (2 par défaut): "
 msgstr ""
 
-#: gedit-markdown.sh:122
+#: gedit-markdown.sh:175
 msgid "Le langage Markdown standard sera ajouté."
 msgstr ""
 
-#: gedit-markdown.sh:124
+#: gedit-markdown.sh:177
 msgid "Le langage Markdown Extra sera ajouté."
 msgstr ""
 
-#: gedit-markdown.sh:128 gedit-markdown.sh:139 gedit-markdown.sh:177
-#: gedit-markdown.sh:209
-msgid "Étape terminée."
-msgstr ""
-
-#: gedit-markdown.sh:131
-msgid "Étape 2: vérification des dépendances"
-msgstr ""
-
-#: gedit-markdown.sh:135
-msgid ""
-"Le greffon «Markdown Preview» ne sera pas installé, car il nécessite Python "
-"2.6 ou plus récent."
-msgstr ""
-
-#: gedit-markdown.sh:142
+#: gedit-markdown.sh:184
 msgid "Étape 3: copie des fichiers"
 msgstr ""
 
-#: gedit-markdown.sh:180
+#: gedit-markdown.sh:222
 msgid "Installation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 
-#: gedit-markdown.sh:188
+#: gedit-markdown.sh:230
 msgid "Désinstallation de gedit-markdown"
 msgstr ""
 
-#: gedit-markdown.sh:193
+#: gedit-markdown.sh:235
 msgid "Étape 1: suppression des fichiers"
 msgstr ""
 
-#: gedit-markdown.sh:212
+#: gedit-markdown.sh:250
 msgid "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 
-#: gedit-markdown.sh:218
+#: gedit-markdown.sh:256
 msgid "Usage: "
 msgstr ""

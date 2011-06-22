@@ -147,7 +147,7 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	fi
 	
 	if [[ $greffonEstInstallable == 0 ]]; then
-		echo $(gettext "Le greffon «Markdown Preview» ne sera pas installé, car il nécessite gedit 2 ainsi que Python 2.6 ou plus récent.")
+		echo $(gettext "Le greffon «Markdown Preview» ne sera pas installé, car il dépend de gedit 2 et de Python >= 2.6.")
 		echo ""
 	fi
 	
