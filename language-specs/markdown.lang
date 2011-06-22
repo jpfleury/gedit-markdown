@@ -20,7 +20,7 @@
  Boston, MA 02111-1307, USA.
 
 -->
-<!-- Note: this language definition file adds support for Markdown syntax, 
+<!-- Note: this language definition file adds support for Markdown syntax,
      described in the following websites:
      * (fr) <http://michelf.com/projets/php-markdown/syntaxe/>
      * (en) <http://daringfireball.net/projects/markdown/syntax> -->
@@ -42,6 +42,7 @@
     <style id="blockquote-marker" _name="Blockquote Marker" map-to="def:shebang"/>
     <style id="url" _name="URL" map-to="def:underlined"/>
     <style id="link-text" _name="Link Text" map-to="def:comment"/>
+    <style id="label" _name="Label" map-to="def:preprocessor"/>
     <style id="attribute-value" _name="Attribute Value" map-to="def:constant"/>
     <style id="image-marker" _name="Image Marker" map-to="def:shebang"/>
     <style id="emphasis" _name="Emphasis" map-to="def:doc-comment-element"/>
@@ -104,14 +105,14 @@
          indented paragraph inside a list item (4 spaces or 1 tab) and an
          indented line of code outside a list (also 4 spaces or 1 tab). In this
          language file, since a full context analysis can't be done (because
-         line break can't be used in regex), the choice was made ​​to highlight 
+         line break can't be used in regex), the choice was made ​​to highlight
          code block only from 2 levels of indentation. -->
 
     <!-- Example (unordered list):
          * Item
          + Item
          - Item
-         
+
          Example (ordered list):
          1. Item
          2. Item
@@ -131,8 +132,12 @@
     <!-- Example:
                  <em>HTML code</em> displayed <strong>literally</strong>.
     -->
-    <context id="code-block" class="no-spell-check" style-ref="code">
-      <match>^( {8,}|\t{2,})[^ \t]+.*</match>
+    <context id="code-block" class="no-spell-check">
+      <match>^( {8,}|\t{2,})([^ \t]+.*)</match>
+
+      <include>
+        <context sub-pattern="2" style-ref="code"/>
+      </include>
     </context>
 
     <!-- Note about following code span contexts: within a paragraph, text
@@ -164,12 +169,12 @@
          > Quoted text with `code span`.
          >> Blockquote **nested**.
     -->
-    <!-- Note: blockquote can contain block-level and inline Markdown elements, 
-         but the current language file only highlights inline ones (emphasis, 
+    <!-- Note: blockquote can contain block-level and inline Markdown elements,
+         but the current language file only highlights inline ones (emphasis,
          link, etc.). -->
     <context id="blockquote" end-at-line-end="true">
       <start>^( {0,3}&gt;(?=.)( {0,4}&gt;)*)</start>
-      
+
       <include>
         <context sub-pattern="1" where="start" style-ref="blockquote-marker"/>
         <context ref="1-backtick-code-span"/>
@@ -238,14 +243,14 @@
          [link text][link label]
          [link text] [link label]
     -->
-    <!-- Note: some assertions are used to differentiate reference link from 
+    <!-- Note: some assertions are used to differentiate reference link from
          link label. -->
     <context id="reference-link">
       <match>(?&lt;!^ |^  |^   )\[(.*?)\]([ \t]?\[(.*?)\])?(?!:)</match>
 
       <include>
         <context sub-pattern="1" style-ref="link-text"/>
-        <context sub-pattern="3" class="no-spell-check"/>
+        <context sub-pattern="3" class="no-spell-check" style-ref="label"/>
       </include>
     </context>
 
@@ -266,9 +271,9 @@
       </match>
 
       <include>
-        <context sub-pattern="1" class="no-spell-check" style-ref="link-text"/>
-        <context sub-pattern="3" class="no-spell-check" style-ref="link-text"/>
-        <context sub-pattern="4" class="no-spell-check" style-ref="link-text"/>
+        <context sub-pattern="1" class="no-spell-check" style-ref="label"/>
+        <context sub-pattern="3" class="no-spell-check" style-ref="url"/>
+        <context sub-pattern="4" class="no-spell-check" style-ref="url"/>
         <context sub-pattern="6" style-ref="attribute-value"/>
       </include>
     </context>
@@ -310,7 +315,7 @@
       <include>
         <context sub-pattern="1" style-ref="image-marker"/>
         <context sub-pattern="2" style-ref="attribute-value"/>
-        <context sub-pattern="3" class="no-spell-check"/>
+        <context sub-pattern="3" class="no-spell-check" style-ref="label"/>
       </include>
     </context>
 

@@ -20,7 +20,7 @@
  Boston, MA 02111-1307, USA.
 
 -->
-<!-- Note: this language definition file adds support for Markdown Extra syntax, 
+<!-- Note: this language definition file adds support for Markdown Extra syntax,
      described here:
      * (fr) <http://michelf.com/projets/php-markdown/extra/>
      * (en) <http://michelf.com/projects/php-markdown/extra/> -->
@@ -43,24 +43,26 @@
     <style id="blockquote-marker" _name="Blockquote Marker" map-to="def:shebang"/>
     <style id="url" _name="URL" map-to="def:underlined"/>
     <style id="link-text" _name="Link Text" map-to="def:comment"/>
+    <style id="label" _name="Label" map-to="def:preprocessor"/>
     <style id="attribute-value" _name="Attribute Value" map-to="def:constant"/>
     <style id="image-marker" _name="Image Marker" map-to="def:shebang"/>
     <style id="emphasis" _name="Emphasis" map-to="def:doc-comment-element"/>
     <style id="strong-emphasis" _name="Strong Emphasis" map-to="def:statement"/>
     <style id="backslash-escape" _name="Backslash Escape" map-to="def:special-char"/>
     <style id="line-break" _name="Line Break" map-to="def:note"/>
-    
+
     <!-- Markdown Extra styles. -->
     <style id="header-id-marker" _name="Header Id Marker" map-to="def:shebang"/>
     <style id="definition-list-marker" _name="Definition List Marker" map-to="def:shebang"/>
     <style id="footnote-marker" _name="Footnote Marker" map-to="def:shebang"/>
     <style id="abbreviation-marker" _name="Abbreviation Marker" map-to="def:shebang"/>
+    <style id="abbreviation" _name="Abbreviation" map-to="def:preprocessor"/>
     <style id="table-separator" _name="Table Separator" map-to="def:statement"/>
   </styles>
 
   <definitions>
     <!-- _______________________ Markdown contexts. _______________________ -->
-    
+
     <!-- Examples:
          Header 1
          ========
@@ -105,14 +107,14 @@
          indented paragraph inside a list item (4 spaces or 1 tab) and an
          indented line of code outside a list (also 4 spaces or 1 tab). In this
          language file, since a full context analysis can't be done (because
-         line break can't be used in regex), the choice was made ​​to highlight 
+         line break can't be used in regex), the choice was made ​​to highlight
          code block only from 2 levels of indentation. -->
 
     <!-- Example (unordered list):
          * Item
          + Item
          - Item
-         
+
          Example (ordered list):
          1. Item
          2. Item
@@ -132,8 +134,12 @@
     <!-- Example:
                  <em>HTML code</em> displayed <strong>literally</strong>.
     -->
-    <context id="code-block" class="no-spell-check" style-ref="code">
-      <match>^( {8,}|\t{2,})[^ \t]+.*</match>
+    <context id="code-block" class="no-spell-check">
+      <match>^( {8,}|\t{2,})([^ \t]+.*)</match>
+
+      <include>
+        <context sub-pattern="2" style-ref="code"/>
+      </include>
     </context>
 
     <!-- Note about following code span contexts: within a paragraph, text
@@ -165,12 +171,12 @@
          > Quoted text with `code span`.
          >> Blockquote nested.
     -->
-    <!-- Note: blockquote can contain block-level and inline Markdown elements, 
-         but the current language file only highlights inline ones (emphasis, 
+    <!-- Note: blockquote can contain block-level and inline Markdown elements,
+         but the current language file only highlights inline ones (emphasis,
          link, etc.). -->
     <context id="blockquote" end-at-line-end="true">
       <start>^( {0,3}&gt;(?=.)( {0,4}&gt;)*)</start>
-      
+
       <include>
         <context sub-pattern="1" where="start" style-ref="blockquote-marker"/>
         <context ref="1-backtick-code-span"/>
@@ -238,9 +244,9 @@
         <context sub-pattern="1" style-ref="line-break"/>
       </include>
     </context>
-    
+
     <!-- _________ Markdown contexts redefined for Markdown Extra. _________ -->
-    
+
     <define-regex id="header-id-attribute" extended="true">
       (?&lt;=[ \t])       # Must be preceded by a space or a tab.
       \{                  # Literal curly bracket.
@@ -249,7 +255,7 @@
       \}                  # Literal curly bracket.
       [ \t]*              # Optional trailing spaces or tabs.
     </define-regex>
-    
+
     <!-- Examples:
          # Header 1 # {#id1}
          ## Header 2 {#id2}
@@ -257,21 +263,21 @@
     -->
     <context id="atx-header">
       <match>^(#+.+?)\%{header-id-attribute}?$</match>
-      
+
       <include>
         <context sub-pattern="1" style-ref="header"/>
         <context sub-pattern="2" style-ref="header-id-marker"/>
         <context sub-pattern="3" class="no-spell-check" style-ref="attribute-value"/>
       </include>
     </context>
-    
+
     <!-- Note about following link and image contexts: link and image are not matched if link text, link label, alt text or image label begin with a circumflex (because it's the syntax used for footnotes references), even if in some tricky cases, they could begin with a circumflex and still be well-formed. However, it's very unlikely that a well-formed link or image will not be highlighted. -->
 
     <!-- Examples matched:
          [link text](http://www.example.com/)
          [link text](<http://www.example.com/>)
          [link text]( /folder/page.html "Title" )
-         
+
          Example NOT matched:
          [^link text](http://www.example.com/)
     -->
@@ -300,19 +306,19 @@
          [link text][]
          [link text][link label]
          [link text] [link label]
-         
+
          Examples NOT matched:
          [^link text][link label]
          [link text][^link label]
     -->
-    <!-- Note: some assertions are used to differentiate reference link from 
+    <!-- Note: some assertions are used to differentiate reference link from
          link label. -->
     <context id="reference-link">
       <match>(?&lt;!^ |^  |^   )\[(?!\^)(.*?)\]([ \t]?\[(?!\^)(.*?)\])?(?!:)</match>
 
       <include>
         <context sub-pattern="1" style-ref="link-text"/>
-        <context sub-pattern="3" class="no-spell-check"/>
+        <context sub-pattern="3" class="no-spell-check" style-ref="label"/>
       </include>
     </context>
 
@@ -320,7 +326,7 @@
          [link label]: /folder/page.html
          [link label]: <http://www.example.com/>
          [link label]: http://www.example.com/ "Title"
-         
+
          Example NOT matched:
          [^link label]: /folder/page.html
     -->
@@ -336,17 +342,17 @@
       </match>
 
       <include>
-        <context sub-pattern="1" class="no-spell-check" style-ref="link-text"/>
+        <context sub-pattern="1" class="no-spell-check" style-ref="label"/>
         <context sub-pattern="3" class="no-spell-check" style-ref="url"/>
         <context sub-pattern="4" class="no-spell-check" style-ref="url"/>
         <context sub-pattern="6" style-ref="attribute-value"/>
       </include>
     </context>
-    
+
     <!-- Examples matched:
          ![alt text](http://www.example.com/image.jpg)
          ![alt text] (/path/to/image.jpg "Title")
-         
+
          Example NOT matched:
          ![^alt text](http://www.example.com/image.jpg)
     -->
@@ -374,7 +380,7 @@
     <!-- Examples matched:
          ![alt text][image label]
          ![alt text] [image label]
-         
+
          Examples NOT matched:
          ![^alt text][image label]
          ![alt text][^image label]
@@ -385,36 +391,36 @@
       <include>
         <context sub-pattern="1" style-ref="image-marker"/>
         <context sub-pattern="2" style-ref="attribute-value"/>
-        <context sub-pattern="3" class="no-spell-check"/>
+        <context sub-pattern="3" class="no-spell-check" style-ref="label"/>
       </include>
     </context>
-    
+
     <!-- Examples generating an emphasis with Markdown Extra:
          Lorem _ipsum dolor_ sit amet.
          Here's an _emphasized text containing an underscore (\_)_.
-         
+
          Example NOT generating an emphasis with Markdown Extra:
          The file name is "my_text_file.txt".
     -->
-    <!-- Note: according to the Markdown Extra syntax, underscores in the middle 
+    <!-- Note: according to the Markdown Extra syntax, underscores in the middle
          of a word no longer generate an emphasis. -->
     <context id="underscores-emphasis" style-ref="emphasis">
       <match>(?&lt;![a-zA-Z0-9_])_[^_ \t].*?(?&lt;!\\|_| |\t)_(?![a-zA-Z0-9_])</match>
     </context>
-    
+
     <!-- Examples generating a strong emphasis with Markdown Extra:
          Lorem __ipsum dolor__ sit amet.
          Here's a __strongly emphasized text containing an underscore (\_)__.
-         
+
          Example NOT generating a strong emphasis with Markdown Extra:
          The file name is "my__text__file.txt".
     -->
     <context id="underscores-strong-emphasis" style-ref="strong-emphasis">
       <match>(?&lt;![a-zA-Z0-9])__[^_ \t].*?(?&lt;!\\|_| |\t)__(?![a-zA-Z0-9])</match>
     </context>
-    
+
     <!-- ____________________ Markdown Extra contexts. ____________________ -->
-    
+
     <!-- Example:
          Header 2 {#id}
          ========
@@ -428,12 +434,12 @@
         <context sub-pattern="2" class="no-spell-check" style-ref="attribute-value"/>
       </include>
     </context>
-    
+
     <!-- Example:
          Word
          : definition
     -->
-    <!-- Note: line break can't be used in regex, so only the line containing 
+    <!-- Note: line break can't be used in regex, so only the line containing
          the colon is matched. -->
     <context id="definition-list">
       <match>^ {0,3}(:)[ \t]+</match>
@@ -442,7 +448,7 @@
         <context sub-pattern="1" style-ref="definition-list-marker"/>
       </include>
     </context>
-    
+
     <!-- Example:
          ~~~
          <em>HTML code</em> displayed <strong>literally</strong>.
@@ -452,10 +458,10 @@
       <start>^(~{3,})[ \t]*$</start>
       <end>^(\%{1@start})[ \t]*$</end>
     </context>
-    
+
     <!-- Example:
          A sentence containing a link to a footnote[^1].
-         
+
          [^1]: That's the footnote.
     -->
     <context id="footnote-reference">
@@ -463,29 +469,30 @@
 
       <include>
         <context sub-pattern="1" style-ref="footnote-marker"/>
-        <context sub-pattern="2" style-ref="attribute-value" class="no-spell-check"/>
+        <context sub-pattern="2" class="no-spell-check" style-ref="attribute-value"/>
       </include>
     </context>
-    
+
     <!-- Example:
          *[PCRE]: Perl Compatible Regular Expression
     -->
     <context id="abbreviation">
-      <match>^ {0,3}(\*)\[.+?\] ?:(.*)</match>
+      <match>^ {0,3}(\*)\[(.+?)\] ?:(.*)</match>
 
       <include>
         <context sub-pattern="1" style-ref="abbreviation-marker"/>
-        <context sub-pattern="2" style-ref="attribute-value"/>
+        <context sub-pattern="2" class="no-spell-check" style-ref="abbreviation"/>
+        <context sub-pattern="3" style-ref="attribute-value"/>
       </include>
     </context>
-    
+
     <!-- Example:
          | Header 1 | Header 2 |
          | -        | -        |
          | Cell     | Cell     |
          | Cell     | Cell     |
     -->
-    <!-- Note: line break can't be used in regex, so only the separator line is 
+    <!-- Note: line break can't be used in regex, so only the separator line is
          matched. -->
     <context id="table-separator" style-ref="table-separator">
       <match extended="true">
@@ -497,11 +504,11 @@
         [ \t-:|]*$         # Optional separator characters.
       </match>
     </context>
-    
+
     <context id="backslash-escape-extra" style-ref="backslash-escape">
       <match>\\[:|]</match>
     </context>
-    
+
     <context id="markdown-syntax">
       <include>
         <!-- Markdown contexts. -->
@@ -525,7 +532,7 @@
         <context ref="asterisks-strong-emphasis"/>
         <context ref="backslash-escape"/>
         <context ref="line-break"/>
-        
+
         <!-- Markdown Extra contexts. -->
         <context ref="setext-header-id-attribute"/>
         <context ref="definition-list"/>
