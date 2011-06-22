@@ -7,7 +7,8 @@ gedit-markdown est un ensemble de fichiers ajoutant le support du langage [Markd
 Plus précisément, gedit-markdown ajoute:
 
 - la coloration syntaxique des fichiers Markdown dans gedit ainsi que des extraits de code pour accélérer la rédaction;
-- le greffon *Aperçu Markdown*, affichant dans le panneau inférieur de gedit un aperçu en HTML du fichier Markdown en cours d'édition.
+- le greffon *Aperçu Markdown*, affichant dans le panneau inférieur de gedit un aperçu en HTML du fichier Markdown en cours d'édition;
+- un jeu de couleurs, optionnel, colorant le code Markdown d'une manière plus ressemblante au rendu HTML.
 
 [Markdown]: http://michelf.com/projets/php-markdown/concepts/
 [Markdown Extra]: http://michelf.com/projets/php-markdown/extra/
@@ -66,6 +67,8 @@ Si gedit est ouvert, redémarrez-le. Ensuite, aller dans *Édition > Préférenc
 
 En ce qui concerne la coloration syntaxique, elle devrait s'activer automatiquement pour les fichiers reconnus comme étant des fichiers Markdown (extensions `.markdown`, `.md` ou `.mkd`), sinon choisir la coloration en allant dans *Affichage > Mode de coloration > Balisage* et cocher *Markdown*.
 
+Un jeu de couleurs optionnel est installé automatiquement par gedit-markdown. Pour l'utiliser, aller dans le menu *Édition > Préférences > Police et couleurs > Jeu de couleurs* de gedit et sélectionner *Classic Markdown*. Cette coloration se rapproche du rendu par défaut du HTML, par exemple les emphases fortes et les titres sont en gras et de couleur noire, les liens sont bleus et soulignés, etc.
+
 ## Précisions ou limitations
 
 - D'anciennes versions de gedit-markdown ajoutaient également un type MIME pour les fichiers Markdown ainsi que la reconnaissance d'une extension supplémentaire (`.mdtxt`). Depuis que le support des fichiers Markdown a été ajouté directement dans la base de données partagée MIME `shared-mime-info` ([consulter le rapport de bogue][bogue27441]), gedit-markdown n'ajoute plus son propre fichier de type MIME pour le Markdown. Aussi, dans un but de conformité avec la spécification, l'extension `.mdtxt` n'est plus supportée.
@@ -107,8 +110,6 @@ En ce qui concerne la coloration syntaxique, elle devrait s'activer automatiquem
 	- Seul le soulignement d'un titre de style Setext est analysé et coloré. Il n'y a donc pas de garanti qu'il s'agit bien d'un soulignement de titre.
 
 	- Avec Markdown Extra, quelques éléments sont analysés et colorés sans certitude qu'ils sont bien dans le bon contexte: l'attribut `id` pour un titre de style Setext, le deux-points séparateur dans une liste de définition et la ligne de séparation d'un tableau.
-
-- J'ai tenté d'utiliser une coloration syntaxique qui se rapproche du rendu par défaut du HTML, par exemple de l'italique pour une emphase légère, des URL soulignées, etc., le tout sans devoir créer un fichier de style personnalisé dans `/usr/share/gtksourceview-2.0/styles` (ce qui forcerait les utilisateurs à choisir manuellement dans gedit le style personnalisé). Il y a donc quelques rendus imparfaits, comme l'emphase forte qui est en gras MAIS AUSSI en rouge.
 
 [bogue27441]: https://bugs.freedesktop.org/show_bug.cgi?id=27441
 

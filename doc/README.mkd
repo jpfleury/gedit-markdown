@@ -7,7 +7,8 @@ gedit-markdown adds support for [Markdown][] (or [Markdown Extra][]) in gedit, t
 Specifically, it adds:
 
 - Markdown syntax highlighting and snippets in gedit;
-- plugin *Markdown Preview* for gedit, previewing in HTML the currently opened file.
+- plugin *Markdown Preview* for gedit, previewing in HTML the currently opened file;
+- a color scheme, optional, highlighting Markdown files in a manner more similar to HTML rendering.
 
 [Markdown]: http://daringfireball.net/projects/markdown/
 [Markdown Extra]: http://michelf.com/projects/php-markdown/extra/
@@ -70,6 +71,10 @@ Restart gedit if it's already running. Then, go to *Edit > Preferences > Plugins
 
 About syntax highlighting, it should automatically be activated for files recognized as Markdown files (extensions `.markdown`, `.md` or `.mkd`), otherwise choose it manually by going to *View > Highlight Mode > Markup* and selecting *Markdown*.
 
+Cette coloration se rapproche du rendu par défaut du HTML, par exemple l'emphase forte et les titres sont en gras et de couleur noire, les liens sont bleus et soulignés, etc.
+
+An optional color scheme is installed by gedit-markdown. To use it, go to *Edit > Preferences > Font & Colors > Color Scheme* in gedit and select *Classic Markdown*. This color scheme is more similar to the default HTML rendering, for example strong emphases and headers are in bold and black font, links are blue and underlined, etc.
+
 ## Details and limitations
 
 Older versions of gedit-markdown also added Markdown MIME type and recognition of an additional extension (`.mdtxt`). Since Markdown support was added directly into the shared MIME database `shared-mime-info` ([see the bug report][bug27441]), gedit-markdown no longer adds its own Markdown MIME type file. Also, for purposes of compliance with the specification, the extension `.mdtxt` is no longer supported.
@@ -111,8 +116,6 @@ Older versions of gedit-markdown also added Markdown MIME type and recognition o
 	- Only the underline of a Setext-style header is matched and highlighted, so there's no guarantee that it's indeed a title underline.
 
 	- With Markdown Extra, some elements are matched and highlighted with no guarantee that they're in the right context: Setext-style header id attribute, colon used as separator in a definition list and separator line of a table.
-
-- I tried to use a highlighting similar to the default HTML rendering, e.g. italics for emphasis, underlined URL, etc. without having to create a custom style in `/usr/share/gtksourceview-2.0/styles`(which would force users to manually select it in gedit). Therefore, there are some imperfect rendering, e.g. strong emphasis that is bold BUT ALSO red.
 
 [bug27441]: https://bugs.freedesktop.org/show_bug.cgi?id=27441
 
