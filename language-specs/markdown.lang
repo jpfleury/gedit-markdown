@@ -29,8 +29,6 @@
     <!-- Bug against shared-mime-info for Markdown MIME type:
          <https://bugs.freedesktop.org/show_bug.cgi?id=27441>. -->
     <property name="mimetypes">text/x-markdown</property>
-    <!-- See <https://bugzilla.gnome.org/show_bug.cgi?id=384446> for discussion
-         about file extension. -->
     <property name="globs">*.markdown;*.md;*.mkd</property>
     <property name="block-comment-start">&lt;!--</property>
     <property name="block-comment-end">--&gt;</property>

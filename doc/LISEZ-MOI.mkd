@@ -22,9 +22,11 @@ Plus précisément, gedit-markdown ajoute:
 
 - gedit-markdown est livré avec un installateur. Ce dernier a été codé pour GNU/Linux. Sous Windows XP, seule la coloration syntaxique fonctionne, et doit être installée à la main.
 
-- L'installateur va copier le greffon «Markdown Preview» seulement si Python 2.6 ou plus récent est présent sur le système.
+- Le greffon «Markdown Preview» dépend de Python 2.6 ou plus récent et a été testé seulement avec gedit 2 (il ne fonctionnera possiblement pas avec gedit 3). Ainsi, l'installateur va copier le greffon seulement si les bonnes versions de Python et de gedit sont installées.
 
-- Pour utiliser les extraits de code de Markdown, il faut activer dans gedit le greffon *Extraits de code* dans *Édition > Préférences > Greffons*.
+	Les autres fichiers devraient théoriquement bien fonctionner avec gedit 3; ils seront donc installés peu importe la version de gedit.
+
+- Pour utiliser les extraits de code de Markdown, il faut activer le greffon *Extraits de code* dans le menu *Édition > Préférences > Greffons* de gedit.
 
 ## Installation
 
