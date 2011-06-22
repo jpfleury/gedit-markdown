@@ -23,8 +23,9 @@ Example:
 
 """
 
-import re, markdown
-from markdown import etree
+import re
+import markdown
+from markdown.util import etree
 
 FN_BACKLINK_TEXT = "zz1337820767766393qq"
 NBSP_PLACEHOLDER =  "qq3936677670287331zz"
@@ -83,10 +84,10 @@ class FootnoteExtension(markdown.Extension):
             for child in element:
                 if child.text:
                     if child.text.find(self.getConfig("PLACE_MARKER")) > -1:
-                        return child, True
+                        return child, element, True
                 if child.tail:
                     if child.tail.find(self.getConfig("PLACE_MARKER")) > -1:
-                        return (child, element), False
+                        return child, element, False
                 finder(child)
             return None
                 
@@ -260,14 +261,17 @@ class FootnotePattern(markdown.inlinepatterns.Pattern):
         self.footnotes = footnotes
 
     def handleMatch(self, m):
-        sup = etree.Element("sup")
-        a = etree.SubElement(sup, "a")
         id = m.group(2)
-        sup.set('id', self.footnotes.makeFootnoteRefId(id))
-        a.set('href', '#' + self.footnotes.makeFootnoteId(id))
-        a.set('rel', 'footnote')
-        a.text = str(self.footnotes.footnotes.index(id) + 1)
-        return sup
+        if id in self.footnotes.footnotes.keys():
+            sup = etree.Element("sup")
+            a = etree.SubElement(sup, "a")
+            sup.set('id', self.footnotes.makeFootnoteRefId(id))
+            a.set('href', '#' + self.footnotes.makeFootnoteId(id))
+            a.set('rel', 'footnote')
+            a.text = unicode(self.footnotes.footnotes.index(id) + 1)
+            return sup
+        else:
+            return None
 
 
 class FootnoteTreeprocessor(markdown.treeprocessors.Treeprocessor):
@@ -281,16 +285,14 @@ class FootnoteTreeprocessor(markdown.treeprocessors.Treeprocessor):
         if footnotesDiv:
             result = self.footnotes.findFootnotesPlaceholder(root)
             if result:
-                node, isText = result
+                child, parent, isText = result
+                ind = parent.getchildren().index(child)
                 if isText:
-                    node.text = None
-                    node.getchildren().insert(0, footnotesDiv)
+                    parent.remove(child)
+                    parent.insert(ind, footnotesDiv)
                 else:
-                    child, element = node
-                    ind = element.getchildren().find(child)
-                    element.getchildren().insert(ind + 1, footnotesDiv)
+                    parent.insert(ind + 1, footnotesDiv)
                     child.tail = None
-                fnPlaceholder.parent.replaceChild(fnPlaceholder, footnotesDiv)
             else:
                 root.append(footnotesDiv)
 

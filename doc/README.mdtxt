@@ -6,7 +6,6 @@ gedit-markdown adds support for [Markdown][] (or [Markdown Extra][]) in gedit, t
 
 Specifically, it adds:
 
-- MIME type for Markdown files, and file extension association (`.markdown`, `.md` and `.mdtxt`);
 - Markdown syntax highlighting and snippets in gedit;
 - plugin *Markdown Preview* for gedit, previewing in HTML the currently opened file.
 
@@ -33,19 +32,13 @@ Specifically, it adds:
 
 - [Download the latest version of gedit-markdown.](http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip)
 - Extract the archive.
-- Run the installer for the desired version (Markdown or Markdown Extra).
+- Run the installer and answer questions asked.
 
-Here are commands for all these steps in a GNU/Linux terminal for **Markdown**:
+Here are commands for all these steps in a GNU/Linux terminal:
 
 	wget http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip
 	unzip gedit-markdown.zip
 	gedit-markdown/gedit-markdown.sh install
-
-Here are commands for **Markdown Extra**.
-
-	wget http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip
-	unzip gedit-markdown.zip
-	gedit-markdown/gedit-markdown.sh install extra
 
 Markdown support will be added for the current user (so no need root privileges). The folder `gedit-markdown` created by the extraction can be deleted after installation.
 
@@ -73,15 +66,11 @@ In a GNU/Linux terminal, run the uninstaller:
 
 Restart gedit if it's already running. Then, go to *Edit > Preferences > Plugins* and activate *Markdown Preview*. An item *Markdown Preview* will be added in the menu *Tools*, and can be used to display in the bottom panel a preview in HTML of the currently opened file. The keyboard shortcut *Ctrl+Alt+m* does the same.
 
-About syntax highlighting, it should automatically be activated for files recognized as Markdown files (extensions `.markdown`, `.md` or `.mdtxt`), otherwise choose it manually by going to *View > Highlight Mode > Markup* and selecting *Markdown* (or *Markdown Extra*).
+About syntax highlighting, it should automatically be activated for files recognized as Markdown files (extensions `.markdown`, `.md` or `.mkd`), otherwise choose it manually by going to *View > Highlight Mode > Markup* and selecting *Markdown*.
 
 ## Details and limitations
 
-- There's no official Markdown file extension. I did some [research on actual usage][ext], which led me to choose extensions `.markdown`, `.md` and `.mdtxt`.
-
-[ext]: https://bugzilla.gnome.org/show_bug.cgi?id=384446#c6
-
-- There's no official Markdown MIME type either. I chose `text/x-markdown`.
+Older versions of gedit-markdown also added Markdown MIME type and recognition of an additional extension (`.mdtxt`). Since Markdown support was added directly into the shared MIME database `shared-mime-info` ([see the bug report][bug27441]), gedit-markdown no longer adds its own Markdown MIME type file. Also, for purposes of compliance with the specification, the extension `.mdtxt` is no longer supported.
 
 - Since HTML code can be directly used in a text written in Markdown, HTML syntax highlighting was added to Markdown syntax highlighting. However, keep in mind that, even if they're highlighted, Markdown syntax within HTML blocks (e.g. `<div>`) and Markdown Extra syntax within HTML blocks without `markdown` attribute set to 1 (e.g., `<div markdown="1">`) are not processed.
 
@@ -101,9 +90,11 @@ About syntax highlighting, it should automatically be activated for files recogn
 
 	Syntax highlighting in gedit supports code span highlighting with up to 2 backticks surrounding text.
 
+- Blockquote can contain block-level and inline Markdown elements, but gedit-markdown only highlights inline ones (emphasis, link, etc.).
+
 - A full context analysis can't be done (because line break can't be used in regex). Here are some consequences:
 
-	- According to the Markdown syntax, to write several paragraphs in a list item, you have to indent each paragraph. Example:
+	- According to the Markdown syntax, to write several paragraphs in a list item, we have to indent each paragraph. Example:
 
 			- Item A (paragraph 1).
 
@@ -119,15 +110,15 @@ About syntax highlighting, it should automatically be activated for files recogn
 
 	- With Markdown Extra, some elements are matched and highlighted with no guarantee that they're in the right context: Setext-style header id attribute, colon used as separator in a definition list and separator line of a table.
 
-- Blockquote can contain block-level and inline Markdown elements, but gedit-markdown only highlights inline ones (emphasis, link, etc.).
+- Link and image are not matched if link text, link label, alt text or image label begin with a circumflex (because it's the syntax used for footnotes references), even if in some tricky cases, they could begin with a circumflex and still be well-formed. However, it's very unlikely that a well-formed link or image will not be highlighted.
 
-- I tried to use a highlighting similar to the default HTML rendering, e.g. italics for emphasis, underlined URL, etc. without having to create a custom style in `/usr/share/gtksourceview-2.0/styles`(which would force users to manually select it in gedit). Therefore, there are some imperfect rendering, e.g. strong emphasis that is bold BUT ALSO red. This limitation is dependent on the resolution of the bug ["Add support for general Bold, Emphasis and other text styles in syntax"][bug].
+- I tried to use a highlighting similar to the default HTML rendering, e.g. italics for emphasis, underlined URL, etc. without having to create a custom style in `/usr/share/gtksourceview-2.0/styles`(which would force users to manually select it in gedit). Therefore, there are some imperfect rendering, e.g. strong emphasis that is bold BUT ALSO red.
 
-[bug]: http://bugzilla.gnome.org/show_bug.cgi?id=441595
+[bug27441]: https://bugs.freedesktop.org/show_bug.cgi?id=27441
 
 ## Localization
 
-- gedit-markdown installer is translatable since version 1.1. Anyone interested in the translation can copy the file `gedit-markdown.pot` in the folder `locale`, rename it to `LANG.po`, translate all strings and send me the result.
+- gedit-markdown installer is translatable. Anyone interested in the translation can copy the file `gedit-markdown.pot` in the folder `locale`, rename it to `LANG.po`, translate all strings and send me the result.
 
 - Similarly, the plugin *Markdown Preview* is also localizable. The file containing strings is `plugins/markdown-preview/locale/markdown-preview.pot`.
 
@@ -139,7 +130,7 @@ bazaar is used for revision control. You can get a copy of the development versi
 
 	bzr branch lp:~jpfle/+junk/gedit-markdown
 
-gedit-markdown has an [issue tracker][], on which bug reports and feature requests can be submitted.
+gedit-markdown has an [issue tracker], on which bug reports and feature requests can be submitted.
 
 [issue tracker]: http://www.jpfleury.net/mantisbt/
 
@@ -163,7 +154,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ### Included scripts
 
-- The plugin *Markdown Preview* shipped with gedit-markdown is a modification of the [plugin of the same name written by Michele Campeotto][Markdown Preview], under the GPL v2 or any later version, and uses [Python Markdown][], under the BSD-style license.
+- The plugin *Markdown Preview* shipped with gedit-markdown is a modification of the [plugin of the same name written by Michele Campeotto][Markdown Preview], under the GPL v2 or any later version, and uses [Python Markdown], under the BSD-style license.
 
 [Markdown Preview]: http://live.gnome.org/Gedit/MarkdownSupport
 [Python Markdown]: http://www.freewisdom.org/projects/python-markdown/

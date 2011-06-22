@@ -66,11 +66,14 @@ Dependencies:
 """
 
 import markdown
-from markdown import etree
+from markdown.util import etree
 import re
 from string import ascii_lowercase, digits, punctuation
+import logging
 
-ID_CHARS = ascii_lowercase + digits + '-_'
+logger = logging.getLogger('MARKDOWN')
+
+ID_CHARS = ascii_lowercase + digits + '-_.'
 IDCOUNT_RE = re.compile(r'^(.*)_([0-9]+)$')
 
 
@@ -82,7 +85,7 @@ class HeaderIdProcessor(markdown.blockprocessors.BlockProcessor):
                         (?P<level>\#{1,6})  # group('level') = string of hashes
                         (?P<header>.*?)     # group('header') = Header text
                         \#*                 # optional closing hashes
-                        (?:[ \t]*\{[ \t]*\#(?P<id>[-_:a-zA-Z0-9]+)[ \t]*\})?
+                        (?:[ \t]*\{[ \t]*\#(?P<id>[-_.:a-zA-Z0-9]+)[ \t]*\})?
                         (\n|$)              #  ^^ group('id') = id attribute
                      """,
                      re.VERBOSE)
@@ -108,7 +111,7 @@ class HeaderIdProcessor(markdown.blockprocessors.BlockProcessor):
             level = len(m.group('level')) + start_level
             if level > 6: 
                 level = 6
-            h = markdown.etree.SubElement(parent, 'h%d' % level)
+            h = etree.SubElement(parent, 'h%d' % level)
             h.text = m.group('header').strip()
             if m.group('id'):
                 h.set('id', self._unique_id(m.group('id')))
@@ -119,12 +122,12 @@ class HeaderIdProcessor(markdown.blockprocessors.BlockProcessor):
                 blocks.insert(0, after)
         else:
             # This should never happen, but just in case...
-            message(CRITICAL, "We've got a problem header!")
+            logger.warn("We've got a problem header: %r" % block)
 
     def _get_meta(self):
         """ Return meta data suported by this ext as a tuple """
-        level = int(self.config['level'][0]) - 1
-        force = self._str2bool(self.config['forceid'][0])
+        level = int(self.config['level']) - 1
+        force = self._str2bool(self.config['forceid'])
         if hasattr(self.md, 'Meta'):
             if self.md.Meta.has_key('header_level'):
                 level = int(self.md.Meta['header_level'][0]) - 1
@@ -155,7 +158,7 @@ class HeaderIdProcessor(markdown.blockprocessors.BlockProcessor):
     def _create_id(self, header):
         """ Return ID from Header text. """
         h = ''
-        for c in header.lower().replace(' ', '_'):
+        for c in header.lower().replace(' ', self.config['separator']):
             if c in ID_CHARS:
                 h += c
             elif c not in punctuation:
@@ -168,7 +171,8 @@ class HeaderIdExtension (markdown.Extension):
         # set defaults
         self.config = {
                 'level' : ['1', 'Base level for headers.'],
-                'forceid' : ['True', 'Force all headers to have an id.']
+                'forceid' : ['True', 'Force all headers to have an id.'],
+                'separator' : ['_', 'Word separator.'],
             }
 
         for key, value in configs:
@@ -178,7 +182,7 @@ class HeaderIdExtension (markdown.Extension):
         md.registerExtension(self)
         self.processor = HeaderIdProcessor(md.parser)
         self.processor.md = md
-        self.processor.config = self.config
+        self.processor.config = self.getConfigs()
         # Replace existing hasheader in place.
         md.parser.blockprocessors['hashheader'] = self.processor
 

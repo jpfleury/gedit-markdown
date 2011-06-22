@@ -9,7 +9,9 @@ Dependencies:
 
 """
 import markdown
-from markdown import etree
+from markdown.util import etree
+from markdown.inlinepatterns import LINK_RE, REFERENCE_RE, SHORT_REF_RE, \
+                                    AUTOLINK_RE, AUTOMAIL_RE
 import re
 
 class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
@@ -25,10 +27,10 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
         last_li = None
 
         # Add title to the div
-        if self.config["title"][0]:
+        if self.config["title"]:
             header = etree.SubElement(div, "span")
             header.attrib["class"] = "toctitle"
-            header.text = self.config["title"][0]
+            header.text = self.config["title"]
 
         level = 0
         list_stack=[div]
@@ -51,7 +53,7 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
             # would causes an enless loop of placing a new TOC 
             # inside previously generated TOC.
 
-            if c.text.find(self.config["marker"][0]) > -1 and not header_rgx.match(c.tag):
+            if c.text.find(self.config["marker"]) > -1 and not header_rgx.match(c.tag):
                 for i in range(len(p)):
                     if p[i] == c:
                         p[i] = div
@@ -71,11 +73,19 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
                     else:
                         list_stack[-1].append(newlist)
                     list_stack.append(newlist)
-                    level += 1
+                    if level == 0:
+                        level = tag_level
+                    else:
+                        level += 1
+                
+                # Sanitize text. Replace all links with link lables (group 1).
+                text = c.text
+                for RE in [LINK_RE, REFERENCE_RE, SHORT_REF_RE, AUTOLINK_RE, AUTOMAIL_RE]:
+                    text = re.sub(RE, '\g<1>', text)
 
                 # Do not override pre-existing ids 
                 if not "id" in c.attrib:
-                    id = self.config["slugify"][0](c.text)
+                    id = self.config["slugify"](text)
                     if id in used_ids:
                         ctr = 1
                         while "%s_%d" % (id, ctr) in used_ids:
@@ -89,12 +99,12 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
                 # List item link, to be inserted into the toc div
                 last_li = etree.Element("li")
                 link = etree.SubElement(last_li, "a")
-                link.text = c.text
+                link.text = text
                 link.attrib["href"] = '#' + id
 
-                if int(self.config["anchorlink"][0]):
+                if int(self.config["anchorlink"]):
                     anchor = etree.SubElement(c, "a")
-                    anchor.text = c.text
+                    anchor.text = text
                     anchor.attrib["href"] = "#" + id
                     anchor.attrib["class"] = "toclink"
                     c.text = ""
@@ -129,7 +139,7 @@ class TocExtension(markdown.Extension):
 
     def extendMarkdown(self, md, md_globals):
         tocext = TocTreeprocessor(md)
-        tocext.config = self.config
+        tocext.config = self.getConfigs()
         md.treeprocessors.add("toc", tocext, "_begin")
 	
 def makeExtension(configs={}):

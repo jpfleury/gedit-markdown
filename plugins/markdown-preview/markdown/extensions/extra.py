@@ -29,7 +29,8 @@ when you upgrade to any future version of Python-Markdown.
 
 import markdown
 
-extensions = ['fenced_code',
+extensions = ['smart_strong',
+              'fenced_code',
               'footnotes',
               'headerid',
               'def_list',
@@ -44,6 +45,8 @@ class ExtraExtension(markdown.Extension):
     def extendMarkdown(self, md, md_globals):
         """ Register extension instances. """
         md.registerExtensions(extensions, self.config)
+        # Turn on processing of markdown text within raw html
+        md.preprocessors['html_block'].markdown_in_raw = True
 
 def makeExtension(configs={}):
     return ExtraExtension(configs=dict(configs))

@@ -43,10 +43,10 @@ redemarrerNautilus()
 	echo ""
 	
 	if [[ $choix == 1 ]]; then
-		echo $(gettext "Redémarrage de Nautilus.")
-		killall nautilus
-		nautilus &> /tmp/gedit-markdown.log &
-		sleep 5
+		echo $(gettext "Redémarrage de Nautilus. Veuillez patienter.")
+		nautilus -q
+		nautilus &> /dev/null &
+		sleep 8
 	else
 		echo $(gettext "Nautilus ne sera pas redémarré maintenant.")
 		
@@ -91,6 +91,9 @@ vercomp()
 
 # Variables.
 
+gras=$(tput bold)
+normal=$(tput sgr0)
+
 cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
 cheminMime=~/.local/share/mime
 cheminMimePackages=~/.local/share/mime/packages
@@ -98,12 +101,6 @@ cheminPlugins=~/.gnome2/gedit/plugins
 cheminPluginsMarkdownPreview=~/.gnome2/gedit/plugins/markdown-preview
 cheminSnippets=~/.gnome2/gedit/snippets
 cheminStyles=~/.local/share/gtksourceview-2.0/styles
-
-markdown=markdown
-
-if [[ $2 == "extra" ]]; then
-	markdown=extra
-fi
 
 versionPython=0
 erreurPython=0
@@ -128,30 +125,54 @@ fichiersAsupprimer=( "$cheminLanguageSpecs/markdown.lang" "$cheminLanguageSpecs/
 cd `dirname "$0"`
 
 if [[ $1 == "installer" || $1 == "install" ]]; then
-	echo -e "\033[1m"
-	echo -en "############################################################\n##\n## "
+	echo $gras
+	echo "############################################################"
+	echo "##"
+	echo "## " $(gettext "Installation de gedit-markdown")
+	echo "##"
+	echo "############################################################"
 	
-	if [[ $markdown == "extra" ]]; then
-		echo $(gettext "Installation de gedit-markdown (version Markdown Extra)")
+	echo ""
+	echo $(gettext "Étape 1: choix de la syntaxe Markdown à installer")
+	echo $normal
+	
+	echo -en $(gettext ""\
+"gedit-markdown peut ajouter le support du langage Markdown standard ou de la\n"\
+"version spéciale Markdown Extra.\n"\
+"\n"\
+"\t1\tMarkdown standard\n"\
+"\t2\tMarkdown Extra\n"\
+"\n"\
+"Saisissez votre choix [1/2] (2 par défaut): ")
+	read choix
+	
+	echo ""
+	markdown=extra
+	
+	if [[ $choix == 1 ]]; then
+		markdown=markdown
+		echo $(gettext "Le langage Markdown standard sera ajouté.")
 	else
-		echo $(gettext "Installation de gedit-markdown (version Markdown)")
-	fi
-	
-	echo -e "##\n############################################################\n"
-	
-	echo -e "\033[1m"
-	echo $(gettext "Étape 1: Vérification des dépendances")
-	echo -e "\033[22m"
-	
-	if [[ $erreurPython == 1 ]]; then
-		echo $(gettext "Le greffon «Markdown Preview» ne sera pas installé, car il nécessite Python 2.6 ou plus récent.")
+		echo $(gettext "Le langage Markdown Extra sera ajouté.")
 	fi
 	
 	echo ""
 	echo $(gettext "Étape terminée.")
 	
-	echo $(gettext "Étape 2: Copie des fichiers")
-	echo -e "\033[22m"
+	echo $gras
+	echo $(gettext "Étape 2: vérification des dépendances")
+	echo $normal
+	
+	if [[ $erreurPython == 1 ]]; then
+		echo $(gettext "Le greffon «Markdown Preview» ne sera pas installé, car il nécessite Python 2.6 ou plus récent.")
+		echo ""
+	fi
+	
+	echo $(gettext "Étape terminée.")
+	
+	echo $gras
+	echo $(gettext "Étape 3: copie des fichiers")
+	echo $normal
 	
 	# Création des répertoires s'ils n'existent pas déjà.
 	mkdir -p $cheminLanguageSpecs
@@ -175,9 +196,9 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	if [[ $erreurPython == 0 ]]; then
 		cp -r plugins/* $cheminPlugins
 		
-		if [[ $markdown == "extra" ]]; then
+		if [[ $markdown == "markdown" ]]; then
 			# Mise à jour de la configuration.
-			sed -i "s/^\(version=\).*$/\1extra/" $cheminPluginsMarkdownPreview/config.ini
+			sed -i "s/^\(version=\).*$/\1markdown/" $cheminPluginsMarkdownPreview/config.ini
 		fi
 		
 		mkdir -p $cheminPythonSitePackages
@@ -190,9 +211,9 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	
 	echo $(gettext "Étape terminée.")
 	
-	echo -e "\033[1m"
-	echo $(gettext "Étape 3: Mise à jour de la base de données MIME")
-	echo -e "\033[22m"
+	echo $gras
+	echo $(gettext "Étape 4: mise à jour de la base de données MIME")
+	echo $normal
 	
 	# Mise à jour de la base de données MIME.
 	update-mime-database $cheminMime
@@ -201,19 +222,22 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo ""
 	echo $(gettext "Étape terminée.")
 	
-	echo -e "\033[1m"
+	echo $gras
 	echo $(gettext "Installation terminée. Veuillez redémarrer gedit s'il est ouvert.")
-	echo -e "\033[22m"
+	echo $normal
 	
 	exit 0
 elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
-	echo -e "\033[1m"
-	echo -en "############################################################\n##\n## "
-	echo $(gettext "Désinstallation de gedit-markdown")
-	echo -e "##\n############################################################\n"
+	echo $gras
+	echo "############################################################"
+	echo "##"
+	echo "## " $(gettext "Désinstallation de gedit-markdown")
+	echo "##"
+	echo "############################################################"
 	
-	echo $(gettext "Étape 1: Suppression des fichiers")
-	echo -e "\033[22m"
+	echo ""
+	echo $(gettext "Étape 1: suppression des fichiers")
+	echo $normal
 	
 	# Suppression des fichiers.
 	for i in "${fichiersAsupprimer[@]}"; do
@@ -230,9 +254,9 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 	
 	echo $(gettext "Étape terminée.")
 	
-	echo -e "\033[1m"
-	echo $(gettext "Étape 2: Mise à jour de la base de données MIME")
-	echo -e "\033[22m"
+	echo $gras
+	echo $(gettext "Étape 2: mise à jour de la base de données MIME")
+	echo $normal
 	
 	# Mise à jour de la base de données MIME.
 	update-mime-database $cheminMime
@@ -241,15 +265,15 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 	echo ""
 	echo $(gettext "Étape terminée.")
 	
-	echo -e "\033[1m"
+	echo $gras
 	echo $(gettext "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert.")
-	echo -e "\033[22m"
+	echo $normal
 	
 	exit 0
 else
-	echo -en "\033[1m"
+	echo $gras
 	echo $(gettext "Usage: ") "$0 [installer | installer extra | desinstaller]"
-	echo -en "\033[22m"
+	echo $normal
 	
 	exit 1
 fi

@@ -8,15 +8,18 @@ processing.
 
 """
 
+import util
+import odict
 
-import markdown
+def build_postprocessors(md_instance, **kwargs):
+    """ Build the default postprocessors for Markdown. """
+    postprocessors = odict.OrderedDict()
+    postprocessors["raw_html"] = RawHtmlPostprocessor(md_instance)
+    postprocessors["amp_substitute"] = AndSubstitutePostprocessor()
+    return postprocessors
 
-class Processor:
-    def __init__(self, markdown_instance=None):
-        if markdown_instance:
-            self.markdown = markdown_instance
 
-class Postprocessor(Processor):
+class Postprocessor(util.Processor):
     """
     Postprocessors are run after the ElementTree it converted back into text.
 
@@ -44,20 +47,28 @@ class RawHtmlPostprocessor(Postprocessor):
         """ Iterate over html stash and restore "safe" html. """
         for i in range(self.markdown.htmlStash.html_counter):
             html, safe  = self.markdown.htmlStash.rawHtmlBlocks[i]
+            html = self.unescape(html)
             if self.markdown.safeMode and not safe:
                 if str(self.markdown.safeMode).lower() == 'escape':
                     html = self.escape(html)
                 elif str(self.markdown.safeMode).lower() == 'remove':
                     html = ''
                 else:
-                    html = markdown.HTML_REMOVED_TEXT
+                    html = self.markdown.html_replacement_text
             if safe or not self.markdown.safeMode:
                 text = text.replace("<p>%s</p>" % 
-                            (markdown.preprocessors.HTML_PLACEHOLDER % i),
+                            (self.markdown.htmlStash.get_placeholder(i)),
                             html + "\n")
-            text =  text.replace(markdown.preprocessors.HTML_PLACEHOLDER % i, 
+            text =  text.replace(self.markdown.htmlStash.get_placeholder(i), 
                                  html)
         return text
+
+    def unescape(self, html):
+        """ Unescape any markdown escaped text within inline html. """
+        for k, v in self.markdown.treeprocessors['inline'].stashed_nodes.items():
+            ph = util.INLINE_PLACEHOLDER % k
+            html = html.replace(ph, '\%s' % v)
+        return html
 
     def escape(self, html):
         """ Basic html escaping """
@@ -73,5 +84,5 @@ class AndSubstitutePostprocessor(Postprocessor):
         pass
 
     def run(self, text):
-        text =  text.replace(markdown.AMP_SUBSTITUTE, "&")
+        text =  text.replace(util.AMP_SUBSTITUTE, "&")
         return text

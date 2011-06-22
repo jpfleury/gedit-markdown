@@ -28,6 +28,7 @@
     <tag>h</tag>
     <description>Header (atx-style)</description>
   </snippet>
+  
   <snippet id="setext-header-1">
     <text><![CDATA[${1:Header}
 ===============
@@ -36,6 +37,7 @@
     <tag>Hs</tag>
     <description>Header 1 (setext-style)</description>
   </snippet>
+  
   <snippet id="setext-header-2">
     <text><![CDATA[${1:Header}
 ---------------
@@ -44,6 +46,7 @@
     <tag>hs</tag>
     <description>Header 2 (setext-style)</description>
   </snippet>
+  
   <snippet id="horizontal-rule">
     <text><![CDATA[***************
 
@@ -51,6 +54,7 @@ $0]]></text>
     <tag>hr</tag>
     <description>Horizontal Rule</description>
   </snippet>
+  
   <snippet id="unordered-list">
     <text><![CDATA[* $1
 * $2
@@ -61,6 +65,7 @@ $0]]></text>
     <tag>ul</tag>
     <description>Unordered List</description>
   </snippet>
+  
   <snippet id="ordered-list">
     <text><![CDATA[1. $1
 2. $2
@@ -71,35 +76,41 @@ $0]]></text>
     <tag>ol</tag>
     <description>Ordered List</description>
   </snippet>
+  
   <snippet id="code-span">
     <text><![CDATA[\`${1:$GEDIT_SELECTED_TEXT}\`]]></text>
     <tag>code</tag>
     <description>Wrap Selection as Code Span</description>
-    <accelerator><![CDATA[<Shift><Alt>c]]></accelerator>
+    <accelerator><![CDATA[<Control><Alt>c]]></accelerator>
   </snippet>
+  
   <snippet id="inline-link">
     <text><![CDATA[[${1:$GEDIT_SELECTED_TEXT}](${2:URL})]]></text>
     <tag>a</tag>
     <description>Wrap Selection as Inline Link</description>
-    <accelerator><![CDATA[<Shift><Alt>a]]></accelerator>
+    <accelerator><![CDATA[<Control><Alt>a]]></accelerator>
   </snippet>
+  
   <snippet id="reference-link">
     <text><![CDATA[[${1:$GEDIT_SELECTED_TEXT}][${2:link label}]]]></text>
     <tag>aref</tag>
     <description>Wrap Selection as Reference Link</description>
-    <accelerator><![CDATA[<Shift><Alt>r]]></accelerator>
+    <accelerator><![CDATA[<Control><Alt>r]]></accelerator>
   </snippet>
-  <snippet id="link-label">
+  
+  <snippet id="link-definition">
     <text><![CDATA[[${1:link label}]: ${2:URL}
 ]]></text>
-    <tag>label</tag>
-    <description>Link Label</description>
+    <tag>adef</tag>
+    <description>Link Definition</description>
   </snippet>
+  
   <snippet id="inline-image">
     <text><![CDATA[![${1:alt text}](${2:URL})]]></text>
     <tag>img</tag>
     <description>Inline Image</description>
   </snippet>
+  
   <snippet id="reference-image">
     <text><![CDATA[![${1:alt text}][${2:image label}]]]></text>
     <tag>iref</tag>

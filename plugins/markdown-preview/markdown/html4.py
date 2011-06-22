@@ -37,12 +37,15 @@
 # --------------------------------------------------------------------
 
 
-import markdown
-ElementTree = markdown.etree.ElementTree
-QName = markdown.etree.QName
-Comment = markdown.etree.Comment
-PI = markdown.etree.PI
-ProcessingInstruction = markdown.etree.ProcessingInstruction
+import util
+ElementTree = util.etree.ElementTree
+QName = util.etree.QName
+if hasattr(util.etree, 'test_comment'):
+    Comment = util.etree.test_comment
+else:
+    Comment = util.etree.Comment
+PI = util.etree.PI
+ProcessingInstruction = util.etree.ProcessingInstruction
 
 HTML_EMPTY = ("area", "base", "basefont", "br", "col", "frame", "hr",
               "img", "input", "isindex", "link", "meta" "param")

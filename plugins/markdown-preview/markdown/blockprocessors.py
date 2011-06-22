@@ -12,8 +12,29 @@ as they need to alter how markdown blocks are parsed.
 
 """
 
+import logging
 import re
-import markdown
+import util
+from blockparser import BlockParser
+
+logger =  logging.getLogger('MARKDOWN')
+
+
+def build_block_parser(md_instance, **kwargs):
+    """ Build the default block parser used by Markdown. """
+    parser = BlockParser(md_instance)
+    parser.blockprocessors['empty'] = EmptyBlockProcessor(parser)
+    parser.blockprocessors['indent'] = ListIndentProcessor(parser)
+    parser.blockprocessors['code'] = CodeBlockProcessor(parser)
+    parser.blockprocessors['hashheader'] = HashHeaderProcessor(parser)
+    parser.blockprocessors['setextheader'] = SetextHeaderProcessor(parser)
+    parser.blockprocessors['hr'] = HRProcessor(parser)
+    parser.blockprocessors['olist'] = OListProcessor(parser)
+    parser.blockprocessors['ulist'] = UListProcessor(parser)
+    parser.blockprocessors['quote'] = BlockQuoteProcessor(parser)
+    parser.blockprocessors['paragraph'] = ParagraphProcessor(parser)
+    return parser
+
 
 class BlockProcessor:
     """ Base class for block processors. 
@@ -26,8 +47,9 @@ class BlockProcessor:
 
     """
 
-    def __init__(self, parser=None):
+    def __init__(self, parser):
         self.parser = parser
+        self.tab_length = parser.markdown.tab_length
 
     def lastChild(self, parent):
         """ Return the last child of an etree element. """
@@ -41,8 +63,8 @@ class BlockProcessor:
         newtext = []
         lines = text.split('\n')
         for line in lines:
-            if line.startswith(' '*markdown.TAB_LENGTH):
-                newtext.append(line[markdown.TAB_LENGTH:])
+            if line.startswith(' '*self.tab_length):
+                newtext.append(line[self.tab_length:])
             elif not line.strip():
                 newtext.append('')
             else:
@@ -53,8 +75,8 @@ class BlockProcessor:
         """ Remove a tab from front of lines but allowing dedented lines. """
         lines = text.split('\n')
         for i in range(len(lines)):
-            if lines[i].startswith(' '*markdown.TAB_LENGTH*level):
-                lines[i] = lines[i][markdown.TAB_LENGTH*level:]
+            if lines[i].startswith(' '*self.tab_length*level):
+                lines[i] = lines[i][self.tab_length*level:]
         return '\n'.join(lines)
 
     def test(self, parent, block):
@@ -113,12 +135,15 @@ class ListIndentProcessor(BlockProcessor):
 
     """
 
-    INDENT_RE = re.compile(r'^(([ ]{%s})+)'% markdown.TAB_LENGTH)
     ITEM_TYPES = ['li']
     LIST_TYPES = ['ul', 'ol']
 
+    def __init__(self, *args):
+        BlockProcessor.__init__(self, *args)
+        self.INDENT_RE = re.compile(r'^(([ ]{%s})+)'% self.tab_length)
+
     def test(self, parent, block):
-        return block.startswith(' '*markdown.TAB_LENGTH) and \
+        return block.startswith(' '*self.tab_length) and \
                 not self.parser.state.isstate('detabbed') and  \
                 (parent.tag in self.ITEM_TYPES or \
                     (len(parent) and parent[-1] and \
@@ -133,8 +158,16 @@ class ListIndentProcessor(BlockProcessor):
 
         self.parser.state.set('detabbed')
         if parent.tag in self.ITEM_TYPES:
-            # The parent is already a li. Just parse the child block.
-            self.parser.parseBlocks(parent, [block])
+            # It's possible that this parent has a 'ul' or 'ol' child list
+            # with a member.  If that is the case, then that should be the
+            # parent.  This is intended to catch the edge case of an indented 
+            # list whose first member was parsed previous to this point
+            # see OListProcessor
+            if len(parent) and parent[-1].tag in self.LIST_TYPES:
+                self.parser.parseBlocks(parent[-1], [block])
+            else:
+                # The parent is already a li. Just parse the child block.
+                self.parser.parseBlocks(parent, [block])
         elif sibling.tag in self.ITEM_TYPES:
             # The sibling is a li. Use it as parent.
             self.parser.parseBlocks(sibling, [block])
@@ -143,8 +176,12 @@ class ListIndentProcessor(BlockProcessor):
             # Assume the last child li is the parent of this block.
             if sibling[-1].text:
                 # If the parent li has text, that text needs to be moved to a p
-                block = '%s\n\n%s' % (sibling[-1].text, block)
+                # The p must be 'inserted' at beginning of list in the event
+                # that other children already exist i.e.; a nested sublist.
+                p = util.etree.Element('p')
+                p.text = sibling[-1].text
                 sibling[-1].text = ''
+                sibling[-1].insert(0, p)
             self.parser.parseChunk(sibling[-1], block)
         else:
             self.create_item(sibling, block)
@@ -152,7 +189,7 @@ class ListIndentProcessor(BlockProcessor):
 
     def create_item(self, parent, block):
         """ Create a new li and parse the block with it as the parent. """
-        li = markdown.etree.SubElement(parent, 'li')
+        li = util.etree.SubElement(parent, 'li')
         self.parser.parseBlocks(li, [block])
  
     def get_level(self, parent, block):
@@ -160,7 +197,7 @@ class ListIndentProcessor(BlockProcessor):
         # Get indent level
         m = self.INDENT_RE.match(block)
         if m:
-            indent_level = len(m.group(1))/markdown.TAB_LENGTH
+            indent_level = len(m.group(1))/self.tab_length
         else:
             indent_level = 0
         if self.parser.state.isstate('list'):
@@ -187,7 +224,7 @@ class CodeBlockProcessor(BlockProcessor):
     """ Process code blocks. """
 
     def test(self, parent, block):
-        return block.startswith(' '*markdown.TAB_LENGTH)
+        return block.startswith(' '*self.tab_length)
     
     def run(self, parent, blocks):
         sibling = self.lastChild(parent)
@@ -200,13 +237,13 @@ class CodeBlockProcessor(BlockProcessor):
             # linebreaks removed from the split into a list.
             code = sibling[0]
             block, theRest = self.detab(block)
-            code.text = markdown.AtomicString('%s\n%s\n' % (code.text, block.rstrip()))
+            code.text = util.AtomicString('%s\n%s\n' % (code.text, block.rstrip()))
         else:
             # This is a new codeblock. Create the elements and insert text.
-            pre = markdown.etree.SubElement(parent, 'pre')
-            code = markdown.etree.SubElement(pre, 'code')
+            pre = util.etree.SubElement(parent, 'pre')
+            code = util.etree.SubElement(pre, 'code')
             block, theRest = self.detab(block)
-            code.text = markdown.AtomicString('%s\n' % block.rstrip())
+            code.text = util.AtomicString('%s\n' % block.rstrip())
         if theRest:
             # This block contained unindented line(s) after the first indented 
             # line. Insert these lines as the first block of the master blocks
@@ -237,9 +274,12 @@ class BlockQuoteProcessor(BlockProcessor):
             quote = sibling
         else:
             # This is a new blockquote. Create a new parent element.
-            quote = markdown.etree.SubElement(parent, 'blockquote')
+            quote = util.etree.SubElement(parent, 'blockquote')
         # Recursively parse block with blockquote as parent.
+        # change parser state so blockquotes embedded in lists use p tags
+        self.parser.state.set('blockquote')
         self.parser.parseChunk(quote, block)
+        self.parser.state.reset()
 
     def clean(self, line):
         """ Remove ``>`` from beginning of a line. """
@@ -261,6 +301,11 @@ class OListProcessor(BlockProcessor):
     CHILD_RE = re.compile(r'^[ ]{0,3}((\d+\.)|[*+-])[ ]+(.*)')
     # Detect indented (nested) items of either type
     INDENT_RE = re.compile(r'^[ ]{4,7}((\d+\.)|[*+-])[ ]+.*')
+    # The integer (python string) with which the lists starts (default=1)
+    # Eg: If list is intialized as)
+    #   3. Item
+    # The ol tag will get starts="3" attribute
+    STARTSWITH = '1'
 
     def test(self, parent, block):
         return bool(self.RE.match(block))
@@ -269,33 +314,51 @@ class OListProcessor(BlockProcessor):
         # Check fr multiple items in one block.
         items = self.get_items(blocks.pop(0))
         sibling = self.lastChild(parent)
+
         if sibling and sibling.tag in ['ol', 'ul']:
             # Previous block was a list item, so set that as parent
             lst = sibling
-            # make sure previous item is in a p.
-            if len(lst) and lst[-1].text and not len(lst[-1]):
-                p = markdown.etree.SubElement(lst[-1], 'p')
+            # make sure previous item is in a p- if the item has text, then it
+            # it isn't in a p
+            if lst[-1].text: 
+                # since it's possible there are other children for this sibling,
+                # we can't just SubElement the p, we need to insert it as the 
+                # first item
+                p = util.etree.Element('p')
                 p.text = lst[-1].text
                 lst[-1].text = ''
+                lst[-1].insert(0, p)
+
             # parse first block differently as it gets wrapped in a p.
-            li = markdown.etree.SubElement(lst, 'li')
+            li = util.etree.SubElement(lst, 'li')
             self.parser.state.set('looselist')
             firstitem = items.pop(0)
             self.parser.parseBlocks(li, [firstitem])
             self.parser.state.reset()
+        elif parent.tag in ['ol', 'ul']:
+            # this catches the edge case of a multi-item indented list whose 
+            # first item is in a blank parent-list item:
+            # * * subitem1
+            #     * subitem2
+            # see also ListIndentProcessor
+            lst = parent
         else:
             # This is a new list so create parent with appropriate tag.
-            lst = markdown.etree.SubElement(parent, self.TAG)
+            lst = util.etree.SubElement(parent, self.TAG)
+            # Check if a custom start integer is set
+            if not self.parser.markdown.lazy_ol and self.STARTSWITH !='1':
+                lst.attrib['start'] = self.STARTSWITH
+
         self.parser.state.set('list')
         # Loop through items in block, recursively parsing each with the
         # appropriate parent.
         for item in items:
-            if item.startswith(' '*markdown.TAB_LENGTH):
+            if item.startswith(' '*self.tab_length):
                 # Item is indented. Parse with last item as parent
                 self.parser.parseBlocks(lst[-1], [item])
             else:
                 # New item. Create li and parse with it as parent
-                li = markdown.etree.SubElement(lst, 'li')
+                li = util.etree.SubElement(lst, 'li')
                 self.parser.parseBlocks(li, [item])
         self.parser.state.reset()
 
@@ -305,11 +368,17 @@ class OListProcessor(BlockProcessor):
         for line in block.split('\n'):
             m = self.CHILD_RE.match(line)
             if m:
-                # This is a new item. Append
+                # This is a new list item
+                # Check first item for the start index
+                if not items and self.TAG=='ol':
+                    # Detect the integer value of first list item
+                    INTEGER_RE = re.compile('(\d+)')
+                    self.STARTSWITH = INTEGER_RE.match(m.group(1)).group()
+                # Append to the list
                 items.append(m.group(3))
             elif self.INDENT_RE.match(line):
                 # This is an indented (possibly nested) item.
-                if items[-1].startswith(' '*markdown.TAB_LENGTH):
+                if items[-1].startswith(' '*self.tab_length):
                     # Previous item was indented. Append to that item.
                     items[-1] = '%s\n%s' % (items[-1], line)
                 else:
@@ -348,21 +417,21 @@ class HashHeaderProcessor(BlockProcessor):
                 # recursively parse this lines as a block.
                 self.parser.parseBlocks(parent, [before])
             # Create header using named groups from RE
-            h = markdown.etree.SubElement(parent, 'h%d' % len(m.group('level')))
+            h = util.etree.SubElement(parent, 'h%d' % len(m.group('level')))
             h.text = m.group('header').strip()
             if after:
                 # Insert remaining lines as first block for future parsing.
                 blocks.insert(0, after)
         else:
             # This should never happen, but just in case...
-            message(CRITICAL, "We've got a problem header!")
+            logger.warn("We've got a problem header: %r" % block)
 
 
 class SetextHeaderProcessor(BlockProcessor):
     """ Process Setext-style Headers. """
 
     # Detect Setext-style header. Must be first 2 lines of block.
-    RE = re.compile(r'^.*?\n[=-]{3,}', re.MULTILINE)
+    RE = re.compile(r'^.*?\n[=-]+[ ]*(\n|$)', re.MULTILINE)
 
     def test(self, parent, block):
         return bool(self.RE.match(block))
@@ -374,7 +443,7 @@ class SetextHeaderProcessor(BlockProcessor):
             level = 1
         else:
             level = 2
-        h = markdown.etree.SubElement(parent, 'h%d' % level)
+        h = util.etree.SubElement(parent, 'h%d' % level)
         h.text = lines[0].strip()
         if len(lines) > 2:
             # Block contains additional lines. Add to  master blocks for later.
@@ -407,7 +476,7 @@ class HRProcessor(BlockProcessor):
             # Recursively parse lines before hr so they get parsed first.
             self.parser.parseBlocks(parent, ['\n'.join(prelines)])
         # create hr
-        hr = markdown.etree.SubElement(parent, 'hr')
+        hr = util.etree.SubElement(parent, 'hr')
         # check for lines in block after hr.
         lines = lines[len(prelines)+1:]
         if len(lines):
@@ -435,7 +504,7 @@ class EmptyBlockProcessor(BlockProcessor):
             if sibling and sibling.tag == 'pre' and sibling[0] and \
                     sibling[0].tag == 'code':
                 # Last block is a codeblock. Append to preserve whitespace.
-                sibling[0].text = markdown.AtomicString('%s/n/n/n' % sibling[0].text )
+                sibling[0].text = util.AtomicString('%s/n/n/n' % sibling[0].text )
 
 
 class ParagraphProcessor(BlockProcessor):
@@ -456,5 +525,5 @@ class ParagraphProcessor(BlockProcessor):
                     parent.text = block.lstrip()
             else:
                 # Create a regular paragraph
-                p = markdown.etree.SubElement(parent, 'p')
+                p = util.etree.SubElement(parent, 'p')
                 p.text = block.lstrip()

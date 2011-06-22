@@ -23,6 +23,6 @@ ce programme; si ce n'est pas le cas, consultez
     <comment>Markdown document</comment>
     <comment xml:lang="fr">document Markdown</comment>
     <sub-class-of type="text/plain"/>
-    <glob pattern="*.markdown;*.md;*.mdtxt"/>
+    <glob pattern="*.markdown;*.md;*.mkd"/>
   </mime-type>
 </mime-info>
