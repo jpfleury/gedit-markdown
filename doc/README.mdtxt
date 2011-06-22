@@ -110,8 +110,6 @@ Older versions of gedit-markdown also added Markdown MIME type and recognition o
 
 	- With Markdown Extra, some elements are matched and highlighted with no guarantee that they're in the right context: Setext-style header id attribute, colon used as separator in a definition list and separator line of a table.
 
-- Link and image are not matched if link text, link label, alt text or image label begin with a circumflex (because it's the syntax used for footnotes references), even if in some tricky cases, they could begin with a circumflex and still be well-formed. However, it's very unlikely that a well-formed link or image will not be highlighted.
-
 - I tried to use a highlighting similar to the default HTML rendering, e.g. italics for emphasis, underlined URL, etc. without having to create a custom style in `/usr/share/gtksourceview-2.0/styles`(which would force users to manually select it in gedit). Therefore, there are some imperfect rendering, e.g. strong emphasis that is bold BUT ALSO red.
 
 [bug27441]: https://bugs.freedesktop.org/show_bug.cgi?id=27441

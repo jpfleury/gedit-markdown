@@ -106,8 +106,6 @@ En ce qui concerne la coloration syntaxique, elle devrait s'activer automatiquem
 
 	- Avec Markdown Extra, quelques éléments sont analysés et colorés sans certitude qu'ils sont bien dans le bon contexte: l'attribut `id` pour un titre de style Setext, le deux-points séparateur dans une liste de définition et la ligne de séparation d'un tableau.
 
-- Les liens et les images ne sont pas analysés et colorés si le texte du lien, le texte alternatif de l'image ou l'étiquette identifiant le lien ou l'image commencent par un accent circonflexe (car il s'agit de la syntaxe utilisée pour les étiquettes identifiant les notes de bas de page), même si dans certains cas limites, ces derniers peuvent commencer par un accent circonflexe et être quand même bien formés. Cependant, il est vraiment très peu probable qu'un lien ou une image bien formés ne soient pas colorés.
-
 - J'ai tenté d'utiliser une coloration syntaxique qui se rapproche du rendu par défaut du HTML, par exemple de l'italique pour une emphase légère, des URL soulignées, etc., le tout sans devoir créer un fichier de style personnalisé dans `/usr/share/gtksourceview-2.0/styles` (ce qui forcerait les utilisateurs à choisir manuellement dans gedit le style personnalisé). Il y a donc quelques rendus imparfaits, comme l'emphase forte qui est en gras MAIS AUSSI en rouge.
 
 [bogue27441]: https://bugs.freedesktop.org/show_bug.cgi?id=27441
