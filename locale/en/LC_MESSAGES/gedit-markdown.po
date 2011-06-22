@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gedit-markdown\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-15 14:04-0400\n"
-"PO-Revision-Date: 2011-06-15 13:50-0400\n"
+"POT-Creation-Date: 2011-06-22 00:16-0400\n"
+"PO-Revision-Date: 2011-06-22 00:16-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -16,41 +16,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: gedit-markdown.sh:31
-msgid ""
-"Nautilus doit être redémarré pour que les modifications apportées à la base"
-"\\nde données partagée MIME-Info soient prises en compte.\\n\\n"
-"\\t1\\tRedémarrer Nautilus maintenant (les fenêtres ou les onglets déjà "
-"ouverts\\n\\t\\tde Nautilus seront perdus).\\n\\t2\\tNe pas redémarrer "
-"Nautilus maintenant et attendre le prochain\\n\\t\\tredémarrage de la "
-"session ou de l'ordinateur.\\n\\nSaisissez votre choix [1/2] (2 par défaut): "
-msgstr ""
-"Nautilus must be restarted to see the changes about MIME database.\\n\\n"
-"\\t1\\tRestart Nautilus now (all open Nautilus windows or tabs will be lost)."
-"\\n\\t2\\tDon't restart Nautilus now, and wait next computer rebooting or "
-"session restarting.\\n\\nEnter choice [1/2] (default is 2): "
-
-#: gedit-markdown.sh:46
-msgid "Redémarrage de Nautilus. Veuillez patienter."
-msgstr "Restarting Nautilus. Please wait."
-
-#: gedit-markdown.sh:51
-msgid "Nautilus ne sera pas redémarré maintenant."
-msgstr "Nautilus will not be restarted."
-
-#: gedit-markdown.sh:54
-msgid "Vous pouvez quand même utiliser dès maintenant Markdown dans gedit."
-msgstr "Note that you can use right now Markdown with gedit."
-
-#: gedit-markdown.sh:131
+#: gedit-markdown.sh:99
 msgid "Installation de gedit-markdown"
 msgstr "Installation of gedit-markdown"
 
-#: gedit-markdown.sh:136
+#: gedit-markdown.sh:104
 msgid "Étape 1: choix de la syntaxe Markdown à installer"
 msgstr "Step 1: choose the Markdown version to install"
 
-#: gedit-markdown.sh:139
+#: gedit-markdown.sh:107
 msgid ""
 "gedit-markdown peut ajouter le support du langage Markdown standard ou de la"
 "\\nversion spéciale Markdown Extra.\\n\\n\\t1\\tMarkdown standard\\n"
@@ -60,24 +34,24 @@ msgstr ""
 "Extra.\\n\\n\\t1\\tStandard Markdown\\n\\t2\\tMarkdown Extra\\n\\nEnter "
 "choice [1/2] (default is 2): "
 
-#: gedit-markdown.sh:154
+#: gedit-markdown.sh:122
 msgid "Le langage Markdown standard sera ajouté."
 msgstr "Standard Markdown will be installed."
 
-#: gedit-markdown.sh:156
+#: gedit-markdown.sh:124
 msgid "Le langage Markdown Extra sera ajouté."
 msgstr "Markdown Extra will be installed."
 
-#: gedit-markdown.sh:160 gedit-markdown.sh:171 gedit-markdown.sh:212
-#: gedit-markdown.sh:223 gedit-markdown.sh:255 gedit-markdown.sh:266
+#: gedit-markdown.sh:128 gedit-markdown.sh:139 gedit-markdown.sh:177
+#: gedit-markdown.sh:209
 msgid "Étape terminée."
 msgstr "Step finished successfully."
 
-#: gedit-markdown.sh:163
+#: gedit-markdown.sh:131
 msgid "Étape 2: vérification des dépendances"
 msgstr "Step 2: check dependencies"
 
-#: gedit-markdown.sh:167
+#: gedit-markdown.sh:135
 msgid ""
 "Le greffon «Markdown Preview» ne sera pas installé, car il nécessite Python "
 "2.6 ou plus récent."
@@ -85,36 +59,28 @@ msgstr ""
 "The plugin \"Markdown Preview\" will not be installed, because it depends on "
 "Python 2.6 or any later version."
 
-#: gedit-markdown.sh:174
+#: gedit-markdown.sh:142
 msgid "Étape 3: copie des fichiers"
 msgstr "Step 3: copy files"
 
-#: gedit-markdown.sh:215
-msgid "Étape 4: mise à jour de la base de données MIME"
-msgstr "Step 4: update the MIME database"
-
-#: gedit-markdown.sh:226
+#: gedit-markdown.sh:180
 msgid "Installation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 "Installation successful. Please restart gedit (if it's already running)."
 
-#: gedit-markdown.sh:234
+#: gedit-markdown.sh:188
 msgid "Désinstallation de gedit-markdown"
 msgstr "Uninstallation of gedit-markdown"
 
-#: gedit-markdown.sh:239
+#: gedit-markdown.sh:193
 msgid "Étape 1: suppression des fichiers"
 msgstr "Step 1: remove files"
 
-#: gedit-markdown.sh:258
-msgid "Étape 2: mise à jour de la base de données MIME"
-msgstr "Step 2: update the MIME database"
-
-#: gedit-markdown.sh:269
+#: gedit-markdown.sh:212
 msgid "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 "Uninstallation successful. Please restart gedit (if it's already running)."
 
-#: gedit-markdown.sh:275
+#: gedit-markdown.sh:218
 msgid "Usage: "
 msgstr "Usage: "

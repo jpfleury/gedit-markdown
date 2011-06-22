@@ -26,36 +26,6 @@ export LANGUAGE=$LANG
 
 # Fonctions.
 
-redemarrerNautilus()
-{
-	echo -en $(gettext ""\
-"Nautilus doit être redémarré pour que les modifications apportées à la base\n"\
-"de données partagée MIME-Info soient prises en compte.\n"\
-"\n"\
-"\t1\tRedémarrer Nautilus maintenant (les fenêtres ou les onglets déjà ouverts\n"\
-"\t\tde Nautilus seront perdus).\n"\
-"\t2\tNe pas redémarrer Nautilus maintenant et attendre le prochain\n"\
-"\t\tredémarrage de la session ou de l'ordinateur.\n"\
-"\n"\
-"Saisissez votre choix [1/2] (2 par défaut): ")
-	read choix
-	
-	echo ""
-	
-	if [[ $choix == 1 ]]; then
-		echo $(gettext "Redémarrage de Nautilus. Veuillez patienter.")
-		nautilus -q
-		nautilus &> /dev/null &
-		sleep 8
-	else
-		echo $(gettext "Nautilus ne sera pas redémarré maintenant.")
-		
-		if [[ $1 == "installer" ]]; then
-			echo $(gettext "Vous pouvez quand même utiliser dès maintenant Markdown dans gedit.")
-		fi
-	fi
-}
-
 # Merci à <http://stackoverflow.com/questions/4023830/bash-how-compare-two-strings-in-version-format/4025065#4025065>.
 vercomp()
 {
@@ -95,8 +65,6 @@ gras=$(tput bold)
 normal=$(tput sgr0)
 
 cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
-cheminMime=~/.local/share/mime
-cheminMimePackages=~/.local/share/mime/packages
 cheminPlugins=~/.gnome2/gedit/plugins
 cheminPluginsMarkdownPreview=~/.gnome2/gedit/plugins/markdown-preview
 cheminSnippets=~/.gnome2/gedit/snippets
@@ -118,7 +86,7 @@ else
 	fi
 fi
 
-fichiersAsupprimer=( "$cheminLanguageSpecs/markdown.lang" "$cheminLanguageSpecs/markdown-extra.lang" "$cheminMimePackages/x-markdown.xml" "$cheminPlugins/markdown-preview.gedit-plugin" "$cheminSnippets/markdown.xml" "$cheminSnippets/markdown-extra.xml" "$cheminStyles/classic-markdown.xml" )
+fichiersAsupprimer=( "$cheminLanguageSpecs/markdown.lang" "$cheminLanguageSpecs/markdown-extra.lang" "$cheminPlugins/markdown-preview.gedit-plugin" "$cheminSnippets/markdown.xml" "$cheminSnippets/markdown-extra.xml" "$cheminStyles/classic-markdown.xml" )
 
 # Début du script.
 
@@ -176,7 +144,6 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	
 	# Création des répertoires s'ils n'existent pas déjà.
 	mkdir -p $cheminLanguageSpecs
-	mkdir -p $cheminMimePackages
 	mkdir -p $cheminPlugins
 	mkdir -p $cheminSnippets
 	mkdir -p $cheminStyles
@@ -190,8 +157,6 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 		cp language-specs/markdown.lang $cheminLanguageSpecs
 		cp snippets/markdown.xml $cheminSnippets
 	fi
-	
-	cp mime-packages/x-markdown.xml $cheminMimePackages
 	
 	if [[ $erreurPython == 0 ]]; then
 		cp -r plugins/* $cheminPlugins
@@ -209,17 +174,6 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	
 	cp styles/classic-markdown.xml $cheminStyles
 	
-	echo $(gettext "Étape terminée.")
-	
-	echo $gras
-	echo $(gettext "Étape 4: mise à jour de la base de données MIME")
-	echo $normal
-	
-	# Mise à jour de la base de données MIME.
-	update-mime-database $cheminMime
-	redemarrerNautilus $1
-	
-	echo ""
 	echo $(gettext "Étape terminée.")
 	
 	echo $gras
@@ -252,17 +206,6 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 		rm -rf $cheminPythonSitePackages/markdown
 	fi
 	
-	echo $(gettext "Étape terminée.")
-	
-	echo $gras
-	echo $(gettext "Étape 2: mise à jour de la base de données MIME")
-	echo $normal
-	
-	# Mise à jour de la base de données MIME.
-	update-mime-database $cheminMime
-	redemarrerNautilus $1
-	
-	echo ""
 	echo $(gettext "Étape terminée.")
 	
 	echo $gras
