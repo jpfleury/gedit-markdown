@@ -33,13 +33,13 @@ Specifically, it adds:
 
 ### GNU/Linux
 
-- [Download the latest version of gedit-markdown.](http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip)
+- [Download the latest version of gedit-markdown.](http://www.jpfleury.net/telechargement.php?logiciel=gedit-markdown)
 - Extract the archive.
 - Run the installer and answer questions asked.
 
 Here are commands for all these steps in a GNU/Linux terminal:
 
-	wget http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip
+	wget http://www.jpfleury.net/telechargement.php?logiciel=gedit-markdown
 	unzip gedit-markdown.zip
 	gedit-markdown/gedit-markdown.sh install
 
