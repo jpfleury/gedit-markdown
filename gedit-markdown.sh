@@ -64,26 +64,58 @@ vercomp()
 gras=$(tput bold)
 normal=$(tput sgr0)
 
-cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
-cheminPlugins=~/.gnome2/gedit/plugins
-cheminPluginsMarkdownPreview=~/.gnome2/gedit/plugins/markdown-preview
-cheminSnippets=~/.gnome2/gedit/snippets
-cheminStyles=~/.local/share/gtksourceview-2.0/styles
+geditEstInstalle=1
+bonneVersionGedit=1
 
-versionPython=0
-erreurPython=0
+if [ -z $(which gedit) ]; then
+	geditEstInstalle=0
+	bonneVersionGedit=0
+else
+	versionGedit=$(gedit --version | cut -d ' ' -f 4 | cut -d '.' -f 1)
+	vercomp $versionGedit "2"
+	
+	if [[ $? == 1 ]]; then
+		bonneVersionGedit=0
+	fi
+fi
+
+vercomp $versionGedit "3"
+
+# Dossiers pour gedit 3.
+if [ $? == 0 ]; then
+	cheminLanguageSpecs=~/.local/share/gtksourceview-3.0/language-specs
+	cheminPlugins=~/.local/share/gedit/plugins
+	cheminPluginsMarkdownPreview=~/.local/share/gedit/plugins/markdown-preview
+	cheminSnippets=~/.local/share/gedit/snippets
+	cheminStyles=~/.local/share/gtksourceview-3.0/styles
+# Dossiers pour gedit 2.
+else
+	cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
+	cheminPlugins=~/.gnome2/gedit/plugins
+	cheminPluginsMarkdownPreview=~/.gnome2/gedit/plugins/markdown-preview
+	cheminSnippets=~/.gnome2/gedit/snippets
+	cheminStyles=~/.local/share/gtksourceview-2.0/styles
+fi
+
+bonneVersionPython=1
 
 if [ -z $(which python) ]; then
-	erreurPython=1
+	bonneVersionPython=0
 else
 	versionPython=$(python -c 'import sys; print(sys.version[:3])')
 	vercomp $versionPython "2.6"
 	
 	if [[ $? == 2 ]]; then
-		erreurPython=1
+		bonneVersionPython=0
 	else
 		cheminPythonSitePackages=$(python -m site --user-site)
 	fi
+fi
+
+greffonEstInstallable=1
+
+if [[ $bonneVersionGedit == 0 || $bonneVersionPython == 0 ]]; then
+	greffonEstInstallable=0
 fi
 
 fichiersAsupprimer=( "$cheminLanguageSpecs/markdown.lang" "$cheminLanguageSpecs/markdown-extra.lang" "$cheminPlugins/markdown-preview.gedit-plugin" "$cheminSnippets/markdown.xml" "$cheminSnippets/markdown-extra.xml" "$cheminStyles/classic-markdown.xml" )
@@ -101,7 +133,28 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo "############################################################"
 	
 	echo ""
-	echo $(gettext "Étape 1: choix de la syntaxe Markdown à installer")
+	echo $(gettext "Étape 1: vérification des dépendances")
+	echo $normal
+	
+	echo "- gedit: $versionGedit"
+	echo "- Python: $versionPython"
+	echo ""
+	
+	if [[ $geditEstInstalle == 0 ]]; then
+		echo $(gettext "Veuillez installer gedit avant de lancer le script d'installation de gedit-markdown.")
+		echo ""
+		exit 1
+	fi
+	
+	if [[ $greffonEstInstallable == 0 ]]; then
+		echo $(gettext "Le greffon «Markdown Preview» ne sera pas installé, car il nécessite gedit 2 ainsi que Python 2.6 ou plus récent.")
+		echo ""
+	fi
+	
+	echo $(gettext "Étape terminée.")
+	
+	echo $gras
+	echo $(gettext "Étape 2: choix de la syntaxe Markdown à installer")
 	echo $normal
 	
 	echo -en $(gettext ""\
@@ -128,17 +181,6 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo $(gettext "Étape terminée.")
 	
 	echo $gras
-	echo $(gettext "Étape 2: vérification des dépendances")
-	echo $normal
-	
-	if [[ $erreurPython == 1 ]]; then
-		echo $(gettext "Le greffon «Markdown Preview» ne sera pas installé, car il nécessite Python 2.6 ou plus récent.")
-		echo ""
-	fi
-	
-	echo $(gettext "Étape terminée.")
-	
-	echo $gras
 	echo $(gettext "Étape 3: copie des fichiers")
 	echo $normal
 	
@@ -158,7 +200,7 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 		cp snippets/markdown.xml $cheminSnippets
 	fi
 	
-	if [[ $erreurPython == 0 ]]; then
+	if [[ $greffonEstInstallable == 1 ]]; then
 		cp -r plugins/* $cheminPlugins
 		
 		if [[ $markdown == "markdown" ]]; then
@@ -199,12 +241,8 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 	done
 	
 	# Suppression des dossiers.
-	
 	rm -rf $cheminPluginsMarkdownPreview
-	
-	if [[ $erreurPython == 0 ]]; then
-		rm -rf $cheminPythonSitePackages/markdown
-	fi
+	rm -rf $cheminPythonSitePackages/markdown
 	
 	echo $(gettext "Étape terminée.")
 	
