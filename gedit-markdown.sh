@@ -19,12 +19,22 @@
 # <http://www.gnu.org/licenses/>.
 
 # Localisation.
-export TEXTDOMAINDIR=`dirname "$0"`/locale
+export TEXTDOMAINDIR=$(dirname "$0")/locale
 export TEXTDOMAIN=gedit-markdown
 export LANGUAGE=$LANG
 . gettext.sh
 
 # Fonctions.
+
+supprimerDossiersVides()
+{
+	dossier=$1
+	
+	while [[ -d $dossier && -z $(ls -A $dossier 2> /dev/null) ]]; do
+		rmdir $dossier
+		dossier=$(dirname "$dossier")
+	done
+}
 
 # Merci à <http://stackoverflow.com/questions/4023830/bash-how-compare-two-strings-in-version-format/4025065#4025065>.
 vercomp()
@@ -67,7 +77,7 @@ normal=$(tput sgr0)
 geditEstInstalle=1
 bonneVersionGedit=1
 
-if [ -z $(which gedit) ]; then
+if [[ -z $(which gedit) ]]; then
 	geditEstInstalle=0
 	bonneVersionGedit=0
 else
@@ -82,7 +92,7 @@ fi
 vercomp $versionGedit "3"
 
 # Dossiers pour gedit 3.
-if [ $? == 0 ]; then
+if [[ $? == 0 ]]; then
 	cheminLanguageSpecs=~/.local/share/gtksourceview-3.0/language-specs
 	cheminPlugins=~/.local/share/gedit/plugins
 	cheminPluginsMarkdownPreview=~/.local/share/gedit/plugins/markdown-preview
@@ -97,9 +107,13 @@ else
 	cheminStyles=~/.local/share/gtksourceview-2.0/styles
 fi
 
+if [[ -f $cheminPluginsMarkdownPreview/config.ini ]]; then
+	ancienCheminPythonSitePackages=$(sed -n "s/^pythonSitePackages=\(.*\)$/\1/p" < $cheminPluginsMarkdownPreview/config.ini)
+fi
+
 bonneVersionPython=1
 
-if [ -z $(which python) ]; then
+if [[ -z $(which python) ]]; then
 	bonneVersionPython=0
 else
 	versionPython=$(python -c 'import sys; print(sys.version[:3])')
@@ -122,7 +136,7 @@ fichiersAsupprimer=( "$cheminLanguageSpecs/markdown.lang" "$cheminLanguageSpecs/
 
 # Début du script.
 
-cd `dirname "$0"`
+cd $(dirname "$0")
 
 if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo $gras
@@ -241,8 +255,20 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 			sed -i "s/^\(panel=\).*$/\1side/" $cheminPluginsMarkdownPreview/config.ini
 		fi
 		
+		if [[ -n $ancienCheminPythonSitePackages ]]; then
+			rm -rf $ancienCheminPythonSitePackages/markdown
+			supprimerDossiersVides $ancienCheminPythonSitePackages
+		fi
+		
 		mkdir -p $cheminPythonSitePackages
+		
+		if [[ -e $cheminPythonSitePackages/markdown ]]; then
+			rm -rf $cheminPythonSitePackages/markdown
+		fi
+		
 		mv $cheminPluginsMarkdownPreview/markdown $cheminPythonSitePackages
+		# Mise à jour de la configuration.
+		sed -i "s|^\(pythonSitePackages=\).*$|\1$cheminPythonSitePackages|" $cheminPluginsMarkdownPreview/config.ini
 		rm $cheminPluginsMarkdownPreview/locale/markdown-preview.pot
 		find $cheminPluginsMarkdownPreview/locale/ -name '*.po' -exec rm -f {} \;
 	fi
@@ -274,8 +300,18 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 	done
 	
 	# Suppression des dossiers.
+
 	rm -rf $cheminPluginsMarkdownPreview
-	rm -rf $cheminPythonSitePackages/markdown
+	
+	if [[ -n $cheminPythonSitePackages ]]; then
+		rm -rf $cheminPythonSitePackages/markdown
+		supprimerDossiersVides $cheminPythonSitePackages
+	fi
+	
+	if [[ -n $ancienCheminPythonSitePackages ]]; then
+		rm -rf $ancienCheminPythonSitePackages/markdown
+		supprimerDossiersVides $ancienCheminPythonSitePackages
+	fi
 	
 	echo $(gettext "Étape terminée.")
 	
@@ -286,7 +322,7 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 	exit 0
 else
 	echo $gras
-	echo $(gettext "Usage: ") "$0 [installer | installer extra | desinstaller]"
+	echo $(gettext "Usage: ") "$0 [installer | desinstaller]"
 	echo $normal
 	
 	exit 1
