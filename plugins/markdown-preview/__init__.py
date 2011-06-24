@@ -46,6 +46,7 @@ HTML_TEMPLATE = "%s"
 CONFIG_PATH = os.path.dirname(__file__) + '/config.ini'
 parser = SafeConfigParser()
 parser.read(CONFIG_PATH)
+markdownPanel = parser.get('markdown', 'panel')
 markdownVersion = parser.get('markdown', 'version')
 
 class MarkdownPreviewPlugin(gedit.Plugin):
@@ -71,13 +72,17 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		scrolled_window.add(html_view)
 		scrolled_window.show_all()
 		
-		bottom_panel = window.get_bottom_panel()
+		if markdownPanel == "side":
+			panel = window.get_side_panel()
+		else:
+			panel = window.get_bottom_panel()
+		
 		image = gtk.Image()
 		image.set_from_icon_name("gnome-mime-text-html", gtk.ICON_SIZE_MENU)
-		bottom_panel.add_item(scrolled_window, _("Markdown Preview"), image)
-		bottom_panel.show()
+		panel.add_item(scrolled_window, _("Markdown Preview"), image)
+		panel.show()
 		
-		windowdata["bottom_panel"] = scrolled_window
+		windowdata["panel"] = scrolled_window
 		windowdata["html_doc"] = html_view
 		windowdata["action_group"] = gtk.ActionGroup("MarkdownPreviewActions")
 		windowdata["action_group"].add_actions([action], window)
@@ -99,9 +104,14 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		manager.remove_ui(windowdata["ui_id"])
 		manager.remove_action_group(windowdata["action_group"])
 		
-		# Remove Markdown Preview from the bottom panel.
-		bottom_panel = window.get_bottom_panel()
-		bottom_panel.remove_item(windowdata["bottom_panel"])
+		# Remove Markdown Preview from the panel.
+		
+		if markdownPanel == "side":
+			panel = window.get_side_panel()
+		else:
+			panel = window.get_bottom_panel()
+		
+		panel.remove_item(windowdata["panel"])
 	
 	def update_preview(self, window):
 		# Retreive data of the window object.
@@ -127,12 +137,16 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		else:
 			html = HTML_TEMPLATE % (markdown.markdown(text, smart_emphasis=False), )
 		
-		p = windowdata["bottom_panel"].get_placement()
+		p = windowdata["panel"].get_placement()
 		html_doc = windowdata["html_doc"]
 		html_doc.load_string(html, "text/html", "utf-8", "file:///")
-		windowdata["bottom_panel"].set_placement(p)
+		windowdata["panel"].set_placement(p)
 		
-		bottom_panel = window.get_bottom_panel()
-		bottom_panel.show()
-		bottom_panel.activate_item(windowdata["bottom_panel"])
+		if markdownPanel == "side":
+			panel = window.get_side_panel()
+		else:
+			panel = window.get_bottom_panel()
+		
+		panel.show()
+		panel.activate_item(windowdata["panel"])
 
