@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gedit-markdown\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-22 11:56-0400\n"
-"PO-Revision-Date: 2011-06-22 01:58-0400\n"
+"POT-Creation-Date: 2011-06-24 00:53-0400\n"
+"PO-Revision-Date: 2011-06-24 00:53-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -21,8 +21,8 @@ msgid "Installation de gedit-markdown"
 msgstr "Installation of gedit-markdown"
 
 #: gedit-markdown.sh:136
-msgid "Étape 1: vérification des dépendances"
-msgstr "Step 1: check dependencies"
+msgid "Première étape: vérification des dépendances"
+msgstr "First step: check dependencies"
 
 #: gedit-markdown.sh:144
 msgid ""
@@ -40,14 +40,14 @@ msgstr ""
 "The plugin \"Markdown Preview\" will not be installed, because it depends on "
 "gedit 2 and Python >= 2.6."
 
-#: gedit-markdown.sh:154 gedit-markdown.sh:181 gedit-markdown.sh:219
-#: gedit-markdown.sh:247
+#: gedit-markdown.sh:154 gedit-markdown.sh:181 gedit-markdown.sh:208
+#: gedit-markdown.sh:252 gedit-markdown.sh:280
 msgid "Étape terminée."
 msgstr "Step finished successfully."
 
 #: gedit-markdown.sh:157
-msgid "Étape 2: choix de la syntaxe Markdown à installer"
-msgstr "Step 2: choose the Markdown version to install"
+msgid "Étape suivante: choix de la syntaxe Markdown à installer"
+msgstr "Next step: choose the Markdown version to install"
 
 #: gedit-markdown.sh:160
 msgid ""
@@ -67,28 +67,49 @@ msgstr "Standard Markdown will be installed."
 msgid "Le langage Markdown Extra sera ajouté."
 msgstr "Markdown Extra will be installed."
 
-#: gedit-markdown.sh:184
-msgid "Étape 3: copie des fichiers"
-msgstr "Step 3: copy files"
+#: gedit-markdown.sh:185
+msgid "Étape suivante: choix de l'emplacement de l'aperçu Markdown"
+msgstr "Next step: choose the emplacement of the Markdown preview"
 
-#: gedit-markdown.sh:222
+#: gedit-markdown.sh:188
+msgid ""
+"L'aperçu Markdown peut être placé dans un des deux panneaux de gedit.\\n\\n"
+"\\t1\\tPanneau latéral\\n\\t2\\tPanneau inférieur\\n\\nSaisissez votre choix "
+"[1/2] (2 par défaut): "
+msgstr ""
+"Markdown preview can be put in one of two panels of gedit.\\n\\n\\t1\\tSide "
+"panel\\n\\t2\\tBottom panel\\n\\nEnter choice [1/2] (default is 2): "
+
+#: gedit-markdown.sh:202
+msgid "L'aperçu Markdown se trouvera dans le panneau latéral."
+msgstr "Markdown preview will be put in the side panel."
+
+#: gedit-markdown.sh:204
+msgid "L'aperçu Markdown se trouvera dans le panneau inférieur."
+msgstr "Markdown preview will be put in the bottom panel."
+
+#: gedit-markdown.sh:212
+msgid "Étape suivante: copie des fichiers"
+msgstr "Next step: copy files"
+
+#: gedit-markdown.sh:255
 msgid "Installation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 "Installation successful. Please restart gedit (if it's already running)."
 
-#: gedit-markdown.sh:230
+#: gedit-markdown.sh:263
 msgid "Désinstallation de gedit-markdown"
 msgstr "Uninstallation of gedit-markdown"
 
-#: gedit-markdown.sh:235
-msgid "Étape 1: suppression des fichiers"
-msgstr "Step 1: remove files"
+#: gedit-markdown.sh:268
+msgid "Première étape: suppression des fichiers"
+msgstr "First step: remove files"
 
-#: gedit-markdown.sh:250
+#: gedit-markdown.sh:283
 msgid "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 "Uninstallation successful. Please restart gedit (if it's already running)."
 
-#: gedit-markdown.sh:256
+#: gedit-markdown.sh:289
 msgid "Usage: "
 msgstr "Usage: "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-22 11:56-0400\n"
+"POT-Creation-Date: 2011-06-24 00:53-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgid "Installation de gedit-markdown"
 msgstr ""
 
 #: gedit-markdown.sh:136
-msgid "Étape 1: vérification des dépendances"
+msgid "Première étape: vérification des dépendances"
 msgstr ""
 
 #: gedit-markdown.sh:144
@@ -37,13 +37,13 @@ msgid ""
 "et de Python >= 2.6."
 msgstr ""
 
-#: gedit-markdown.sh:154 gedit-markdown.sh:181 gedit-markdown.sh:219
-#: gedit-markdown.sh:247
+#: gedit-markdown.sh:154 gedit-markdown.sh:181 gedit-markdown.sh:208
+#: gedit-markdown.sh:252 gedit-markdown.sh:280
 msgid "Étape terminée."
 msgstr ""
 
 #: gedit-markdown.sh:157
-msgid "Étape 2: choix de la syntaxe Markdown à installer"
+msgid "Étape suivante: choix de la syntaxe Markdown à installer"
 msgstr ""
 
 #: gedit-markdown.sh:160
@@ -61,26 +61,45 @@ msgstr ""
 msgid "Le langage Markdown Extra sera ajouté."
 msgstr ""
 
-#: gedit-markdown.sh:184
-msgid "Étape 3: copie des fichiers"
+#: gedit-markdown.sh:185
+msgid "Étape suivante: choix de l'emplacement de l'aperçu Markdown"
 msgstr ""
 
-#: gedit-markdown.sh:222
+#: gedit-markdown.sh:188
+msgid ""
+"L'aperçu Markdown peut être placé dans un des deux panneaux de gedit.\\n\\n"
+"\\t1\\tPanneau latéral\\n\\t2\\tPanneau inférieur\\n\\nSaisissez votre choix "
+"[1/2] (2 par défaut): "
+msgstr ""
+
+#: gedit-markdown.sh:202
+msgid "L'aperçu Markdown se trouvera dans le panneau latéral."
+msgstr ""
+
+#: gedit-markdown.sh:204
+msgid "L'aperçu Markdown se trouvera dans le panneau inférieur."
+msgstr ""
+
+#: gedit-markdown.sh:212
+msgid "Étape suivante: copie des fichiers"
+msgstr ""
+
+#: gedit-markdown.sh:255
 msgid "Installation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 
-#: gedit-markdown.sh:230
+#: gedit-markdown.sh:263
 msgid "Désinstallation de gedit-markdown"
 msgstr ""
 
-#: gedit-markdown.sh:235
-msgid "Étape 1: suppression des fichiers"
+#: gedit-markdown.sh:268
+msgid "Première étape: suppression des fichiers"
 msgstr ""
 
-#: gedit-markdown.sh:250
+#: gedit-markdown.sh:283
 msgid "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 
-#: gedit-markdown.sh:256
+#: gedit-markdown.sh:289
 msgid "Usage: "
 msgstr ""

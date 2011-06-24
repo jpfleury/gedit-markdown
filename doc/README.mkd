@@ -7,17 +7,13 @@ gedit-markdown adds support for [Markdown][] (or [Markdown Extra][]) in gedit, t
 Specifically, it adds:
 
 - Markdown syntax highlighting and snippets in gedit;
-- plugin *Markdown Preview* for gedit, previewing in HTML the currently opened file;
+- plugin *Markdown Preview* for gedit, displayed in the side panel or the bottom panel and previewing in HTML the currently opened file;
 - a color scheme, optional, highlighting Markdown files in a manner more similar to HTML rendering.
 
 [Markdown]: http://daringfireball.net/projects/markdown/
 [Markdown Extra]: http://michelf.com/projects/php-markdown/extra/
 
 <img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple1.png" width="684" height="779" alt="Default Markdown syntax highlighting in gedit." />
-
-***************
-
-<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple3.png" width="684" height="886" alt="Markdown Preview in gedit." />
 
 ## Requirements
 
@@ -67,9 +63,29 @@ In a GNU/Linux terminal, run the uninstaller:
 
 ## Usage
 
-Restart gedit if it's already running. Then, go to *Edit > Preferences > Plugins* and activate *Markdown Preview*. An item *Markdown Preview* will be added in the menu *Tools*, and can be used to display in the bottom panel a preview in HTML of the currently opened file. The keyboard shortcut *Ctrl+Alt+m* does the same.
+First of all, restart gedit if it's already running.
 
-About syntax highlighting, it should automatically be activated for files recognized as Markdown files (extensions `.markdown`, `.md` or `.mkd`), otherwise choose it manually by going to *View > Highlight Mode > Markup* and selecting *Markdown*.
+### Syntax highlighting
+
+Syntax highlighting should automatically be activated for files recognized as Markdown files (extensions `.markdown`, `.md` or `.mkd`), otherwise choose it manually by going to *View > Highlight Mode > Markup* and selecting *Markdown*.
+
+### Plugin *Markdown Preview*
+
+Then, go to *Edit > Preferences > Plugins* and activate *Markdown Preview*. An item *Markdown Preview* will be added in the menu *Tools*, and can be used to display in the side panel or in the bottom panel a preview in HTML of the currently opened file. The keyboard shortcut *Ctrl+Alt+m* does the same.
+
+Here's a screenshot of the plugin when it's displayed in the bottom panel:
+
+<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple3.png" width="684" height="886" alt="Markdown Preview in the bottom panel of gedit." />
+
+Now the same plugin displayed in the side panel:
+
+<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple4.png" width="684" height="445" alt="Markdown Preview in the side panel of gedit." />
+
+**Note:** during installation, choices were made about the Markdown version and the panel to use. These choices can be changed in the configuration file of the plugin:
+
+	~/.gnome2/gedit/plugins/markdown-preview/config.ini
+
+### Optional color scheme
 
 An optional color scheme is installed by gedit-markdown. To use it, go to *Edit > Preferences > Font & Colors > Color Scheme* in gedit and select *Classic Markdown*. This color scheme is more similar to an HTML rendering, for example strong emphases and headers are in bold and black font, links are blue and underlined, etc. Here's a screenshot of a Markdown document highlighted with this color scheme:
 

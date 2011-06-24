@@ -133,7 +133,7 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo "############################################################"
 	
 	echo ""
-	echo $(gettext "Étape 1: vérification des dépendances")
+	echo "## " $(gettext "Première étape: vérification des dépendances")
 	echo $normal
 	
 	echo "- gedit: $versionGedit"
@@ -154,7 +154,7 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo $(gettext "Étape terminée.")
 	
 	echo $gras
-	echo $(gettext "Étape 2: choix de la syntaxe Markdown à installer")
+	echo "## " $(gettext "Étape suivante: choix de la syntaxe Markdown à installer")
 	echo $normal
 	
 	echo -en $(gettext ""\
@@ -180,8 +180,36 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo ""
 	echo $(gettext "Étape terminée.")
 	
+	if [[ $greffonEstInstallable == 1 ]]; then
+		echo $gras
+		echo "## " $(gettext "Étape suivante: choix de l'emplacement de l'aperçu Markdown")
+		echo $normal
+	
+		echo -en $(gettext ""\
+"L'aperçu Markdown peut être placé dans un des deux panneaux de gedit.\n"\
+"\n"\
+"\t1\tPanneau latéral\n"\
+"\t2\tPanneau inférieur\n"\
+"\n"\
+"Saisissez votre choix [1/2] (2 par défaut): ")
+		read choix
+	
+		echo ""
+		panneau=bottom
+	
+		if [[ $choix == 1 ]]; then
+			panneau=side
+			echo $(gettext "L'aperçu Markdown se trouvera dans le panneau latéral.")
+		else
+			echo $(gettext "L'aperçu Markdown se trouvera dans le panneau inférieur.")
+		fi
+	
+		echo ""
+		echo $(gettext "Étape terminée.")
+	fi
+	
 	echo $gras
-	echo $(gettext "Étape 3: copie des fichiers")
+	echo "## " $(gettext "Étape suivante: copie des fichiers")
 	echo $normal
 	
 	# Création des répertoires s'ils n'existent pas déjà.
@@ -208,6 +236,11 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 			sed -i "s/^\(version=\).*$/\1markdown/" $cheminPluginsMarkdownPreview/config.ini
 		fi
 		
+		if [[ $panneau == "side" ]]; then
+			# Mise à jour de la configuration.
+			sed -i "s/^\(panel=\).*$/\1side/" $cheminPluginsMarkdownPreview/config.ini
+		fi
+		
 		mkdir -p $cheminPythonSitePackages
 		mv $cheminPluginsMarkdownPreview/markdown $cheminPythonSitePackages
 		rm $cheminPluginsMarkdownPreview/locale/markdown-preview.pot
@@ -232,7 +265,7 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 	echo "############################################################"
 	
 	echo ""
-	echo $(gettext "Étape 1: suppression des fichiers")
+	echo "## " $(gettext "Première étape: suppression des fichiers")
 	echo $normal
 	
 	# Suppression des fichiers.

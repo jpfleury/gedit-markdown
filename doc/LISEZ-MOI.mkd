@@ -7,17 +7,13 @@ gedit-markdown est un ensemble de fichiers ajoutant le support du langage [Markd
 Plus précisément, gedit-markdown ajoute:
 
 - la coloration syntaxique des fichiers Markdown dans gedit ainsi que des extraits de code pour accélérer la rédaction;
-- le greffon *Aperçu Markdown*, affichant dans le panneau inférieur de gedit un aperçu en HTML du fichier Markdown en cours d'édition;
+- le greffon *Aperçu Markdown*, affichant dans le panneau latéral ou inférieur de gedit un aperçu en HTML du fichier Markdown en cours d'édition;
 - un jeu de couleurs, optionnel, colorant le code Markdown d'une manière plus ressemblante au rendu HTML.
 
 [Markdown]: http://michelf.com/projets/php-markdown/concepts/
 [Markdown Extra]: http://michelf.com/projets/php-markdown/extra/
 
 <img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple1.png" width="684" height="779" alt="Coloration syntaxique par défaut du Markdown dans gedit." />
-
-***************
-
-<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple3.png" width="684" height="886" alt="Aperçu en HTML d'un document Markdown dans gedit." />
 
 ## Dépendances
 
@@ -63,9 +59,29 @@ Dans une console sous GNU/Linux, lancer le script de désinstallation:
 
 ## Utilisation
 
-Si gedit est ouvert, redémarrez-le. Ensuite, aller dans *Édition > Préférences > Greffons* et activer *Aperçu Markdown*. Maintenant vous trouverez dans le menu *Outils* une action *Aperçu Markdown*, qui affichera dans le panneau inférieur l'aperçu en HTML du document courant. Le raccourci-clavier *Ctrl+Alt+m* peut également être utilisé pour effectuer la même chose.
+Avant toute chose, redémarrer gedit s'il est ouvert.
 
-En ce qui concerne la coloration syntaxique, elle devrait s'activer automatiquement pour les fichiers reconnus comme étant des fichiers Markdown (extensions `.markdown`, `.md` ou `.mkd`), sinon choisir la coloration en allant dans *Affichage > Mode de coloration > Balisage* et cocher *Markdown*.
+### Coloration syntaxique
+
+La coloration syntaxique devrait s'activer automatiquement pour les fichiers reconnus comme étant des fichiers Markdown (extensions `.markdown`, `.md` ou `.mkd`), sinon choisir la coloration en allant dans *Affichage > Mode de coloration > Balisage* et cocher *Markdown*.
+
+### Greffon *Aperçu Markdown*
+
+Pour activer le greffon, aller dans *Édition > Préférences > Greffons* et activer *Aperçu Markdown*. Maintenant vous trouverez dans le menu *Outils* une action *Aperçu Markdown*, qui affichera dans le panneau latéral ou inférieur l'aperçu en HTML du document courant. Le raccourci-clavier *Ctrl+Alt+m* peut également être utilisé pour effectuer la même chose.
+
+Voici une capture d'écran du greffon lorsqu'il est situé dans le panneau inférieur:
+
+<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple3.png" width="684" height="886" alt="Aperçu en HTML d'un document Markdown dans le panneau inférieur de gedit." />
+
+Voici maintenant le même greffon situé dans le panneau latéral:
+
+<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple4.png" width="684" height="445" alt="Aperçu en HTML d'un document Markdown dans le panneau latéral de gedit." />
+
+**Note:** lors de l'installation, des choix ont été effectués en ce qui concerne la version du langage Markdown ainsi que le panneau à utiliser. Ces choix peuvent être modifiés dans le fichier de configuration du greffon:
+
+	~/.gnome2/gedit/plugins/markdown-preview/config.ini
+
+### Jeu de couleurs optionnel
 
 Un jeu de couleurs optionnel est installé automatiquement par gedit-markdown. Pour l'utiliser, aller dans le menu *Édition > Préférences > Police et couleurs > Jeu de couleurs* de gedit et sélectionner *Classic Markdown*. Cette coloration se rapproche d'un rendu HTML, par exemple les emphases fortes et les titres sont en gras et de couleur noire, les liens sont bleus et soulignés, etc. Ce jeu de couleurs resemble à ceci:
 
