@@ -8,6 +8,7 @@ Plus précisément, gedit-markdown ajoute:
 
 - la coloration syntaxique des fichiers Markdown dans gedit ainsi que des extraits de code pour accélérer la rédaction;
 - le greffon *Aperçu Markdown*, affichant dans le panneau latéral ou inférieur de gedit un aperçu en HTML du fichier Markdown en cours d'édition;
+- un outil externe permettant d'exporter le code HTML du document Markdown en cours d'édition;
 - un jeu de couleurs, optionnel, colorant le code Markdown d'une manière plus ressemblante au rendu HTML.
 
 [Markdown]: http://michelf.com/projets/php-markdown/concepts/
@@ -22,8 +23,6 @@ Plus précisément, gedit-markdown ajoute:
 - Le greffon «Markdown Preview» dépend de Python >= 2.6 et a été testé seulement avec gedit 2 (il ne fonctionnera possiblement pas avec gedit 3). Ainsi, l'installateur va copier le greffon seulement si les bonnes versions de Python et de gedit sont installées.
 
 	Les autres fichiers devraient théoriquement bien fonctionner avec gedit 3; ils seront donc installés peu importe la version de gedit.
-
-- Pour utiliser les extraits de code de Markdown, il faut activer le greffon *Extraits de code* dans le menu *Édition > Préférences > Greffons* de gedit.
 
 ## Installation
 
@@ -86,8 +85,18 @@ Le fichier de configuration du greffon est le suivant:
 Seule la section `markdown` peut être modifiée, et contient trois paramètres:
 
 - `panel`: emplacement de l'aperçu Markdown. Valeurs possibles: `side` (panneau latéral) ou `bottom` (panneau inférieur).
-- `shortcut`: raccourci-clavier pour générer l'aperçu en HTML du document courant. La valeur par défaut est `<Control><Alt>M`.
+- `shortcut`: raccourci-clavier pour générer l'aperçu en HTML du document courant. La valeur par défaut est `<Control><Alt>m`.
 - `version`: la version du langage Markdown à utiliser pour générer l'aperçu en HTML. Valeurs possibles: `standard` ou `extra`.
+
+### Extraits de code
+
+Pour utiliser les extraits de code de Markdown, il faut activer le greffon *Extraits de code* dans le menu *Édition > Préférences > Greffons* de gedit. Ensuite, aller dans *Outils > Gérer les extraits de code...* pour consulter les différentes possibilités.
+
+### Outil externe *Exporter en HTML*
+
+Pour utiliser l'outil externe, il faut activer le greffon *Outils externes* dans le menu *Édition > Préférences > Greffons* de gedit. L'outil est accessible par le menu *Outils > Outils externes > Exporter en HTML* ou par le raccourci-clavier *Ctrl+Alt+h*. Le code Markdown du document en cours d'édition sera converti en HTML, et le résultat sera inséré dans un nouveau document.
+
+Pour modifier l'outil, aller dans *Outils > Gérer les outils externes...*.
 
 ### Jeu de couleurs optionnel
 

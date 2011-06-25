@@ -130,10 +130,10 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		
 		text = doc.get_text(start, end)
 		
-		if markdownVersion == "extra":
-			html = HTML_TEMPLATE % (markdown.markdown(text, extensions=['extra']), )
-		else:
+		if markdownVersion == "standard":
 			html = HTML_TEMPLATE % (markdown.markdown(text, smart_emphasis=False), )
+		else:
+			html = HTML_TEMPLATE % (markdown.markdown(text, extensions=['extra']), )
 		
 		p = windowdata["panel"].get_placement()
 		html_doc = windowdata["html_doc"]

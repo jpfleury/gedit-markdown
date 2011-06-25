@@ -98,6 +98,7 @@ if [[ $? == 0 ]]; then
 	cheminPluginsMarkdownPreview=~/.local/share/gedit/plugins/markdown-preview
 	cheminSnippets=~/.local/share/gedit/snippets
 	cheminStyles=~/.local/share/gtksourceview-3.0/styles
+	cheminTools=~/.local/share/gedit/tools
 # Dossiers pour gedit 2.
 else
 	cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
@@ -105,6 +106,7 @@ else
 	cheminPluginsMarkdownPreview=~/.gnome2/gedit/plugins/markdown-preview
 	cheminSnippets=~/.gnome2/gedit/snippets
 	cheminStyles=~/.local/share/gtksourceview-2.0/styles
+	cheminTools=~/.gnome2/gedit/tools
 fi
 
 if [[ -f $cheminPluginsMarkdownPreview/config.ini ]]; then
@@ -132,7 +134,7 @@ if [[ $bonneVersionGedit == 0 || $bonneVersionPython == 0 ]]; then
 	greffonEstInstallable=0
 fi
 
-fichiersAsupprimer=( "$cheminLanguageSpecs/markdown.lang" "$cheminLanguageSpecs/markdown-extra.lang" "$cheminPlugins/markdown-preview.gedit-plugin" "$cheminSnippets/markdown.xml" "$cheminSnippets/markdown-extra.xml" "$cheminStyles/classic-markdown.xml" )
+fichiersAsupprimer=( "$cheminLanguageSpecs/markdown.lang" "$cheminLanguageSpecs/markdown-extra.lang" "$cheminPlugins/markdown-preview.gedit-plugin" "$cheminSnippets/markdown.xml" "$cheminSnippets/markdown-extra.xml" "$cheminStyles/classic-markdown.xml" "$cheminTools/export-to-html" "$cheminTools/export-extra-to-html" )
 
 # Début du script.
 
@@ -234,18 +236,18 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	
 	# Copie des fichiers.
 	
-	if [[ $markdown == "extra" ]]; then
-		cp language-specs/markdown-extra.lang $cheminLanguageSpecs
-		cp snippets/markdown-extra.xml $cheminSnippets
-	else
+	if [[ $markdown == "standard" ]]; then
 		cp language-specs/markdown.lang $cheminLanguageSpecs
 		cp snippets/markdown.xml $cheminSnippets
+	else
+		cp language-specs/markdown-extra.lang $cheminLanguageSpecs
+		cp snippets/markdown-extra.xml $cheminSnippets
 	fi
 	
 	if [[ $greffonEstInstallable == 1 ]]; then
 		cp -r plugins/* $cheminPlugins
 		
-		if [[ $markdown == "markdown" ]]; then
+		if [[ $markdown == "standard" ]]; then
 			# Mise à jour de la configuration.
 			sed -i "s/^\(version=\).*$/\1standard/" $cheminPluginsMarkdownPreview/config.ini
 		fi
@@ -271,6 +273,13 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 		sed -i "s|^\(pythonSitePackages=\).*$|\1$cheminPythonSitePackages|" $cheminPluginsMarkdownPreview/config.ini
 		rm $cheminPluginsMarkdownPreview/locale/markdown-preview.pot
 		find $cheminPluginsMarkdownPreview/locale/ -name '*.po' -exec rm -f {} \;
+		mkdir -p $cheminTools
+		
+		if [[ $markdown == "standard" ]]; then
+			cp tools/export-to-html $cheminTools
+		else
+			cp tools/export-extra-to-html $cheminTools
+		fi
 	fi
 	
 	cp styles/classic-markdown.xml $cheminStyles
