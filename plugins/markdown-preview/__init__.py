@@ -133,7 +133,7 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		if markdownVersion == "standard":
 			html = HTML_TEMPLATE % (markdown.markdown(text, smart_emphasis=False), )
 		else:
-			html = HTML_TEMPLATE % (markdown.markdown(text, extensions=['extra']), )
+			html = HTML_TEMPLATE % (markdown.markdown(text, extensions=['extra', 'headerid(forceid=False)']), )
 		
 		p = windowdata["panel"].get_placement()
 		html_doc = windowdata["html_doc"]

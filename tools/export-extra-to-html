@@ -16,4 +16,4 @@ import markdown
 
 text = sys.stdin.read().decode('utf-8')
 print "<!-- Markdown => HTML -->"
-print markdown.markdown(text, extensions=['extra']).encode('utf-8')
+print markdown.markdown(text, extensions=['extra', 'headerid(forceid=False)']).encode('utf-8')
