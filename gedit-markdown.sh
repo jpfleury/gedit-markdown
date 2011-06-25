@@ -187,7 +187,7 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	markdown=extra
 	
 	if [[ $choix == 1 ]]; then
-		markdown=markdown
+		markdown=standard
 		echo $(gettext "Le langage Markdown standard sera ajouté.")
 	else
 		echo $(gettext "Le langage Markdown Extra sera ajouté.")
