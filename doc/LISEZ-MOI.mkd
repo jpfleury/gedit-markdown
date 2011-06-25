@@ -67,7 +67,7 @@ La coloration syntaxique devrait s'activer automatiquement pour les fichiers rec
 
 ### Greffon *Aperçu Markdown*
 
-Pour activer le greffon, aller dans *Édition > Préférences > Greffons* et activer *Aperçu Markdown*. Maintenant vous trouverez dans le menu *Outils* une action *Aperçu Markdown*, qui affichera dans le panneau latéral ou inférieur l'aperçu en HTML du document courant. Le raccourci-clavier *Ctrl+Alt+m* peut également être utilisé pour effectuer la même chose.
+Pour activer le greffon, aller dans *Édition > Préférences > Greffons* et activer *Aperçu Markdown*. Maintenant vous trouverez dans le menu *Outils* une action *Aperçu Markdown*, qui affichera dans le panneau latéral ou inférieur l'aperçu en HTML du document courant. Le raccourci-clavier *Ctrl+Alt+m* (peut être modifié dans le fichier de configuration) peut également être utilisé pour effectuer la même chose.
 
 Voici une capture d'écran du greffon lorsqu'il est situé dans le panneau inférieur:
 
@@ -77,9 +77,17 @@ Voici maintenant le même greffon situé dans le panneau latéral:
 
 <img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple4.png" width="684" height="445" alt="Aperçu en HTML d'un document Markdown dans le panneau latéral de gedit." />
 
-**Note:** lors de l'installation, des choix ont été effectués en ce qui concerne la version du langage Markdown ainsi que le panneau à utiliser. Ces choix peuvent être modifiés dans le fichier de configuration du greffon:
+#### Fichier de configuration
+
+Le fichier de configuration du greffon est le suivant:
 
 	~/.gnome2/gedit/plugins/markdown-preview/config.ini
+
+Seule la section `markdown` peut être modifiée, et contient trois paramètres:
+
+- `panel`: emplacement de l'aperçu Markdown. Valeurs possibles: `side` (panneau latéral) ou `bottom` (panneau inférieur).
+- `shortcut`: raccourci-clavier pour générer l'aperçu en HTML du document courant. La valeur par défaut est `<Control><Alt>M`.
+- `version`: la version du langage Markdown à utiliser pour générer l'aperçu en HTML. Valeurs possibles: `standard` ou `extra`.
 
 ### Jeu de couleurs optionnel
 

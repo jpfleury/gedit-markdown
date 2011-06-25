@@ -71,7 +71,7 @@ Syntax highlighting should automatically be activated for files recognized as Ma
 
 ### Plugin *Markdown Preview*
 
-Then, go to *Edit > Preferences > Plugins* and activate *Markdown Preview*. An item *Markdown Preview* will be added in the menu *Tools*, and can be used to display in the side panel or in the bottom panel a preview in HTML of the currently opened file. The keyboard shortcut *Ctrl+Alt+m* does the same.
+Then, go to *Edit > Preferences > Plugins* and activate *Markdown Preview*. An item *Markdown Preview* will be added in the menu *Tools*, and can be used to display in the side panel or in the bottom panel a preview in HTML of the currently opened file. The keyboard shortcut *Ctrl+Alt+m* (can be changed in the configuration file) does the same.
 
 Here's a screenshot of the plugin when it's displayed in the bottom panel:
 
@@ -81,9 +81,17 @@ Now the same plugin displayed in the side panel:
 
 <img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple4.png" width="684" height="445" alt="Markdown Preview in the side panel of gedit." />
 
-**Note:** during installation, choices were made about the Markdown version and the panel to use. These choices can be changed in the configuration file of the plugin:
+#### Configuration file
+
+The configuration file of the plugin is the following:
 
 	~/.gnome2/gedit/plugins/markdown-preview/config.ini
+
+Only the section `markdown` can be edited. It contains three properties:
+
+- `panel`: emplacement of the preview. Possibles values: `side` or `bottom`.
+- `shortcut`: shortcut to refresh the preview. The default value is `<Control><Alt>M`.
+- `version`: the Markdown version to use for the HTML preview. Possible values: `standard` or `extra`.
 
 ### Optional color scheme
 

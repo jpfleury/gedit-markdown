@@ -247,7 +247,7 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 		
 		if [[ $markdown == "markdown" ]]; then
 			# Mise à jour de la configuration.
-			sed -i "s/^\(version=\).*$/\1markdown/" $cheminPluginsMarkdownPreview/config.ini
+			sed -i "s/^\(version=\).*$/\1standard/" $cheminPluginsMarkdownPreview/config.ini
 		fi
 		
 		if [[ $panneau == "side" ]]; then

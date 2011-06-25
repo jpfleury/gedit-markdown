@@ -44,6 +44,7 @@ CONFIG_PATH = os.path.dirname(__file__) + '/config.ini'
 parser = SafeConfigParser()
 parser.read(CONFIG_PATH)
 markdownPanel = parser.get('markdown', 'panel')
+markdownShortcut = parser.get('markdown', 'shortcut')
 markdownVersion = parser.get('markdown', 'version')
 
 class MarkdownPreviewPlugin(gedit.Plugin):
@@ -51,7 +52,7 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		gedit.Plugin.__init__(self)
 	
 	def activate(self, window):
-		action = ("Markdown Preview", None, _("Markdown Preview"), "<Control><Alt>M",
+		action = ("Markdown Preview", None, _("Markdown Preview"), markdownShortcut,
 		          _("Update the HTML preview"), lambda x, y: self.update_preview(y))
 		
 		# Store data in the window object.
