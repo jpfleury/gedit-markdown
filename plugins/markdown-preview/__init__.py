@@ -40,12 +40,12 @@ except:
 HTML_TEMPLATE = "%s"
 
 # Configuration.
-CONFIG_PATH = os.path.dirname(__file__) + '/config.ini'
+CONFIG_PATH = os.path.expanduser('~') + '/.gedit-markdown.ini'
 parser = SafeConfigParser()
 parser.read(CONFIG_PATH)
-markdownPanel = parser.get('markdown', 'panel')
-markdownShortcut = parser.get('markdown', 'shortcut')
-markdownVersion = parser.get('markdown', 'version')
+markdownPanel = parser.get('markdown-preview', 'panel')
+markdownShortcut = parser.get('markdown-preview', 'shortcut')
+markdownVersion = parser.get('markdown-preview', 'version')
 
 class MarkdownPreviewPlugin(gedit.Plugin):
 	def __init__(self):

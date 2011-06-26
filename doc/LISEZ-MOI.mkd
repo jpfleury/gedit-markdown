@@ -80,9 +80,9 @@ Voici maintenant le même greffon situé dans le panneau latéral:
 
 Le fichier de configuration du greffon est le suivant:
 
-	~/.gnome2/gedit/plugins/markdown-preview/config.ini
+	~/.gedit-markdown.ini
 
-Seule la section `markdown` peut être modifiée, et contient trois paramètres:
+Seule la section `markdown-preview` peut être modifiée, et contient trois paramètres:
 
 - `panel`: emplacement de l'aperçu Markdown. Valeurs possibles: `side` (panneau latéral) ou `bottom` (panneau inférieur).
 - `shortcut`: raccourci-clavier pour générer l'aperçu en HTML du document courant. La valeur par défaut est `<Control><Alt>m`.

@@ -84,9 +84,9 @@ Now the same plugin displayed in the side panel:
 
 The configuration file of the plugin is the following:
 
-	~/.gnome2/gedit/plugins/markdown-preview/config.ini
+	~/.gedit-markdown.ini
 
-Only the section `markdown` can be edited. It contains three properties:
+Only the section `markdown-preview` can be edited. It contains three properties:
 
 - `panel`: emplacement of the preview. Possibles values: `side` or `bottom`.
 - `shortcut`: shortcut to refresh the preview. The default value is `<Control><Alt>m`.

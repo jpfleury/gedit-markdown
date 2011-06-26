@@ -18,13 +18,22 @@
 # ce programme; si ce n'est pas le cas, consultez
 # <http://www.gnu.org/licenses/>.
 
-# Localisation.
+########################################################################
+##
+## Localisation.
+##
+########################################################################
+
 export TEXTDOMAINDIR=$(dirname "$0")/locale
 export TEXTDOMAIN=gedit-markdown
 export LANGUAGE=$LANG
 . gettext.sh
 
-# Fonctions.
+########################################################################
+##
+## Fonctions.
+##
+########################################################################
 
 supprimerDossiersVides()
 {
@@ -34,6 +43,42 @@ supprimerDossiersVides()
 		rmdir $dossier
 		dossier=$(dirname "$dossier")
 	done
+}
+
+supprimerGreffon()
+{
+	# Suppression des fichiers.
+	
+	for i in "${anciensFichiersAsupprimer[@]}"; do
+		rm -f $i
+	done
+	
+	for i in "${fichiersAsupprimer[@]}"; do
+		rm -f $i
+	done
+	
+	# Suppression des dossiers.
+	
+	rm -rf $cheminPluginsMarkdownPreview
+	
+	if [[ -n $cheminPythonSitePackages ]]; then
+		rm -rf $cheminPythonSitePackages/markdown
+		supprimerDossiersVides $cheminPythonSitePackages
+	fi
+	
+	if [[ -n $ancienCheminPythonSitePackages ]]; then
+		rm -rf $ancienCheminPythonSitePackages/markdown
+		supprimerDossiersVides $ancienCheminPythonSitePackages
+	fi
+	
+	supprimerDossiersVides $cheminLanguageSpecs
+	supprimerDossiersVides $cheminPlugins
+	supprimerDossiersVides $cheminPluginsMarkdownPreview
+	supprimerDossiersVides $cheminSnippets
+	supprimerDossiersVides $cheminStyles
+	supprimerDossiersVides $cheminTools
+	# Anciennes versions.
+	supprimerDossiersVides $cheminMimePackages
 }
 
 # Merci à <http://stackoverflow.com/questions/4023830/bash-how-compare-two-strings-in-version-format/4025065#4025065>.
@@ -69,7 +114,11 @@ vercomp()
 	return 0
 }
 
-# Variables.
+########################################################################
+##
+## Variables.
+##
+########################################################################
 
 gras=$(tput bold)
 normal=$(tput sgr0)
@@ -91,16 +140,16 @@ fi
 
 vercomp $versionGedit "3"
 
-# Dossiers pour gedit 3.
 if [[ $? == 0 ]]; then
+	# Dossiers pour gedit 3.
 	cheminLanguageSpecs=~/.local/share/gtksourceview-3.0/language-specs
 	cheminPlugins=~/.local/share/gedit/plugins
 	cheminPluginsMarkdownPreview=~/.local/share/gedit/plugins/markdown-preview
 	cheminSnippets=~/.local/share/gedit/snippets
 	cheminStyles=~/.local/share/gtksourceview-3.0/styles
 	cheminTools=~/.local/share/gedit/tools
-# Dossiers pour gedit 2.
 else
+	# Dossiers pour gedit 2.
 	cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
 	cheminPlugins=~/.gnome2/gedit/plugins
 	cheminPluginsMarkdownPreview=~/.gnome2/gedit/plugins/markdown-preview
@@ -109,9 +158,11 @@ else
 	cheminTools=~/.gnome2/gedit/tools
 fi
 
-if [[ -f $cheminPluginsMarkdownPreview/config.ini ]]; then
-	ancienCheminPythonSitePackages=$(sed -n "s/^pythonSitePackages=\(.*\)$/\1/p" < $cheminPluginsMarkdownPreview/config.ini)
+if [[ -f $cheminConfigIni ]]; then
+	ancienCheminPythonSitePackages=$(sed -n "s/^pythonSitePackages=\(.*\)$/\1/p" < $cheminConfigIni)
 fi
+
+cheminConfigIni=~/.gedit-markdown.ini
 
 bonneVersionPython=1
 
@@ -136,7 +187,15 @@ fi
 
 fichiersAsupprimer=( "$cheminLanguageSpecs/markdown.lang" "$cheminLanguageSpecs/markdown-extra.lang" "$cheminPlugins/markdown-preview.gedit-plugin" "$cheminSnippets/markdown.xml" "$cheminSnippets/markdown-extra.xml" "$cheminStyles/classic-markdown.xml" "$cheminTools/export-to-html" "$cheminTools/export-extra-to-html" )
 
-# Début du script.
+# Fichiers d'anciennes versions.
+cheminMimePackages=~/.local/share/mime/packages
+anciensFichiersAsupprimer=( "$cheminMimePackages/x-markdown.xml" "$cheminPlugins/markdownpreview.gedit-plugin" "$cheminPlugins/markdownpreview.py" "$cheminPlugins/markdownpreview.pyc" "$cheminPlugins/markdown.py" "$cheminPlugins/markdown.pyc" )
+
+########################################################################
+##
+## Début du script.
+##
+########################################################################
 
 cd $(dirname "$0")
 
@@ -228,6 +287,9 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo "## " $(gettext "Étape suivante: copie des fichiers")
 	echo $normal
 	
+	# Au cas où il s'agit d'une mise à jour et non d'une première installation.
+	supprimerGreffon
+	
 	# Création des répertoires s'ils n'existent pas déjà.
 	mkdir -p $cheminLanguageSpecs
 	mkdir -p $cheminPlugins
@@ -235,6 +297,10 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	mkdir -p $cheminStyles
 	
 	# Copie des fichiers.
+	
+	if [[ ! -e $cheminConfigIni ]]; then
+		cp config/gedit-markdown.ini $cheminConfigIni
+	fi
 	
 	if [[ $markdown == "standard" ]]; then
 		cp language-specs/markdown.lang $cheminLanguageSpecs
@@ -249,28 +315,33 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 		
 		if [[ $markdown == "standard" ]]; then
 			# Mise à jour de la configuration.
-			sed -i "s/^\(version=\).*$/\1standard/" $cheminPluginsMarkdownPreview/config.ini
+			if [[ -n $(grep "^version=" $cheminConfigIni) ]]; then
+				sed -i "s/^\(version=\).*$/\1standard/" $cheminConfigIni
+			else
+				sed -i "s/^\(\[markdown-preview\]\)$/\1\nversion=standard/" $cheminConfigIni
+			fi
 		fi
 		
 		if [[ $panneau == "side" ]]; then
 			# Mise à jour de la configuration.
-			sed -i "s/^\(panel=\).*$/\1side/" $cheminPluginsMarkdownPreview/config.ini
-		fi
-		
-		if [[ -n $ancienCheminPythonSitePackages ]]; then
-			rm -rf $ancienCheminPythonSitePackages/markdown
-			supprimerDossiersVides $ancienCheminPythonSitePackages
+			if [[ -n $(grep "^panel=" $cheminConfigIni) ]]; then
+				sed -i "s/^\(panel=\).*$/\1side/" $cheminConfigIni
+			else
+				sed -i "s/^\(\[markdown-preview\]\)$/\1\npanel=side/" $cheminConfigIni
+			fi
 		fi
 		
 		mkdir -p $cheminPythonSitePackages
 		
-		if [[ -e $cheminPythonSitePackages/markdown ]]; then
-			rm -rf $cheminPythonSitePackages/markdown
+		mv $cheminPluginsMarkdownPreview/markdown $cheminPythonSitePackages
+		
+		# Mise à jour de la configuration.
+		if [[ -n $(grep "^pythonSitePackages=" $cheminConfigIni) ]]; then
+			sed -i "s|^\(pythonSitePackages=\).*$|\1$cheminPythonSitePackages|" $cheminConfigIni
+		else
+			sed -i "s|^\(\[markdown-preview\]\)$|\1\npythonSitePackages=$cheminPythonSitePackages|" $cheminConfigIni
 		fi
 		
-		mv $cheminPluginsMarkdownPreview/markdown $cheminPythonSitePackages
-		# Mise à jour de la configuration.
-		sed -i "s|^\(pythonSitePackages=\).*$|\1$cheminPythonSitePackages|" $cheminPluginsMarkdownPreview/config.ini
 		rm $cheminPluginsMarkdownPreview/locale/markdown-preview.pot
 		find $cheminPluginsMarkdownPreview/locale/ -name '*.po' -exec rm -f {} \;
 		mkdir -p $cheminTools
@@ -303,24 +374,7 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 	echo "## " $(gettext "Première étape: suppression des fichiers")
 	echo $normal
 	
-	# Suppression des fichiers.
-	for i in "${fichiersAsupprimer[@]}"; do
-		rm -f $i
-	done
-	
-	# Suppression des dossiers.
-
-	rm -rf $cheminPluginsMarkdownPreview
-	
-	if [[ -n $cheminPythonSitePackages ]]; then
-		rm -rf $cheminPythonSitePackages/markdown
-		supprimerDossiersVides $cheminPythonSitePackages
-	fi
-	
-	if [[ -n $ancienCheminPythonSitePackages ]]; then
-		rm -rf $ancienCheminPythonSitePackages/markdown
-		supprimerDossiersVides $ancienCheminPythonSitePackages
-	fi
+	supprimerGreffon
 	
 	echo $(gettext "Étape terminée.")
 	
