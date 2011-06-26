@@ -26,7 +26,6 @@ import webkit
 import markdown
 import gettext
 from ConfigParser import SafeConfigParser
-from gpdefs import *
 
 try:
 	APP_NAME = 'markdown-preview'
