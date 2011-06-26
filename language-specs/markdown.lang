@@ -26,8 +26,6 @@
      * (en) <http://daringfireball.net/projects/markdown/syntax> -->
 <language id="markdown" _name="Markdown" version="2.0" _section="Markup">
   <metadata>
-    <!-- Bug against shared-mime-info for Markdown MIME type:
-         <https://bugs.freedesktop.org/show_bug.cgi?id=27441>. -->
     <property name="mimetypes">text/x-markdown</property>
     <property name="globs">*.markdown;*.md;*.mkd</property>
     <property name="block-comment-start">&lt;!--</property>
