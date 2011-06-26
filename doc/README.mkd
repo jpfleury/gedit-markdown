@@ -24,7 +24,7 @@ Specifically, it adds:
 
 	Other files should theoretically work well with gedit 3 and will therefore be installed regardless of the version of gedit.
 
-## Installation
+## Installation (or update)
 
 ### GNU/Linux
 

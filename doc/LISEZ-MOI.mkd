@@ -24,7 +24,7 @@ Plus précisément, gedit-markdown ajoute:
 
 	Les autres fichiers devraient théoriquement bien fonctionner avec gedit 3; ils seront donc installés peu importe la version de gedit.
 
-## Installation
+## Installation (ou mise à jour)
 
 ### GNU/Linux
 
