@@ -199,13 +199,13 @@
          <user@example.com>
          <http://www.example.com/>
     -->
-    <!-- Note: regular expression for URL is taken from function `doAutoLinks`
-         from PHP Markdown. See <http://michelf.com/projets/php-markdown/>. -->
+    <!-- Note: regular expressions are taken from function `_DoAutoLinks` from
+         Markdown.pl (see <http://daringfireball.net/projects/markdown/>). -->
     <context id="automatic-link" class="no-spell-check">
       <match case-sensitive="false" extended="true">
         &lt;
-          (([-a-z0-9%._'+]+@[-a-z0-9.]+\.[a-z]+) | # E-mail.
-          ((https?|ftp|dict):[^\'">\s]+))          # URL.
+          (((mailto:)?[-.\w]+\@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+) | # E-mail.
+          ((https?|ftp):[^'">\s]+))                                 # URL.
         &gt;
       </match>
 
