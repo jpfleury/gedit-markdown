@@ -43,14 +43,11 @@ from treeprocessors import build_treeprocessors
 from inlinepatterns import build_inlinepatterns
 from postprocessors import build_postprocessors
 from extensions import Extension
-import html4
+from searializers import to_html_string, to_xhtml_string
 
-# For backwards compatibility in the 2.0.x series
-# The things defined in these modules started off in __init__.py so third
-# party code might need to access them here.
-from util import *
+__all__ = ['Markdown', 'markdown', 'markdownFromFile']
 
-logger =  logging.getLogger('MARKDOWN')
+logger = logging.getLogger('MARKDOWN')
 
 
 class Markdown:
@@ -67,13 +64,15 @@ class Markdown:
     }
     
     output_formats = {
-        'html'  : html4.to_html_string,
-        'html4' : html4.to_html_string,
-        'xhtml' : util.etree.tostring,
-        'xhtml1': util.etree.tostring,
+        'html'  : to_html_string,
+        'html4' : to_html_string,
+        'html5' : to_html_string,
+        'xhtml' : to_xhtml_string,
+        'xhtml1': to_xhtml_string,
+        'xhtml5': to_xhtml_string,
     }
 
-    def __init__(self, extensions=[], **kwargs):
+    def __init__(self, *args, **kwargs):
         """
         Creates a new Markdown instance.
 
@@ -86,8 +85,10 @@ class Markdown:
         * extension-configs: Configuration settingis for extensions.
         * output_format: Format of output. Supported formats are:
             * "xhtml1": Outputs XHTML 1.x. Default.
+            * "xhtml5": Outputs XHTML style tags of HTML 5
             * "xhtml": Outputs latest supported version of XHTML (currently XHTML 1.1).
             * "html4": Outputs HTML 4
+            * "html5": Outputs HTML style tags of HTML 5
             * "html": Outputs latest supported version of HTML (currently HTML 4).
             Note that it is suggested that the more specific formats ("xhtml1"
             and "html4") be used as "xhtml" or "html" may change in the future
@@ -96,11 +97,23 @@ class Markdown:
         * html_replacement_text: Text used when safe_mode is set to "replace".
         * tab_length: Length of tabs in the source. Default: 4
         * enable_attributes: Enable the conversion of attributes. Default: True
-        * smart_emphsasis: Treat `_connected_words_` intelegently Default: True
+        * smart_emphasis: Treat `_connected_words_` intelegently Default: True
         * lazy_ol: Ignore number of first item of ordered lists. Default: True
 
         """
 
+        # For backward compatability, loop through old positional args
+        pos = ['extensions', 'extension_configs', 'safe_mode', 'output_format']
+        c = 0
+        for arg in args:
+            if not kwargs.has_key(pos[c]):
+                kwargs[pos[c]] = arg
+            c += 1
+            if c == len(pos):
+                # ignore any additional args
+                break
+
+        # Loop throu kwargs and assign defaults
         for option, default in self.option_defaults.items():
             setattr(self, option, kwargs.get(option, default)) 
 
@@ -113,8 +126,8 @@ class Markdown:
 
         self.references = {}
         self.htmlStash = util.HtmlStash()
-        self.registerExtensions(extensions = extensions,
-                                configs = kwargs.get('extension_configs', {}))
+        self.registerExtensions(extensions=kwargs.get('extensions', []),
+                                configs=kwargs.get('extension_configs', {}))
         self.set_output_format(kwargs.get('output_format', 'xhtml1'))
         self.reset()
 
@@ -318,7 +331,7 @@ class Markdown:
         if isinstance(input, basestring):
             input_file = codecs.open(input, mode="r", encoding=encoding)
         else:
-            input_file = input
+            input_file = codecs.getreader(encoding)(input)
         text = input_file.read()
         input_file.close()
         text = text.lstrip(u'\ufeff') # remove the byte-order mark
@@ -364,14 +377,34 @@ def markdown(text, *args, **kwargs):
     return md.convert(text)
 
 
-def markdownFromFile(input = None,
-                     output = None,
-                     extensions = [],
-                     encoding = None,
-                     *args, **kwargs):
-    """Read markdown code from a file and write it to a file or a stream."""
-    md = Markdown(extensions=extensions, *args, **kwargs)
-    md.convertFile(input, output, encoding)
+def markdownFromFile(*args, **kwargs):
+    """Read markdown code from a file and write it to a file or a stream.
+    
+    This is a shortcut function which initializes an instance of Markdown,
+    cand calls the convertFile method rather than convert.
+    
+    Keyword arguments:
+    
+    * input: a file name or readable object.
+    * output: a file name or writable object.
+    * encoding: Encoding of input and output.
+    * Any arguments accepted by the Markdown class.
+    
+    """
+    # For backward compatability loop through positional args
+    pos = ['input', 'output', 'extensions', 'encoding']
+    c = 0
+    for arg in args:
+        if not kwargs.has_key(pos[c]):
+            kwargs[pos[c]] = arg
+        c += 1
+        if c == len(pos):
+            break
+
+    md = Markdown(**kwargs)
+    md.convertFile(kwargs.get('input', None), 
+                   kwargs.get('output', None),
+                   kwargs.get('encoding', None))
 
 
 

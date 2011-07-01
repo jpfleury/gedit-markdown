@@ -15,30 +15,16 @@ available to you.
     * [[Definition_Lists]]
     * [[Fenced_Code_Blocks]]
     * [[Footnotes]]
-    * [[HeaderId]]
+    * [[Attr_List]]
     * [[Tables]]
+* [[attr_list]]
 * [[CodeHilite]]
 * [[HTML_Tidy]]
+* [[HeaderId]]
 * [[ImageLinks]]
 * [[Meta-Data]]
+* [[nl2br]]
 * [[RSS]]
 * [[Table_of_Contents]]
 * [[WikiLinks]]
-
-Unofficially Supported Extensions 
----------------------------------
-
-These extensions have not yet been included in any official Python-Markdown 
-release. However, the code is maintained in the projects 
-[mainline git repository](http://gitorious.org/projects/python-markdown/repos/mainline) 
-by the Python-Markdown developers and the official documentation is maintained 
-here. All bug reports should be made to the project. It is anticipated that 
-these extensions will be included with some future official release, at which 
-time they will be moved to the above list of official extensions.
-
-* [[Legacy]]
-
-
-
-
 

@@ -47,6 +47,8 @@ else:
 PI = util.etree.PI
 ProcessingInstruction = util.etree.ProcessingInstruction
 
+__all__ = ['to_html_string', 'to_xhtml_string']
+
 HTML_EMPTY = ("area", "base", "basefont", "br", "col", "frame", "hr",
               "img", "input", "isindex", "link", "meta" "param")
 
@@ -119,6 +121,8 @@ def _escape_attrib_html(text, encoding):
     try:
         if "&" in text:
             text = text.replace("&", "&amp;")
+        if "<" in text:
+            text = text.replace("<", "&lt;")
         if ">" in text:
             text = text.replace(">", "&gt;")
         if "\"" in text:
@@ -128,7 +132,7 @@ def _escape_attrib_html(text, encoding):
         _raise_serialization_error(text)
 
 
-def _serialize_html(write, elem, encoding, qnames, namespaces):
+def _serialize_html(write, elem, encoding, qnames, namespaces, format):
     tag = elem.tag
     text = elem.text
     if tag is Comment:
@@ -141,7 +145,7 @@ def _serialize_html(write, elem, encoding, qnames, namespaces):
             if text:
                 write(_escape_cdata(text, encoding))
             for e in elem:
-                _serialize_html(write, e, encoding, qnames, None)
+                _serialize_html(write, e, encoding, qnames, None, format)
         else:
             write("<" + tag)
             items = elem.items()
@@ -154,8 +158,11 @@ def _serialize_html(write, elem, encoding, qnames, namespaces):
                         v = qnames[v.text]
                     else:
                         v = _escape_attrib_html(v, encoding)
-                    # FIXME: handle boolean attributes
-                    write(" %s=\"%s\"" % (qnames[k], v))
+                    if qnames[k] == v and format == 'html':
+                        # handle boolean attributes
+                        write(" %s" % v)
+                    else:
+                        write(" %s=\"%s\"" % (qnames[k], v))
                 if namespaces:
                     items = namespaces.items()
                     items.sort(key=lambda x: x[1]) # sort on prefix
@@ -166,36 +173,40 @@ def _serialize_html(write, elem, encoding, qnames, namespaces):
                             k.encode(encoding),
                             _escape_attrib(v, encoding)
                             ))
-            write(">")
-            tag = tag.lower()
-            if text:
-                if tag == "script" or tag == "style":
-                    write(_encode(text, encoding))
-                else:
-                    write(_escape_cdata(text, encoding))
-            for e in elem:
-                _serialize_html(write, e, encoding, qnames, None)
-            if tag not in HTML_EMPTY:
-                write("</" + tag + ">")
+            if format == "xhtml" and tag in HTML_EMPTY:
+                write(" />")
+            else:
+                write(">")
+                tag = tag.lower()
+                if text:
+                    if tag == "script" or tag == "style":
+                        write(_encode(text, encoding))
+                    else:
+                        write(_escape_cdata(text, encoding))
+                for e in elem:
+                    _serialize_html(write, e, encoding, qnames, None, format)
+                if tag not in HTML_EMPTY:
+                    write("</" + tag + ">")
     if elem.tail:
         write(_escape_cdata(elem.tail, encoding))
 
-def write_html(root, f,
+def _write_html(root,
           # keyword arguments
-          encoding="us-ascii",
-          default_namespace=None):
+          encoding="utf-8",
+          default_namespace=None,
+          format="html"):
     assert root is not None
-    if not hasattr(f, "write"):
-        f = open(f, "wb")
-    write = f.write
+    data = []
+    write = data.append
     if not encoding:
-        encoding = "us-ascii"
+        encoding = "utf-8"
     qnames, namespaces = _namespaces(
             root, encoding, default_namespace
             )
     _serialize_html(
-                write, root, encoding, qnames, namespaces
+                write, root, encoding, qnames, namespaces, format
                 )
+    return "".join(data)
 
 # --------------------------------------------------------------------
 # serialization support
@@ -268,10 +279,7 @@ def _namespaces(elem, encoding, default_namespace=None):
     return qnames, namespaces
 
 def to_html_string(element, encoding=None):
-    class dummy:
-        pass
-    data = []
-    file = dummy()
-    file.write = data.append
-    write_html(ElementTree(element).getroot(),file,encoding)
-    return "".join(data)
+    return _write_html(ElementTree(element).getroot(), encoding, format="html")
+
+def to_xhtml_string(element, encoding=None):
+    return _write_html(ElementTree(element).getroot(), encoding, format="xhtml")
