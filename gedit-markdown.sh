@@ -24,9 +24,8 @@
 ##
 ########################################################################
 
-export TEXTDOMAINDIR=$(dirname "$0")/locale
+export TEXTDOMAINDIR=./locale
 export TEXTDOMAIN=gedit-markdown
-export LANGUAGE=$LANG
 . gettext.sh
 
 ########################################################################
