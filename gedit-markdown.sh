@@ -137,8 +137,9 @@ if [[ -z $(which gedit) ]]; then
 	geditEstInstalle=0
 	bonneVersionGedit=0
 else
-	versionGedit=$(gedit --version | cut -d ' ' -f 4 | cut -d '.' -f 1)
-	vercomp $versionGedit "2"
+	versionCompleteGedit=$(gedit --version | cut -d ' ' -f 4)
+	versionMajeureGedit=$(echo $versionCompleteGedit | cut -d '.' -f 1)
+	vercomp $versionMajeureGedit "2"
 	
 	if [[ $? == 1 ]]; then
 		bonneVersionGedit=0
@@ -149,7 +150,7 @@ fi
 ## Dossiers d'installation.
 ####################################
 
-vercomp $versionGedit "3"
+vercomp $versionMajeureGedit "3"
 
 if [[ $? == 0 ]]; then
 	# Dossiers pour gedit 3.
@@ -250,7 +251,7 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo "## " $(gettext "Première étape: vérification des dépendances")
 	echo $normal
 	
-	echo "- gedit: $versionGedit"
+	echo "- gedit: $versionCompleteGedit"
 	
 	if [[ -n $versionGtkSourceView ]]; then
 		echo "- GtkSourceView: $versionGtkSourceView"
