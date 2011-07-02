@@ -24,6 +24,8 @@ Plus précisément, gedit-markdown ajoute:
 
 	Les autres fichiers devraient théoriquement bien fonctionner avec gedit 3; ils seront donc installés peu importe la version de gedit.
 
+- La désactivation de la vérification orthographique dans la coloration syntaxique pour les contextes non pertinents (par exemple dans les adresses URL) dépend de GtkSourceView >= 2.10.
+
 ## Installation (ou mise à jour)
 
 ### GNU/Linux

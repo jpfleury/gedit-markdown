@@ -120,8 +120,16 @@ vercomp()
 ##
 ########################################################################
 
+####################################
+## Mise en forme de l'affichage.
+####################################
+
 gras=$(tput bold)
 normal=$(tput sgr0)
+
+####################################
+## Version de gedit.
+####################################
 
 geditEstInstalle=1
 bonneVersionGedit=1
@@ -137,6 +145,10 @@ else
 		bonneVersionGedit=0
 	fi
 fi
+
+####################################
+## Dossiers d'installation.
+####################################
 
 vercomp $versionGedit "3"
 
@@ -164,6 +176,26 @@ fi
 
 cheminConfigIni=~/.gedit-markdown.ini
 
+####################################
+## Version de GtkSourceView.
+####################################
+
+cheminGtkSourceView2Readme=/usr/share/doc/libgtksourceview2.0-0/README
+bonneVersionGtkSourceView=1
+
+if [[ -f $cheminGtkSourceView2Readme ]]; then
+	versionGtkSourceView=$(cat $cheminGtkSourceView2Readme | grep "^This is version " | cut -d ' ' -f 4)
+	vercomp $versionGtkSourceView "2.10"
+	
+	if [[ $? == 2 ]]; then
+		bonneVersionGtkSourceView=0
+	fi
+fi
+
+####################################
+## Version de Python.
+####################################
+
 bonneVersionPython=1
 
 if [[ -z $(which python) ]]; then
@@ -179,11 +211,19 @@ else
 	fi
 fi
 
+####################################
+## Greffon installable.
+####################################
+
 greffonEstInstallable=1
 
 if [[ $bonneVersionGedit == 0 || $bonneVersionPython == 0 ]]; then
 	greffonEstInstallable=0
 fi
+
+####################################
+## Fichiers à supprimer.
+####################################
 
 fichiersAsupprimer=( "$cheminLanguageSpecs/markdown.lang" "$cheminLanguageSpecs/markdown-extra.lang" "$cheminPlugins/markdown-preview.gedit-plugin" "$cheminSnippets/markdown.xml" "$cheminSnippets/markdown-extra.xml" "$cheminStyles/classic-markdown.xml" "$cheminTools/export-to-html" "$cheminTools/export-extra-to-html" )
 
@@ -212,6 +252,11 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo $normal
 	
 	echo "- gedit: $versionGedit"
+	
+	if [[ -n $versionGtkSourceView ]]; then
+		echo "- GtkSourceView: $versionGtkSourceView"
+	fi
+	
 	echo "- Python: $versionPython"
 	echo ""
 	
@@ -221,8 +266,18 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 		exit 1
 	fi
 	
+	if [[ $bonneVersionGtkSourceView == 0 ]]; then
+		echo -e $(gettext ""\
+"La vérification orthographique ne peut pas être désactivée dans la coloration\n"\
+"syntaxique pour les contextes non pertinents (par exemple dans les adresses URL),\n"\
+"car cette fonctionnalité dépend de GtkSourceView >= 2.10.")
+		echo ""
+	fi
+	
 	if [[ $greffonEstInstallable == 0 ]]; then
-		echo $(gettext "Le greffon «Markdown Preview» ne sera pas installé, car il dépend de gedit 2 et de Python >= 2.6.")
+		echo -e $(gettext ""\
+"Le greffon «Markdown Preview» ne sera pas installé, car il dépend de gedit 2 et\n"\
+"de Python >= 2.6.")
 		echo ""
 	fi
 	
@@ -304,11 +359,16 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	
 	if [[ $markdown == "standard" ]]; then
 		cp language-specs/markdown.lang $cheminLanguageSpecs
+		cheminCompletLanguageSpecs=$cheminLanguageSpecs/markdown.lang
 		cp snippets/markdown.xml $cheminSnippets
 	else
 		cp language-specs/markdown-extra.lang $cheminLanguageSpecs
+		cheminCompletLanguageSpecs=$cheminLanguageSpecs/markdown-extra.lang
 		cp snippets/markdown-extra.xml $cheminSnippets
 	fi
+	
+	# Compatibilité avec GtkSourceView < 2.10.
+	sed -i 's/ class="no-spell-check"//g' $cheminCompletLanguageSpecs
 	
 	if [[ $greffonEstInstallable == 1 ]]; then
 		cp -r plugins/* $cheminPlugins
