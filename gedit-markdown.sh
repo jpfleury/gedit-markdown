@@ -206,8 +206,9 @@ bonneVersionPython=1
 if [[ -z $(which python) ]]; then
 	bonneVersionPython=0
 else
-	versionPython=$(python -c 'import sys; print(sys.version[:3])')
-	vercomp $versionPython "2.6"
+	versionCompletePython=$(python -c 'import platform; print(platform.python_version())')
+	versionMajeurePython=$(python -c 'import sys; print(sys.version[:3])')
+	vercomp $versionMajeurePython "2.6"
 	
 	if [[ $? == 2 ]]; then
 		bonneVersionPython=0
@@ -262,7 +263,7 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 		echo "- GtkSourceView: $versionGtkSourceView"
 	fi
 	
-	echo "- Python: $versionPython"
+	echo "- Python: $versionCompletePython"
 	echo ""
 	
 	if [[ $geditEstInstalle == 0 ]]; then
