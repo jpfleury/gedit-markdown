@@ -26,6 +26,11 @@
 
 export TEXTDOMAINDIR=./locale
 export TEXTDOMAIN=gedit-markdown
+
+if [[ ${LANG:0:2} == "fr" ]]; then
+	export LANGUAGE=fr
+fi
+
 . gettext.sh
 
 ########################################################################
