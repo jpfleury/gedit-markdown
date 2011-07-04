@@ -39,7 +39,7 @@ except:
 HTML_TEMPLATE = "%s"
 
 # Configuration.
-CONFIG_PATH = os.path.expanduser('~') + '/.gedit-markdown.ini'
+CONFIG_PATH = os.path.expanduser('~') + '/.config/gedit-markdown.ini'
 parser = SafeConfigParser()
 parser.read(CONFIG_PATH)
 markdownPanel = parser.get('markdown-preview', 'panel')

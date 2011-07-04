@@ -6,7 +6,7 @@ gedit-markdown est un ensemble de fichiers ajoutant le support du langage [Markd
 
 Plus précisément, gedit-markdown ajoute:
 
-- la coloration syntaxique des fichiers Markdown dans gedit ainsi que des extraits de code pour accélérer la rédaction;
+- la coloration syntaxique des fichiers Markdown ainsi que des extraits de code pour accélérer la rédaction;
 - le greffon *Aperçu Markdown*, affichant dans le panneau latéral ou inférieur de gedit un aperçu en HTML du fichier Markdown en cours d'édition;
 - un outil externe permettant d'exporter le code HTML du document Markdown en cours d'édition;
 - un jeu de couleurs, optionnel, colorant le code Markdown d'une manière plus ressemblante au rendu HTML.
@@ -18,11 +18,11 @@ Plus précisément, gedit-markdown ajoute:
 
 ## Dépendances
 
-- gedit-markdown est livré avec un installateur. Ce dernier a été codé pour GNU/Linux. Sous Windows XP, seule la coloration syntaxique fonctionne, et doit être installée à la main.
+- gedit-markdown est livré avec un installateur pour GNU/Linux. Sous Windows XP, seuls certains fichiers fonctionnent, et doivent être installés à la main.
 
-- Le greffon «Markdown Preview» dépend de Python >= 2.6 et a été testé seulement avec gedit 2 (il ne fonctionnera possiblement pas avec gedit 3). Ainsi, l'installateur va copier le greffon seulement si les bonnes versions de Python et de gedit sont installées.
+- Le greffon «Markdown Preview» dépend de Python >= 2.6 et (pour l'instant) de gedit 2 (portage vers gedit 3 en cours). Ainsi, l'installateur va copier le greffon seulement si les bonnes versions de Python et de gedit sont installées.
 
-	Les autres fichiers devraient théoriquement bien fonctionner avec gedit 3; ils seront donc installés peu importe la version de gedit.
+	Les autres fichiers fonctionnent sans problème avec gedit 3; ils seront donc installés peu importe la version de gedit.
 
 - La désactivation de la vérification orthographique dans la coloration syntaxique pour les contextes non pertinents (par exemple dans les adresses URL) dépend de GtkSourceView >= 2.10.
 
@@ -34,7 +34,7 @@ Plus précisément, gedit-markdown ajoute:
 - Décompresser l'archive.
 - Lancer le script d'installation et répondre aux questions demandées.
 
-Voici les commandes pour effectuer toutes ces étapes dans une console sous GNU/Linux:
+Voici les commandes pour effectuer toutes ces étapes dans une console:
 
 	wget http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip
 	unzip gedit-markdown.zip
@@ -44,19 +44,31 @@ Le support de Markdown sera ajouté à l'utilisateur courant (l'installation se 
 
 ### Windows XP
 
-Il n'y a qu'un fichier à copier, car seule la coloration syntaxique fonctionne. Dans l'archive de gedit-markdown, trouver le dossier `language-specs`, choisir le fichier correspondant à la version de Markdown voulue, par exemple:
+Voici la marche à suivre pour gedit 2:
 
-	language-specs/markdown.lang
+- Coloration syntaxique: dans l'archive de gedit-markdown, trouver le dossier `language-specs`, copier le fichier correspondant à la version de Markdown voulue, par exemple:
 
-et le copier dans le dossier suivant:
+		language-specs/markdown.lang
 
-	C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
+	et le coller dans le dossier suivant:
+
+		C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
+
+- Jeu de couleurs optionnel: dans l'archive de gedit-markdown, copier le fichier `styles/classic-markdown.xml` et le coller dans le dossier suivant:
+
+		C:\Program Files\gedit\share\gtksourceview-2.0\styles\
 
 ## Désinstallation
 
-Dans une console sous GNU/Linux, lancer le script de désinstallation:
+### GNU/Linux
+
+Dans une console, lancer le script de désinstallation:
 
 	gedit-markdown/gedit-markdown.sh desinstaller
+
+### Windows XP
+
+Simplement supprimer à la main les fichiers ajoutés lors de l'installation.
 
 ## Utilisation
 
@@ -78,18 +90,6 @@ Voici maintenant le même greffon situé dans le panneau latéral:
 
 <img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple4.png" width="684" height="445" alt="Aperçu en HTML d'un document Markdown dans le panneau latéral de gedit." />
 
-#### Fichier de configuration
-
-Le fichier de configuration du greffon est le suivant:
-
-	~/.gedit-markdown.ini
-
-Seule la section `markdown-preview` peut être modifiée, et contient trois paramètres:
-
-- `panel`: emplacement de l'aperçu Markdown. Valeurs possibles: `side` (panneau latéral) ou `bottom` (panneau inférieur).
-- `shortcut`: raccourci-clavier pour générer l'aperçu en HTML du document courant. La valeur par défaut est `<Control><Alt>m`.
-- `version`: la version du langage Markdown à utiliser pour générer l'aperçu en HTML. Valeurs possibles: `standard` ou `extra`.
-
 ### Extraits de code
 
 Pour utiliser les extraits de code de Markdown, il faut activer le greffon *Extraits de code* dans le menu *Édition > Préférences > Greffons* de gedit. Ensuite, aller dans *Outils > Gérer les extraits de code...* pour consulter les différentes possibilités.
@@ -106,9 +106,23 @@ Un jeu de couleurs optionnel est installé automatiquement par gedit-markdown. P
 
 <img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple2.png" width="684" height="779" alt="Jeu de couleurs optionnel pour la coloration syntaxique du Markdown dans gedit." />
 
+### Fichier de configuration
+
+Le fichier de configuration de gedit-markdown est le suivant:
+
+	~/.config/gedit-markdown.ini
+
+Seule la section `markdown-preview` peut être modifiée, et contient trois paramètres:
+
+- `panel`: emplacement de l'aperçu Markdown. Valeurs possibles: `side` (panneau latéral) ou `bottom` (panneau inférieur).
+- `shortcut`: raccourci-clavier pour générer l'aperçu en HTML du document courant. La valeur par défaut est `<Control><Alt>m`.
+- `version`: la version du langage Markdown à utiliser pour générer l'aperçu et exporter en HTML. Valeurs possibles: `standard` ou `extra`.
+
 ## Précisions ou limitations
 
-- D'anciennes versions de gedit-markdown ajoutaient également un type MIME pour les fichiers Markdown ainsi que la reconnaissance d'une extension supplémentaire (`.mdtxt`). Depuis que le support des fichiers Markdown a été ajouté directement dans la base de données partagée MIME `shared-mime-info` ([consulter le rapport de bogue][bogue27441]), gedit-markdown n'ajoute plus son propre fichier de type MIME pour le Markdown. Aussi, dans un but de conformité avec la spécification, l'extension `.mdtxt` n'est plus supportée.
+- La coloration syntaxique ainsi que les extraits de code pour Markdown (version standard) ont été ajoutés officiellement à GtkSourceView et gedit > 3.1.1. Dans l'installateur de gedit-markdown, si la version choisie est Markdown standard, une vérification sera effectuée pour ne pas copier des fichiers qui existent déjà (aucune vérification ne sera effectuée pour l'installation de Markdown Extra puisqu'il ne s'agit pas de la version livrée par défaut avec GtkSourceView et gedit > 3.1.1).
+
+- D'anciennes versions de gedit-markdown ajoutaient également un type MIME pour les fichiers Markdown ainsi que la reconnaissance d'une extension supplémentaire (`.mdtxt`). Depuis que le support des fichiers Markdown a été ajouté directement dans la base de données partagée MIME `shared-mime-info` ([consulter le rapport de bogue][bogue27441]), gedit-markdown n'ajoute plus son propre fichier de type MIME pour Markdown. Aussi, dans un but de conformité avec la spécification, l'extension `.mdtxt` n'est plus supportée.
 
 - Puisqu'il est possible d'ajouter du code HTML directement dans un texte écrit en Markdown, j'ai également ajouté la coloration syntaxique du HTML, ce qui a entre autres comme conséquence que le code Markdown dans du HTML est coloré syntaxiquement. Il faut cependant avoir en tête que selon la syntaxe officielle, du code Markdown dans un environnement HTML n'est pas transformé, il est affiché tel quel, et que selon la syntaxe du Markdown Extra, seul le code Markdown dans un bloc possédant un attribut `markdown` dont la valeur est de 1 (par exemple `<div markdown="1">`) est transformé.
 

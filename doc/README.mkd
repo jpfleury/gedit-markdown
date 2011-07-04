@@ -6,7 +6,7 @@ gedit-markdown adds support for [Markdown][] (or [Markdown Extra][]) in gedit, t
 
 Specifically, it adds:
 
-- Markdown syntax highlighting and snippets in gedit;
+- Markdown syntax highlighting and snippets;
 - plugin *Markdown Preview* for gedit, displayed in the side panel or the bottom panel and previewing in HTML the currently opened file;
 - an external tool exporting to HTML the currently opened file;
 - a color scheme, optional, highlighting Markdown files in a manner more similar to HTML rendering.
@@ -18,11 +18,11 @@ Specifically, it adds:
 
 ## Requirements
 
-- gedit-markdown is shipped with an installer for GNU/Linux. On Windows XP, only syntax highlighting works, and must be installed by hand.
+- gedit-markdown is shipped with an installer for GNU/Linux. On Windows XP, only a few files work, and must be installed by hand.
 
-- The plugin «Markdown Preview» depends on Python >= 2.6 and was tested only with gedit 2 (it will possibly not work with gedit 3). Thus, the installer will copy the plugin only if the right versions of Python and gedit are installed.
+- The plugin «Markdown Preview» depends on Python >= 2.6 and (for now) on gedit 2 (porting to gedit 3 in progress). Thus, the installer will copy the plugin only if the right versions of Python and gedit are installed.
 
-	Other files should theoretically work well with gedit 3 and will therefore be installed regardless of the version of gedit.
+	Other files work well with gedit 3 and will therefore be installed regardless of the version of gedit.
 
 - Deactivation of check spelling for irrelevant highlighted contexts (for example in URL) depends on GtkSourceView >= 2.10.
 
@@ -34,7 +34,7 @@ Specifically, it adds:
 - Extract the archive.
 - Run the installer and answer questions asked.
 
-Here are commands for all these steps in a GNU/Linux terminal:
+Here are commands for all these steps in a terminal:
 
 	wget http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip
 	unzip gedit-markdown.zip
@@ -44,23 +44,31 @@ Markdown support will be added for the current user (so no need root privileges)
 
 ### Windows XP
 
-Only one file must be copied, because only syntax highlighting works. In the extracted folder, find the folder `language-specs`, choose the file corresponding to the Markdown version desired, for example:
+Here are steps for gedit 2:
 
-	language-specs/markdown.lang
+- Syntax highlighting: in the extracted folder, find the folder `language-specs`, copy the file corresponding to the Markdown version desired, for example:
 
-and copy it in the following folder:
+		language-specs/markdown.lang
 
-	C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
+	and paste it in the following folder:
 
-so we have in the end:
+		C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\
 
-	C:\Program Files\gedit\share\gtksourceview-2.0\language-specs\markdown.lang
+- Optional color scheme: in the extracted folder, copy the file `styles/classic-markdown.xml` and paste it in the following folder:
+
+		C:\Program Files\gedit\share\gtksourceview-2.0\styles\
 
 ## Uninstallation
 
-In a GNU/Linux terminal, run the uninstaller:
+### GNU/Linux
+
+In a terminal, run the uninstaller:
 
 	gedit-markdown/gedit-markdown.sh uninstall
+
+### Windows XP
+
+Simply remove by hand the files added during installation.
 
 ## Usage
 
@@ -82,18 +90,6 @@ Now the same plugin displayed in the side panel:
 
 <img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple4.png" width="684" height="445" alt="Markdown Preview in the side panel of gedit." />
 
-#### Configuration file
-
-The configuration file of the plugin is the following:
-
-	~/.gedit-markdown.ini
-
-Only the section `markdown-preview` can be edited. It contains three properties:
-
-- `panel`: emplacement of the preview. Possibles values: `side` or `bottom`.
-- `shortcut`: shortcut to refresh the preview. The default value is `<Control><Alt>m`.
-- `version`: the Markdown version to use for the HTML preview. Possible values: `standard` or `extra`.
-
 ### Snippets
 
 To use Markdown snippets, activate the plugin *Snippets* in *Edit > Preferences > Plugins*. Then, go to *Tools > Manage Snippets...* to see the possibilities.
@@ -110,7 +106,21 @@ An optional color scheme is installed by gedit-markdown. To use it, go to *Edit 
 
 <img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple2.png" width="684" height="779" alt="Optional color scheme for Markdown syntax highlighting in gedit." />
 
+### Configuration file
+
+The configuration file of gedit-markdown is the following:
+
+	~/.config/gedit-markdown.ini
+
+Only the section `markdown-preview` can be edited. It contains three properties:
+
+- `panel`: emplacement of the preview. Possibles values: `side` or `bottom`.
+- `shortcut`: shortcut to refresh the preview. The default value is `<Control><Alt>m`.
+- `version`: the Markdown version to use for the HTML preview and to export to HTML. Possible values: `standard` or `extra`.
+
 ## Details and limitations
+
+- Syntax highlighting and snippets for standard Markdown were officially added in GtkSourceView and gedit > 3.1.1. The installer of gedit-markdown will ensure that no already existing files are copied (no check is done for Markdown Extra because this is not the default version shipped with GtkSourceView and gedit > 3.1.1).
 
 - Older versions of gedit-markdown also added Markdown MIME type and recognition of an additional extension (`.mdtxt`). Since Markdown support was added directly into the shared MIME database `shared-mime-info` ([see the bug report][bug27441]), gedit-markdown no longer adds its own Markdown MIME type file. Also, for purposes of compliance with the specification, the extension `.mdtxt` is no longer supported.
 

@@ -44,7 +44,7 @@ supprimerDossiersVides()
 	dossier=$1
 	
 	while [[ -d $dossier && -z $(ls -A $dossier 2> /dev/null) ]]; do
-		rmdir $dossier
+		rmdir -v $dossier
 		dossier=$(dirname "$dossier")
 	done
 }
@@ -54,27 +54,28 @@ supprimerGreffon()
 	# Suppression des fichiers.
 	
 	for i in "${anciensFichiersAsupprimer[@]}"; do
-		rm -f $i
+		rm -fv $i
 	done
 	
 	for i in "${fichiersAsupprimer[@]}"; do
-		rm -f $i
+		rm -fv $i
 	done
 	
 	# Suppression des dossiers.
 	
-	rm -rf $cheminPluginsMarkdownPreview
+	rm -rfv $cheminPluginsMarkdownPreview
 	
 	if [[ -n $cheminPythonSitePackages ]]; then
-		rm -rf $cheminPythonSitePackages/markdown
+		rm -rfv $cheminPythonSitePackages/markdown
 		supprimerDossiersVides $cheminPythonSitePackages
 	fi
 	
 	if [[ -n $ancienCheminPythonSitePackages ]]; then
-		rm -rf $ancienCheminPythonSitePackages/markdown
+		rm -rfv $ancienCheminPythonSitePackages/markdown
 		supprimerDossiersVides $ancienCheminPythonSitePackages
 	fi
 	
+	supprimerDossiersVides $cheminConfig
 	supprimerDossiersVides $cheminLanguageSpecs
 	supprimerDossiersVides $cheminPlugins
 	supprimerDossiersVides $cheminPluginsMarkdownPreview
@@ -82,6 +83,8 @@ supprimerGreffon()
 	supprimerDossiersVides $cheminStyles
 	supprimerDossiersVides $cheminTools
 	# Anciennes versions.
+	supprimerDossiersVides $cheminInvalideGeditSnippets
+	supprimerDossiersVides $cheminInvalideGeditTools
 	supprimerDossiersVides $cheminMimePackages
 }
 
@@ -135,66 +138,55 @@ normal=$(tput sgr0)
 ## Version de gedit.
 ####################################
 
-geditEstInstalle=1
-bonneVersionGedit=1
-
-if [[ -z $(which gedit) ]]; then
-	geditEstInstalle=0
-	bonneVersionGedit=0
-else
-	versionCompleteGedit=$(gedit --version | cut -d ' ' -f 4)
-	versionMajeureGedit=$(echo $versionCompleteGedit | cut -d '.' -f 1)
-	vercomp $versionMajeureGedit "2"
-	
-	if [[ $? == 1 ]]; then
-		bonneVersionGedit=0
-	fi
+if [[ -n $(which gedit) ]]; then
+	versionGedit=$(gedit --version | cut -d ' ' -f 4)
 fi
 
 ####################################
-## Dossiers d'installation.
+## Chemins.
 ####################################
 
-vercomp $versionMajeureGedit "3"
-
-if [[ $? == 0 ]]; then
-	# Dossiers pour gedit 3.
+if [[ ${versionGedit:0:1} == "3" ]]; then
+	# gedit 3.
+	cheminGeditMarkdownPluginsGedit=plugins/gedit3
 	cheminLanguageSpecs=~/.local/share/gtksourceview-3.0/language-specs
+	cheminSystemeLanguageSpecs=/usr/share/gtksourceview-3.0/language-specs
 	cheminPlugins=~/.local/share/gedit/plugins
 	cheminPluginsMarkdownPreview=~/.local/share/gedit/plugins/markdown-preview
-	cheminSnippets=~/.local/share/gedit/snippets
+	cheminSnippets=~/.config/gedit/snippets
+	cheminSystemeSnippets=/usr/share/gedit/plugins/snippets
 	cheminStyles=~/.local/share/gtksourceview-3.0/styles
-	cheminTools=~/.local/share/gedit/tools
+	cheminTools=~/.config/gedit/tools
 else
-	# Dossiers pour gedit 2.
+	# gedit 2.
+	cheminGeditMarkdownPluginsGedit=plugins/gedit2
 	cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
+	cheminSystemeLanguageSpecs=/usr/share/gtksourceview-2.0/language-specs
 	cheminPlugins=~/.gnome2/gedit/plugins
 	cheminPluginsMarkdownPreview=~/.gnome2/gedit/plugins/markdown-preview
 	cheminSnippets=~/.gnome2/gedit/snippets
+	cheminSystemeSnippets=/usr/share/gedit-2/plugins/snippets
 	cheminStyles=~/.local/share/gtksourceview-2.0/styles
 	cheminTools=~/.gnome2/gedit/tools
 fi
 
-if [[ -f $cheminConfigIni ]]; then
-	ancienCheminPythonSitePackages=$(sed -n "s/^pythonSitePackages=\(.*\)$/\1/p" < $cheminConfigIni)
+cheminConfig=~/.config
+cheminFichierConfig=$cheminConfig/gedit-markdown.ini
+
+if [[ -f $cheminFichierConfig ]]; then
+	ancienCheminPythonSitePackages=$(sed -n "s/^pythonSitePackages=\(.*\)$/\1/p" < $cheminFichierConfig)
 fi
 
-cheminConfigIni=~/.gedit-markdown.ini
-
 ####################################
-## Version de GtkSourceView.
+## Classe `no-spell-check` dans le fichier de langue.
 ####################################
 
-cheminGtkSourceView2Readme=/usr/share/doc/libgtksourceview2.0-0/README
-bonneVersionGtkSourceView=1
+# Le fichier de langue HTML est utilisé comme référence pour vérifier si la version installée de GtkSourceView supporte la classe `no-spell-check` dans les fichiers de langue.
+cheminHtmlLang=$cheminSystemeLanguageSpecs/html.lang
+supportClasseNoSpellCheck=1
 
-if [[ -f $cheminGtkSourceView2Readme ]]; then
-	versionGtkSourceView=$(cat $cheminGtkSourceView2Readme | grep "^This is version " | cut -d ' ' -f 4)
-	vercomp $versionGtkSourceView "2.10"
-	
-	if [[ $? == 2 ]]; then
-		bonneVersionGtkSourceView=0
-	fi
+if [[ -f $cheminHtmlLang && -z $(grep ' class="no-spell-check"' $cheminHtmlLang) ]]; then
+	supportClasseNoSpellCheck=0
 fi
 
 ####################################
@@ -206,9 +198,8 @@ bonneVersionPython=1
 if [[ -z $(which python) ]]; then
 	bonneVersionPython=0
 else
-	versionCompletePython=$(python -c 'import platform; print(platform.python_version())')
-	versionMajeurePython=$(python -c 'import sys; print(sys.version[:3])')
-	vercomp $versionMajeurePython "2.6"
+	versionPython=$(python -c 'import sys; print(sys.version[:3])')
+	vercomp $versionPython "2.6"
 	
 	if [[ $? == 2 ]]; then
 		bonneVersionPython=0
@@ -218,24 +209,42 @@ else
 fi
 
 ####################################
-## Greffon installable.
-####################################
-
-greffonEstInstallable=1
-
-if [[ $bonneVersionGedit == 0 || $bonneVersionPython == 0 ]]; then
-	greffonEstInstallable=0
-fi
-
-####################################
 ## Fichiers à supprimer.
 ####################################
 
-fichiersAsupprimer=( "$cheminLanguageSpecs/markdown.lang" "$cheminLanguageSpecs/markdown-extra.lang" "$cheminPlugins/markdown-preview.gedit-plugin" "$cheminSnippets/markdown.xml" "$cheminSnippets/markdown-extra.xml" "$cheminStyles/classic-markdown.xml" "$cheminTools/export-to-html" "$cheminTools/export-extra-to-html" )
+fichiersAsupprimer=(
+	"$cheminLanguageSpecs/markdown.lang"
+	"$cheminLanguageSpecs/markdown-extra.lang"
+	"$cheminPlugins/markdown-preview.gedit-plugin"
+	"$cheminSnippets/markdown.xml"
+	"$cheminSnippets/markdown-extra.xml"
+	"$cheminStyles/classic-markdown.xml"
+	"$cheminTools/export-to-html"
+	"$cheminTools/export-extra-to-html"
+)
 
 # Fichiers d'anciennes versions.
+
+cheminAncienFichierConfig=~/.gedit-markdown.ini
 cheminMimePackages=~/.local/share/mime/packages
-anciensFichiersAsupprimer=( "$cheminMimePackages/x-markdown.xml" "$cheminPlugins/markdownpreview.gedit-plugin" "$cheminPlugins/markdownpreview.py" "$cheminPlugins/markdownpreview.pyc" "$cheminPlugins/markdown.py" "$cheminPlugins/markdown.pyc" )
+
+# Dossiers invalides utilisés un certain temps pour gedit 3.
+cheminInvalideGeditSnippets=~/.local/share/gedit/snippets
+cheminInvalideGeditTools=~/.local/share/gedit/tools
+
+anciensFichiersAsupprimer=(
+	"$cheminAncienFichierConfig"
+	"$cheminInvalideGeditSnippets/markdown.xml"
+	"$cheminInvalideGeditSnippets/markdown-extra.xml"
+	"$cheminInvalideGeditTools/export-to-html"
+	"$cheminInvalideGeditTools/export-extra-to-html"
+	"$cheminMimePackages/x-markdown.xml"
+	"$cheminPlugins/markdownpreview.gedit-plugin"
+	"$cheminPlugins/markdownpreview.py"
+	"$cheminPlugins/markdownpreview.pyc"
+	"$cheminPlugins/markdown.py"
+	"$cheminPlugins/markdown.pyc"
+)
 
 ########################################################################
 ##
@@ -249,30 +258,25 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo $gras
 	echo "############################################################"
 	echo "##"
-	echo "## " $(gettext "Installation de gedit-markdown")
+	echo "##" $(gettext "Installation de gedit-markdown")
 	echo "##"
 	echo "############################################################"
 	
 	echo ""
-	echo "## " $(gettext "Première étape: vérification des dépendances")
+	echo "##" $(gettext "Première étape: vérification des dépendances")
 	echo $normal
 	
-	echo "- gedit: $versionCompleteGedit"
-	
-	if [[ -n $versionGtkSourceView ]]; then
-		echo "- GtkSourceView: $versionGtkSourceView"
-	fi
-	
-	echo "- Python: $versionCompletePython"
+	echo "- gedit: $versionGedit"
+	echo "- Python: $versionPython"
 	echo ""
 	
-	if [[ $geditEstInstalle == 0 ]]; then
+	if [[ -z $versionGedit ]]; then
 		echo $(gettext "Veuillez installer gedit avant de lancer le script d'installation de gedit-markdown.")
 		echo ""
 		exit 1
 	fi
 	
-	if [[ $bonneVersionGtkSourceView == 0 ]]; then
+	if [[ $supportClasseNoSpellCheck == 0 ]]; then
 		echo -e $(gettext ""\
 "La vérification orthographique ne peut pas être désactivée dans la coloration\n"\
 "syntaxique pour les contextes non pertinents (par exemple dans les adresses URL),\n"\
@@ -280,27 +284,32 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 		echo ""
 	fi
 	
-	if [[ $greffonEstInstallable == 0 ]]; then
+	if [[ $bonneVersionPython == 0 ]]; then
 		echo -e $(gettext ""\
-"Le greffon «Markdown Preview» ne sera pas installé, car il dépend de gedit 2 et\n"\
-"de Python >= 2.6.")
+"Le greffon «Aperçu Markdown» ne sera pas installé, car il dépend de Python >= 2.6.")
+		echo ""
+	fi
+	
+	# Temporaire, le temps que le portage vers gedit 3 soit terminé.
+	if [[ ${versionGedit:0:1} == "3" ]]; then
+		echo -e $(gettext ""\
+"Le greffon «Aperçu Markdown» ne sera pas installé, car il dépend de gedit 2.")
 		echo ""
 	fi
 	
 	echo $(gettext "Étape terminée.")
 	
 	echo $gras
-	echo "## " $(gettext "Étape suivante: choix de la syntaxe Markdown à installer")
+	echo "##" $(gettext "Étape suivante: choix de la syntaxe Markdown à installer")
 	echo $normal
 	
-	echo -en $(gettext ""\
+	echo -e $(gettext ""\
 "gedit-markdown peut ajouter le support du langage Markdown standard ou de la\n"\
 "version spéciale Markdown Extra.\n"\
 "\n"\
 "\t1\tMarkdown standard\n"\
-"\t2\tMarkdown Extra\n"\
-"\n"\
-"Saisissez votre choix [1/2] (2 par défaut): ")
+"\t2\tMarkdown Extra\n")
+	gettext "Saisissez votre choix [1/2] (2 par défaut): "
 	read choix
 	
 	echo ""
@@ -316,18 +325,17 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	echo ""
 	echo $(gettext "Étape terminée.")
 	
-	if [[ $greffonEstInstallable == 1 ]]; then
+	if [[ $bonneVersionPython == 1 ]]; then
 		echo $gras
-		echo "## " $(gettext "Étape suivante: choix de l'emplacement de l'aperçu Markdown")
+		echo "##" $(gettext "Étape suivante: choix de l'emplacement de l'aperçu Markdown")
 		echo $normal
 	
-		echo -en $(gettext ""\
+		echo -e $(gettext ""\
 "L'aperçu Markdown peut être placé dans un des deux panneaux de gedit.\n"\
 "\n"\
 "\t1\tPanneau latéral\n"\
-"\t2\tPanneau inférieur\n"\
-"\n"\
-"Saisissez votre choix [1/2] (2 par défaut): ")
+"\t2\tPanneau inférieur\n")
+		gettext "Saisissez votre choix [1/2] (2 par défaut): "
 		read choix
 	
 		echo ""
@@ -345,82 +353,91 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	fi
 	
 	echo $gras
-	echo "## " $(gettext "Étape suivante: copie des fichiers")
+	echo "##" $(gettext "Étape suivante: copie des fichiers")
 	echo $normal
 	
 	# Au cas où il s'agit d'une mise à jour et non d'une première installation.
 	supprimerGreffon
 	
 	# Création des répertoires s'ils n'existent pas déjà.
-	mkdir -p $cheminLanguageSpecs
-	mkdir -p $cheminPlugins
-	mkdir -p $cheminSnippets
-	mkdir -p $cheminStyles
+	mkdir -pv $cheminConfig
+	mkdir -pv $cheminLanguageSpecs
+	mkdir -pv $cheminPlugins
+	mkdir -pv $cheminSnippets
+	mkdir -pv $cheminStyles
 	
 	# Copie des fichiers.
 	
-	if [[ ! -e $cheminConfigIni ]]; then
-		cp config/gedit-markdown.ini $cheminConfigIni
+	if [[ ! -e $cheminFichierConfig ]]; then
+		cp -v config/gedit-markdown.ini $cheminFichierConfig
 	fi
 	
 	if [[ $markdown == "standard" ]]; then
-		cp language-specs/markdown.lang $cheminLanguageSpecs
-		cheminCompletLanguageSpecs=$cheminLanguageSpecs/markdown.lang
-		cp snippets/markdown.xml $cheminSnippets
+		if [[ ! -e "$cheminSystemeLanguageSpecs/markdown.lang" ]]; then
+			cp -v language-specs/markdown.lang $cheminLanguageSpecs
+			cheminLanguageSpecsMarkdownLang=$cheminLanguageSpecs/markdown.lang
+		fi
+		
+		if [[ ! -e "$cheminSystemeSnippets/markdown.xml" ]]; then
+			cp -v snippets/markdown.xml $cheminSnippets
+		fi
+		
+		# Mise à jour de la configuration.
+		if [[ -n $(grep "^version=" $cheminFichierConfig) ]]; then
+			sed -i "s/^\(version=\).*$/\1standard/" $cheminFichierConfig
+		else
+			sed -i "s/^\(\[markdown-preview\]\)$/\1\nversion=standard/" $cheminFichierConfig
+		fi
 	else
-		cp language-specs/markdown-extra.lang $cheminLanguageSpecs
-		cheminCompletLanguageSpecs=$cheminLanguageSpecs/markdown-extra.lang
-		cp snippets/markdown-extra.xml $cheminSnippets
+		cp -v language-specs/markdown-extra.lang $cheminLanguageSpecs
+		cheminLanguageSpecsMarkdownLang=$cheminLanguageSpecs/markdown-extra.lang
+		cp -v snippets/markdown-extra.xml $cheminSnippets
 	fi
 	
 	# Compatibilité avec GtkSourceView < 2.10.
-	sed -i 's/ class="no-spell-check"//g' $cheminCompletLanguageSpecs
+	if [[ -f $cheminLanguageSpecsMarkdownLang ]]; then
+		sed -i 's/ class="no-spell-check"//g' $cheminLanguageSpecsMarkdownLang
+	fi
 	
-	if [[ $greffonEstInstallable == 1 ]]; then
-		cp -r plugins/* $cheminPlugins
+	if [[ $bonneVersionPython == 1 ]]; then
+		# Python-Markdown.
 		
-		if [[ $markdown == "standard" ]]; then
-			# Mise à jour de la configuration.
-			if [[ -n $(grep "^version=" $cheminConfigIni) ]]; then
-				sed -i "s/^\(version=\).*$/\1standard/" $cheminConfigIni
-			else
-				sed -i "s/^\(\[markdown-preview\]\)$/\1\nversion=standard/" $cheminConfigIni
-			fi
-		fi
-		
-		if [[ $panneau == "side" ]]; then
-			# Mise à jour de la configuration.
-			if [[ -n $(grep "^panel=" $cheminConfigIni) ]]; then
-				sed -i "s/^\(panel=\).*$/\1side/" $cheminConfigIni
-			else
-				sed -i "s/^\(\[markdown-preview\]\)$/\1\npanel=side/" $cheminConfigIni
-			fi
-		fi
-		
-		mkdir -p $cheminPythonSitePackages
-		
-		mv $cheminPluginsMarkdownPreview/markdown $cheminPythonSitePackages
+		mkdir -pv $cheminPythonSitePackages
+		cp -rv python-markdown $cheminPythonSitePackages/markdown
 		
 		# Mise à jour de la configuration.
-		if [[ -n $(grep "^pythonSitePackages=" $cheminConfigIni) ]]; then
-			sed -i "s|^\(pythonSitePackages=\).*$|\1$cheminPythonSitePackages|" $cheminConfigIni
+		if [[ -n $(grep "^pythonSitePackages=" $cheminFichierConfig) ]]; then
+			sed -i "s|^\(pythonSitePackages=\).*$|\1$cheminPythonSitePackages|" $cheminFichierConfig
 		else
-			sed -i "s|^\(\[markdown-preview\]\)$|\1\npythonSitePackages=$cheminPythonSitePackages|" $cheminConfigIni
+			sed -i "s|^\(\[markdown-preview\]\)$|\1\npythonSitePackages=$cheminPythonSitePackages|" $cheminFichierConfig
 		fi
 		
-		rm $cheminPluginsMarkdownPreview/locale/markdown-preview.pot
-		find $cheminPluginsMarkdownPreview/locale/ -name '*.po' -exec rm -f {} \;
-		mkdir -p $cheminTools
+		# Outil externe.
+		mkdir -pv $cheminTools
+		cp -v tools/export-to-html $cheminTools
 		
-		if [[ $markdown == "standard" ]]; then
-			cp tools/export-to-html $cheminTools
-		else
-			cp tools/export-extra-to-html $cheminTools
+		# Greffon «Aperçu Markdown».
+		
+		# Temporaire, le temps que le portage vers gedit 3 soit terminé.
+		if [[ ${versionGedit:0:1} == "2" ]]; then
+			cp -rv $cheminGeditMarkdownPluginsGedit/* $cheminPlugins
+			rm -v $cheminPluginsMarkdownPreview/locale/markdown-preview.pot
+			find $cheminPluginsMarkdownPreview/locale/ -name '*.po' -exec rm -fv {} \;
+		
+			if [[ $panneau == "side" ]]; then
+				# Mise à jour de la configuration.
+				if [[ -n $(grep "^panel=" $cheminFichierConfig) ]]; then
+					sed -i "s/^\(panel=\).*$/\1side/" $cheminFichierConfig
+				else
+					sed -i "s/^\(\[markdown-preview\]\)$/\1\npanel=side/" $cheminFichierConfig
+				fi
+			fi
 		fi
 	fi
 	
-	cp styles/classic-markdown.xml $cheminStyles
+	cp -v styles/classic-markdown.xml $cheminStyles
 	
+	echo ""
 	echo $(gettext "Étape terminée.")
 	
 	echo $gras
@@ -432,16 +449,17 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 	echo $gras
 	echo "############################################################"
 	echo "##"
-	echo "## " $(gettext "Désinstallation de gedit-markdown")
+	echo "##" $(gettext "Désinstallation de gedit-markdown")
 	echo "##"
 	echo "############################################################"
 	
 	echo ""
-	echo "## " $(gettext "Première étape: suppression des fichiers")
+	echo "##" $(gettext "Première étape: suppression des fichiers")
 	echo $normal
 	
 	supprimerGreffon
 	
+	echo ""
 	echo $(gettext "Étape terminée.")
 	
 	echo $gras

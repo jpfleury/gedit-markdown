@@ -16,11 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: plugins/markdown-preview/__init__.py:54
-#: plugins/markdown-preview/__init__.py:79
-msgid "Markdown Preview"
-msgstr "Aperçu Markdown"
+#~ msgid "Markdown Preview"
+#~ msgstr "Aperçu Markdown"
 
-#: plugins/markdown-preview/__init__.py:55
-msgid "Update the HTML preview"
-msgstr "Mettre à jour l'aperçu HTML"
+#~ msgid "Update the HTML preview"
+#~ msgstr "Mettre à jour l'aperçu HTML"

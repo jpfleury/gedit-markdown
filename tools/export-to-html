@@ -11,9 +11,22 @@
 # Save-files=nothing
 
 import codecs
+import os
 import sys
 import markdown
+from ConfigParser import SafeConfigParser
+
+# Configuration.
+CONFIG_PATH = os.path.expanduser('~') + '/.config/gedit-markdown.ini'
+parser = SafeConfigParser()
+parser.read(CONFIG_PATH)
+markdownVersion = parser.get('markdown-preview', 'version')
 
 text = sys.stdin.read().decode('utf-8')
 print "<!-- Markdown => HTML -->"
-print markdown.markdown(text, smart_emphasis=False).encode('utf-8')
+
+if markdownVersion == "standard":
+	print markdown.markdown(text, smart_emphasis=False).encode('utf-8')
+else:
+	print markdown.markdown(text, extensions=['extra', 'headerid(forceid=False)']).encode('utf-8')
+
