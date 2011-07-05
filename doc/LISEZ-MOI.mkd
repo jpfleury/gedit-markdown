@@ -172,12 +172,13 @@ Pour l'instant, gedit-markdown est disponible en français et en anglais.
 
 ## Développement
 
-Le logiciel bazaar est utilisé pour le versionnage des fichiers. Une copie de la version de développement peut être récupérée avec la commande suivante:
+Le logiciel bazaar est utilisé pour le versionnage des fichiers. [La version de développement peut être consultée en ligne][dev] ou bien être récupérée avec la commande suivante:
 
 	bzr branch lp:~jpfle/+junk/gedit-markdown
 
 gedit-markdown dispose également d'un [système de suivi], sur lequel les rapports de bogues et les suggestions peuvent être soumis.
 
+[dev]: http://bazaar.launchpad.net/~jpfle/+junk/gedit-markdown/files
 [système de suivi]: http://www.jpfleury.net/mantisbt/
 
 ## Licence

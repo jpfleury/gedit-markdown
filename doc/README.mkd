@@ -172,12 +172,13 @@ For now, gedit-markdown is available in French and English.
 
 ## Development
 
-bazaar is used for revision control. You can get a copy of the development version with the following command:
+bazaar is used for revision control. [The development version can be browsed online][dev]. You can also get a copy with the following command:
 
 	bzr branch lp:~jpfle/+junk/gedit-markdown
 
 gedit-markdown has an [issue tracker], on which bug reports and feature requests can be submitted.
 
+[dev]: http://bazaar.launchpad.net/~jpfle/+junk/gedit-markdown/files
 [issue tracker]: http://www.jpfleury.net/mantisbt/
 
 ## License
