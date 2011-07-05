@@ -290,13 +290,6 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 		echo ""
 	fi
 	
-	# Temporaire, le temps que le portage vers gedit 3 soit terminé.
-	if [[ ${versionGedit:0:1} == "3" ]]; then
-		echo -e $(gettext ""\
-"Le greffon «Aperçu Markdown» ne sera pas installé, car il dépend de gedit 2.")
-		echo ""
-	fi
-	
 	echo $(gettext "Étape terminée.")
 	
 	echo $gras
@@ -418,19 +411,16 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 		
 		# Greffon «Aperçu Markdown».
 		
-		# Temporaire, le temps que le portage vers gedit 3 soit terminé.
-		if [[ ${versionGedit:0:1} == "2" ]]; then
-			cp -rv $cheminGeditMarkdownPluginsGedit/* $cheminPlugins
-			rm -v $cheminPluginsMarkdownPreview/locale/markdown-preview.pot
-			find $cheminPluginsMarkdownPreview/locale/ -name '*.po' -exec rm -fv {} \;
+		cp -rv $cheminGeditMarkdownPluginsGedit/* $cheminPlugins
+		rm -v $cheminPluginsMarkdownPreview/locale/markdown-preview.pot
+		find $cheminPluginsMarkdownPreview/locale/ -name '*.po' -exec rm -fv {} \;
 		
-			if [[ $panneau == "side" ]]; then
-				# Mise à jour de la configuration.
-				if [[ -n $(grep "^panel=" $cheminFichierConfig) ]]; then
-					sed -i "s/^\(panel=\).*$/\1side/" $cheminFichierConfig
-				else
-					sed -i "s/^\(\[markdown-preview\]\)$/\1\npanel=side/" $cheminFichierConfig
-				fi
+		if [[ $panneau == "side" ]]; then
+			# Mise à jour de la configuration.
+			if [[ -n $(grep "^panel=" $cheminFichierConfig) ]]; then
+				sed -i "s/^\(panel=\).*$/\1side/" $cheminFichierConfig
+			else
+				sed -i "s/^\(\[markdown-preview\]\)$/\1\npanel=side/" $cheminFichierConfig
 			fi
 		fi
 	fi
