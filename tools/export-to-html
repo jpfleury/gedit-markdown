@@ -6,7 +6,7 @@
 # Shortcut=<Control><Alt>h
 # Languages=markdown
 # Applicability=all
-# Input=document
+# Input=selection-document
 # Output=new-document
 # Save-files=nothing
 
