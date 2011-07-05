@@ -24,14 +24,21 @@
 ##
 ########################################################################
 
-export TEXTDOMAINDIR=./locale
-export TEXTDOMAIN=gedit-markdown
-
-if [[ ${LANG:0:2} == "fr" ]]; then
-	export LANGUAGE=fr
+if [[ -n $(which gettext) ]]; then
+	export TEXTDOMAINDIR=./locale
+	export TEXTDOMAIN=gedit-markdown
+	
+	if [[ ${LANG:0:2} == "fr" ]]; then
+		export LANGUAGE=fr
+	fi
+	
+	. gettext.sh
+else
+	gettext()
+	{
+		echo $*
+	}
 fi
-
-. gettext.sh
 
 ########################################################################
 ##
