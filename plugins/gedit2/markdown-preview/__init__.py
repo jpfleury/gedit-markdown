@@ -64,6 +64,7 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		scrolled_window.set_property("shadow-type", gtk.SHADOW_IN)
 		
 		html_view = webkit.WebView()
+		html_view.props.settings.props.enable_default_context_menu = False
 		html_view.load_string((HTML_TEMPLATE % ("", )), "text/html", "utf-8", "file:///")
 		
 		scrolled_window.add(html_view)
