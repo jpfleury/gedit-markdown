@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-04 23:27-0400\n"
+"POT-Creation-Date: 2011-07-06 19:30-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: plugins/gedit3/markdown-preview/__init__.py:56
-#: plugins/gedit3/markdown-preview/__init__.py:81
+#: plugins/gedit3/markdown-preview/__init__.py:82
 msgid "Markdown Preview"
 msgstr ""
 

@@ -64,6 +64,10 @@ In a terminal, run the uninstaller:
 
 	gedit-markdown/gedit-markdown.sh uninstall
 
+**Tip:** it's possible to specify in command line the version of gedit. Possible values ​​are `2` and `3`. It can be useful when updating from gedit 2 to gedit 3. Thus, the script can be run to remove files from the old version of gedit. Example:
+
+	gedit-markdown/gedit-markdown.sh uninstall 2
+
 ### Windows XP
 
 Simply remove by hand the files added during installation.

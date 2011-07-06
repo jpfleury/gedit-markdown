@@ -64,6 +64,10 @@ Dans une console, lancer le script de désinstallation:
 
 	gedit-markdown/gedit-markdown.sh desinstaller
 
+**Astuce:** il est possible de préciser en ligne de commande la version de gedit. Les valeurs possibles sont `2` et `3`. Ça peut être utile lors d'une mise à jour de gedit 2 vers gedit 3. Ainsi, le script peut être lancé pour supprimer les fichiers de l'ancienne version de gedit. Exemple:
+
+	gedit-markdown/gedit-markdown.sh desinstaller 2
+
 ### Windows XP
 
 Simplement supprimer à la main les fichiers ajoutés lors de l'installation.

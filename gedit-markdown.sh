@@ -145,7 +145,9 @@ normal=$(tput sgr0)
 ## Version de gedit.
 ####################################
 
-if [[ -n $(which gedit) ]]; then
+if [[ $2 == "2" || $2 == "3" ]]; then
+	versionGedit=$2
+elif [[ -n $(which gedit) ]]; then
 	versionGedit=$(gedit --version | cut -d ' ' -f 4)
 fi
 
@@ -466,8 +468,11 @@ elif [[ $1 == "desinstaller" || $1 == "uninstall" ]]; then
 	exit 0
 else
 	echo $gras
-	echo $(gettext "Usage: ") "$0 [installer | desinstaller]"
+	echo $(gettext "Usage:") $0 $(gettext "ACTION [VERSION]")
 	echo $normal
+	echo $(gettext "ACTION (obligatoire): action à effectuer. Valeurs possibles:") "installer|desinstaller"
+	echo $(gettext "VERSION (optionnel): version majeure de gedit. Valeurs possibles:") "2|3"
+	echo ""
 	
 	exit 1
 fi
