@@ -20,9 +20,11 @@ Plus précisément, gedit-markdown ajoute:
 
 - gedit-markdown supporte gedit 2 et gedit 3. Il est livré avec un installateur pour GNU/Linux. Sous Windows XP, seuls certains fichiers fonctionnent, et doivent être installés à la main.
 
-- Le greffon «Markdown Preview» dépend de Python >= 2.6. Ainsi, l'installateur va copier le greffon seulement si la bonne version de Python est installée.
+- Le greffon «Aperçu Markdown» dépend de Python >= 2.6. Ainsi, l'installateur va copier le greffon seulement si la bonne version de Python est installée.
 
 - La désactivation de la vérification orthographique dans la coloration syntaxique pour les contextes non pertinents (par exemple dans les adresses URL) dépend de GtkSourceView >= 2.10.
+
+- Pour les utilisateurs d'Ubuntu 11.10: il semble que le paquet `gir1.2-webkit-3.0` doive être installé pour que le greffon «Aperçu Markdown» fonctionne. Le test a été effectué sur une version alpha, donc à vérifier lors de la sortie de la version finale.
 
 ## Installation (ou mise à jour)
 

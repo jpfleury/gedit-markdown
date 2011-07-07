@@ -20,9 +20,11 @@ Specifically, it adds:
 
 - gedit-markdown supports gedit 2 and gedit 3. It's shipped with an installer for GNU/Linux. On Windows XP, only a few files work, and must be installed by hand.
 
-- The plugin «Markdown Preview» depends on Python >= 2.6. Thus, the installer will copy the plugin only if the right version of Python is installed.
+- The plugin *Markdown Preview* depends on Python >= 2.6. Thus, the installer will copy the plugin only if the right version of Python is installed.
 
 - Deactivation of check spelling for irrelevant highlighted contexts (for example in URL) depends on GtkSourceView >= 2.10.
+
+- For users of Ubuntu 11.10: it seems that the package `gir1.2-webkit-3.0` must be installed to use the plugin *Markdown Preview*. The test was performed on an alpha release, so it remains to be seen with the final version.
 
 ## Installation (or update)
 
