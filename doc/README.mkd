@@ -7,14 +7,14 @@ gedit-markdown adds support for [Markdown][] (or [Markdown Extra][]) in gedit, t
 Specifically, it adds:
 
 - Markdown syntax highlighting and snippets;
-- plugin *Markdown Preview* for gedit, displayed in the side panel or the bottom panel and previewing in HTML the currently opened file or the selection;
-- an external tool exporting to HTML the currently opened file or the selection;
+- plugin *Markdown Preview* for gedit, displayed in the side panel or the bottom panel and previewing in HTML the selection or the currently opened file;
+- an external tool exporting to HTML the selection or the currently opened file;
 - a color scheme, optional, highlighting Markdown files in a manner more similar to HTML rendering.
 
 [Markdown]: http://daringfireball.net/projects/markdown/
 [Markdown Extra]: http://michelf.com/projects/php-markdown/extra/
 
-<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple1.png" width="684" height="779" alt="Default Markdown syntax highlighting in gedit." />
+<img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple1.png" width="684" height="779" alt="Default Markdown syntax highlighting in gedit." />
 
 ## Requirements
 
@@ -24,21 +24,18 @@ Specifically, it adds:
 
 - Deactivation of check spelling for irrelevant highlighted contexts (for example in URL) depends on GtkSourceView >= 2.10.
 
-- For users of Ubuntu 11.10: it seems that the package `gir1.2-webkit-3.0` must be installed to use the plugin *Markdown Preview*. The test was performed on an alpha release, so it remains to be seen with the final version.
+- For users of Ubuntu 11.10: the package `gir1.2-webkit-3.0` must be installed to use the plugin *Markdown Preview*.
 
 ## Installation (or update)
 
 ### GNU/Linux
 
-- [Download the latest version of gedit-markdown.](http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip)
+- [Download the latest version of gedit-markdown.](http://jpfleury.indefero.net/p/gedit-markdown/downloads/)
 - Extract the archive.
-- Run the installer and answer questions asked.
+- Open a terminal in the extracted folder.
+- Run the installer in the terminal and answer questions asked:
 
-Here are commands for all these steps in a terminal:
-
-	wget http://www.jpfleury.net/site/fichiers/gedit-markdown/gedit-markdown.zip
-	unzip gedit-markdown.zip
-	gedit-markdown/gedit-markdown.sh install
+		./gedit-markdown.sh install
 
 Markdown support will be added for the current user (so no need root privileges). The folder `gedit-markdown` created by the extraction can be deleted after installation.
 
@@ -62,13 +59,14 @@ Here are steps for gedit 2:
 
 ### GNU/Linux
 
-In a terminal, run the uninstaller:
+- Open a terminal in the extracted folder.
+- Run the uninstaller in the terminal:
 
-	gedit-markdown/gedit-markdown.sh uninstall
+		./gedit-markdown.sh uninstall
 
 **Tip:** it's possible to specify in command line the version of gedit. Possible values ​​are `2` and `3`. It can be useful when updating from gedit 2 to gedit 3. Thus, the script can be run to remove files from the old version of gedit. Example:
 
-	gedit-markdown/gedit-markdown.sh uninstall 2
+	./gedit-markdown.sh uninstall 2
 
 ### Windows XP
 
@@ -88,11 +86,11 @@ Then, go to *Edit > Preferences > Plugins* and activate *Markdown Preview*. An i
 
 Here's a screenshot of the plugin when it's displayed in the bottom panel:
 
-<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple3.png" width="684" height="886" alt="Markdown Preview in the bottom panel of gedit." />
+<img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple3.png" width="684" height="886" alt="Markdown Preview in the bottom panel of gedit." />
 
 Now the same plugin displayed in the side panel:
 
-<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple4.png" width="684" height="445" alt="Markdown Preview in the side panel of gedit." />
+<img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4.png" width="684" height="445" alt="Markdown Preview in the side panel of gedit." />
 
 ### Snippets
 
@@ -108,7 +106,7 @@ To edit the tool, go to *Tools > Manage External Tools...*.
 
 An optional color scheme is installed by gedit-markdown. To use it, go to *Edit > Preferences > Font & Colors > Color Scheme* in gedit and select *Classic Markdown*. This color scheme is more similar to an HTML rendering, for example strong emphases and headers are in bold and black font, links are blue and underlined, etc. Here's a screenshot of a Markdown document highlighted with this color scheme:
 
-<img src="http://www.jpfleury.net/site/fichiers/gedit-markdown/exemple2.png" width="684" height="779" alt="Optional color scheme for Markdown syntax highlighting in gedit." />
+<img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple2.png" width="684" height="779" alt="Optional color scheme for Markdown syntax highlighting in gedit." />
 
 ### Configuration file
 
@@ -178,14 +176,12 @@ For now, gedit-markdown is available in French and English.
 
 ## Development
 
-bazaar is used for revision control. [The development version can be browsed online][dev]. You can also get a copy with the following command:
-
-	bzr branch lp:~jpfle/+junk/gedit-markdown
+Git is used for revision control. [Repository can be browsed online or cloned.][git]
 
 gedit-markdown has an [issue tracker], on which bug reports and feature requests can be submitted.
 
-[dev]: http://bazaar.launchpad.net/~jpfle/+junk/gedit-markdown/files
-[issue tracker]: http://www.jpfleury.net/mantisbt/
+[git]: http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/
+[issue tracker]: http://jpfleury.indefero.net/p/gedit-markdown/issues/
 
 ## License
 

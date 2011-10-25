@@ -50,3 +50,6 @@ pot: menagePot
 	xgettext -j -o plugins/gedit2/markdown-preview/locale/markdown-preview.pot -L Python plugins/gedit2/markdown-preview/__init__.py
 	xgettext -j -o plugins/gedit3/markdown-preview/locale/markdown-preview.pot -L Python plugins/gedit3/markdown-preview/__init__.py
 
+push:
+	git push origin --tags :
+
