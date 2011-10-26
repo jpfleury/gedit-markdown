@@ -88,9 +88,9 @@ Voici une capture d'écran du greffon lorsqu'il est situé dans le panneau infé
 
 <img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple3.png" width="684" height="886" alt="Aperçu en HTML d'un document Markdown dans le panneau inférieur de gedit." />
 
-Voici maintenant le même greffon situé dans le panneau latéral:
+Voici maintenant le même greffon situé dans le panneau latéral (cliquer pour télécharger l'image au format original):
 
-<img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4.png" width="684" height="445" alt="Aperçu en HTML d'un document Markdown dans le panneau latéral de gedit." />
+<a href="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4-grand.png"><img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4-petit.png" width="684" height="445" alt="Aperçu en HTML d'un document Markdown dans le panneau latéral de gedit." /></a>
 
 ### Extraits de code
 

@@ -88,9 +88,9 @@ Here's a screenshot of the plugin when it's displayed in the bottom panel:
 
 <img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple3.png" width="684" height="886" alt="Markdown Preview in the bottom panel of gedit." />
 
-Now the same plugin displayed in the side panel:
+Now the same plugin displayed in the side panel (click to download the original image):
 
-<img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4.png" width="684" height="445" alt="Markdown Preview in the side panel of gedit." />
+<a href="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4-grand.png"><img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4-petit.png" width="684" height="445" alt="Markdown Preview in the side panel of gedit." /></a>
 
 ### Snippets
 
