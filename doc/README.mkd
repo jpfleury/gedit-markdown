@@ -30,7 +30,7 @@ Specifically, it adds:
 
 ### GNU/Linux
 
-- [Download the latest version of gedit-markdown.](http://jpfleury.indefero.net/p/gedit-markdown/downloads/)
+- [Download the latest version of gedit-markdown.](http://jpfleury.indefero.net/p/gedit-markdown/source/download/master/)
 - Extract the archive.
 - Open a terminal in the extracted folder.
 - Run the installer in the terminal and answer questions asked:
