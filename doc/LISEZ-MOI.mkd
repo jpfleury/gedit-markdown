@@ -7,8 +7,11 @@ gedit-markdown est un ensemble de fichiers ajoutant le support du langage [Markd
 Plus précisément, gedit-markdown ajoute:
 
 - la coloration syntaxique des fichiers Markdown ainsi que des extraits de code pour accélérer la rédaction;
+
 - le greffon *Aperçu Markdown*, affichant dans le panneau latéral ou inférieur de gedit un aperçu en HTML de la sélection ou du fichier en cours d'édition;
+
 - un outil externe permettant d'exporter le code HTML de la sélection ou du document en cours d'édition;
+
 - un jeu de couleurs, optionnel, colorant le code Markdown d'une manière plus ressemblante au rendu HTML.
 
 [Markdown]: http://michelf.com/projets/php-markdown/concepts/
@@ -31,8 +34,11 @@ Plus précisément, gedit-markdown ajoute:
 ### GNU/Linux
 
 - [Télécharger l'archive de la dernière version.](http://jpfleury.indefero.net/p/gedit-markdown/source/download/master/)
-- Décompresser l'archive.
+
+- Extraire l'archive.
+
 - Ouvrir une console dans le dossier extrait.
+
 - Lancer le script d'installation dans la console et répondre aux questions demandées, ce qui donne:
 
 		./gedit-markdown.sh installer
@@ -60,6 +66,7 @@ Voici la marche à suivre pour gedit 2:
 ### GNU/Linux
 
 - Ouvrir une console dans le dossier extrait.
+
 - Lancer le script de désinstallation dans la console, ce qui donne:
 
 		./gedit-markdown.sh desinstaller
@@ -117,7 +124,9 @@ Le fichier de configuration de gedit-markdown est le suivant:
 Seule la section `markdown-preview` peut être modifiée, et contient trois paramètres:
 
 - `panel`: emplacement de l'aperçu Markdown. Valeurs possibles: `side` (panneau latéral) ou `bottom` (panneau inférieur).
+
 - `shortcut`: raccourci-clavier pour générer l'aperçu en HTML du document courant. La valeur par défaut est `<Control><Alt>m`.
+
 - `version`: la version du langage Markdown à utiliser pour générer l'aperçu et exporter en HTML. Valeurs possibles: `standard` ou `extra`.
 
 ## Précisions ou limitations
@@ -168,9 +177,9 @@ Seule la section `markdown-preview` peut être modifiée, et contient trois para
 
 ## Traduction
 
-- Les messages de l'installateur peuvent être traduits. Toute personne intéressée à effectuer une traduction peut donc copier le fichier `gedit-markdown.pot` situé dans le répertoire `locale`, le renommer en `LANGUE.po`, y traduire les phrases et m'envoyer le résultat.
+Les messages de l'installateur peuvent être traduits. Toute personne intéressée à effectuer une traduction peut donc copier le fichier `gedit-markdown.pot` situé dans le répertoire `locale`, le renommer en `LANGUE.po`, y traduire les phrases et m'envoyer le résultat.
 
-- De même, le greffon *Aperçu Markdown* est également traduisible. Le fichier contenant les phrases à traduire est `plugins/markdown-preview/locale/markdown-preview.pot`.
+De même, le greffon *Aperçu Markdown* est également traduisible. Le fichier contenant les phrases à traduire est `plugins/markdown-preview/locale/markdown-preview.pot`.
 
 Pour l'instant, gedit-markdown est disponible en français et en anglais.
 
