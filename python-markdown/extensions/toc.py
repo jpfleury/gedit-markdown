@@ -5,14 +5,15 @@ Table of Contents Extension for Python-Markdown
 (c) 2008 [Jack Miller](http://codezen.org)
 
 Dependencies:
-* [Markdown 2.0+](http://www.freewisdom.org/projects/python-markdown/)
+* [Markdown 2.1+](http://www.freewisdom.org/projects/python-markdown/)
 
 """
 import markdown
 from markdown.util import etree
-from markdown.inlinepatterns import LINK_RE, REFERENCE_RE, SHORT_REF_RE, \
-                                    AUTOLINK_RE, AUTOMAIL_RE
+from markdown.extensions.headerid import slugify, unique, itertext
+
 import re
+
 
 class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
     # Iterator wrapper to get parent and child all at once
@@ -22,6 +23,8 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
                 yield parent, child
 
     def run(self, doc):
+        marker_found = False
+
         div = etree.Element("div")
         div.attrib["class"] = "toc"
         last_li = None
@@ -43,7 +46,8 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
                 used_ids.append(c.attrib["id"])
 
         for (p, c) in self.iterparent(doc):
-            if not c.text:
+            text = ''.join(itertext(c)).strip()
+            if not text:
                 continue
 
             # To keep the output from screwing up the
@@ -53,72 +57,79 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
             # would causes an enless loop of placing a new TOC 
             # inside previously generated TOC.
 
-            if c.text.find(self.config["marker"]) > -1 and not header_rgx.match(c.tag):
+            if c.text and c.text.strip() == self.config["marker"] and \
+               not header_rgx.match(c.tag) and c.tag not in ['pre', 'code']:
                 for i in range(len(p)):
                     if p[i] == c:
                         p[i] = div
                         break
+                marker_found = True
                     
             if header_rgx.match(c.tag):
-                tag_level = int(c.tag[-1])
-                
-                while tag_level < level:
-                    list_stack.pop()
-                    level -= 1
+                try:
+                    tag_level = int(c.tag[-1])
+                    
+                    while tag_level < level:
+                        list_stack.pop()
+                        level -= 1
 
-                if tag_level > level:
-                    newlist = etree.Element("ul")
-                    if last_li:
-                        last_li.append(newlist)
+                    if tag_level > level:
+                        newlist = etree.Element("ul")
+                        if last_li:
+                            last_li.append(newlist)
+                        else:
+                            list_stack[-1].append(newlist)
+                        list_stack.append(newlist)
+                        if level == 0:
+                            level = tag_level
+                        else:
+                            level += 1
+
+                    # Do not override pre-existing ids 
+                    if not "id" in c.attrib:
+                        id = unique(self.config["slugify"](text, '-'), used_ids)
+                        c.attrib["id"] = id
                     else:
-                        list_stack[-1].append(newlist)
-                    list_stack.append(newlist)
-                    if level == 0:
-                        level = tag_level
-                    else:
-                        level += 1
-                
-                # Sanitize text. Replace all links with link lables (group 1).
-                text = c.text
-                for RE in [LINK_RE, REFERENCE_RE, SHORT_REF_RE, AUTOLINK_RE, AUTOMAIL_RE]:
-                    text = re.sub(RE, '\g<1>', text)
+                        id = c.attrib["id"]
 
-                # Do not override pre-existing ids 
-                if not "id" in c.attrib:
-                    id = self.config["slugify"](text)
-                    if id in used_ids:
-                        ctr = 1
-                        while "%s_%d" % (id, ctr) in used_ids:
-                            ctr += 1
-                        id = "%s_%d" % (id, ctr)
-                    used_ids.append(id)
-                    c.attrib["id"] = id
-                else:
-                    id = c.attrib["id"]
+                    # List item link, to be inserted into the toc div
+                    last_li = etree.Element("li")
+                    link = etree.SubElement(last_li, "a")
+                    link.text = text
+                    link.attrib["href"] = '#' + id
 
-                # List item link, to be inserted into the toc div
-                last_li = etree.Element("li")
-                link = etree.SubElement(last_li, "a")
-                link.text = text
-                link.attrib["href"] = '#' + id
+                    if self.config["anchorlink"] in [1, '1', True, 'True', 'true']:
+                        anchor = etree.Element("a")
+                        anchor.text = c.text
+                        anchor.attrib["href"] = "#" + id
+                        anchor.attrib["class"] = "toclink"
+                        c.text = ""
+                        for elem in c.getchildren():
+                            anchor.append(elem)
+                            c.remove(elem)
+                        c.append(anchor)
 
-                if int(self.config["anchorlink"]):
-                    anchor = etree.SubElement(c, "a")
-                    anchor.text = text
-                    anchor.attrib["href"] = "#" + id
-                    anchor.attrib["class"] = "toclink"
-                    c.text = ""
-
-                list_stack[-1].append(last_li)
+                    list_stack[-1].append(last_li)
+                except IndexError:
+                    # We have bad ordering of headers. Just move on.
+                    pass
+        if not marker_found:
+            # searialize and attach to markdown instance.
+            prettify = self.markdown.treeprocessors.get('prettify')
+            if prettify: prettify.run(div)
+            toc = self.markdown.serializer(div)
+            for pp in self.markdown.postprocessors.values():
+                toc = pp.run(toc)
+            self.markdown.toc = toc
 
 class TocExtension(markdown.Extension):
     def __init__(self, configs):
         self.config = { "marker" : ["[TOC]", 
                             "Text to find and replace with Table of Contents -"
                             "Defaults to \"[TOC]\""],
-                        "slugify" : [self.slugify,
+                        "slugify" : [slugify,
                             "Function to generate anchors based on header text-"
-                            "Defaults to a built in slugify function."],
+                            "Defaults to the headerid ext's slugify function."],
                         "title" : [None,
                             "Title to insert into TOC <div> - "
                             "Defaults to None"],
@@ -129,18 +140,15 @@ class TocExtension(markdown.Extension):
         for key, value in configs:
             self.setConfig(key, value)
 
-    # This is exactly the same as Django's slugify
-    def slugify(self, value):
-        """ Slugify a string, to make it URL friendly. """
-        import unicodedata
-        value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
-        value = unicode(re.sub('[^\w\s-]', '', value).strip().lower())
-        return re.sub('[-\s]+','-',value)
-
     def extendMarkdown(self, md, md_globals):
         tocext = TocTreeprocessor(md)
         tocext.config = self.getConfigs()
-        md.treeprocessors.add("toc", tocext, "_begin")
+        # Headerid ext is set to '>inline'. With this set to '<prettify',
+        # it should always come after headerid ext (and honor ids assinged 
+        # by the header id extension) if both are used. Same goes for 
+        # attr_list extension. This must come last because we don't want
+        # to redefine ids after toc is created. But we do want toc prettified.
+        md.treeprocessors.add("toc", tocext, "<prettify")
 	
 def makeExtension(configs={}):
     return TocExtension(configs=configs)

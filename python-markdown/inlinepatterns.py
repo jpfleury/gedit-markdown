@@ -59,7 +59,7 @@ def build_inlinepatterns(md_instance, **kwargs):
     """ Build the default set of inline patterns for Markdown. """
     inlinePatterns = odict.OrderedDict()
     inlinePatterns["backtick"] = BacktickPattern(BACKTICK_RE)
-    inlinePatterns["escape"] = SimpleTextPattern(ESCAPE_RE)
+    inlinePatterns["escape"] = EscapePattern(ESCAPE_RE, md_instance)
     inlinePatterns["reference"] = ReferencePattern(REFERENCE_RE, md_instance)
     inlinePatterns["link"] = LinkPattern(LINK_RE, md_instance)
     inlinePatterns["image_link"] = ImagePattern(IMAGE_LINK_RE, md_instance)
@@ -112,7 +112,7 @@ REFERENCE_RE = NOIMG + BRK+ r'\s?\[([^\]]*)\]'           # [Google][3]
 SHORT_REF_RE = NOIMG + r'\[([^\]]+)\]'                   # [Google]
 IMAGE_REFERENCE_RE = r'\!' + BRK + '\s?\[([^\]]*)\]' # ![alt text][2]
 NOT_STRONG_RE = r'((^| )(\*|_)( |$))'                        # stand-alone * or _
-AUTOLINK_RE = r'<((?:f|ht)tps?://[^>]*)>'        # <http://www.123.com>
+AUTOLINK_RE = r'<((?:[Ff]|[Hh][Tt])[Tt][Pp][Ss]?://[^>]*)>' # <http://www.123.com>
 AUTOMAIL_RE = r'<([^> \!]*@[^> ]*)>'               # <me@example.com>
 
 HTML_RE = r'(\<([a-zA-Z/][^\>]*?|\!--.*?--)\>)'               # <...>
@@ -197,8 +197,6 @@ class Pattern:
         return util.INLINE_PLACEHOLDER_RE.sub(get_stash, text)
 
 
-BasePattern = Pattern # for backward compatibility
-
 class SimpleTextPattern(Pattern):
     """ Return a simple text of group(2) of a Pattern. """
     def handleMatch(self, m):
@@ -206,6 +204,18 @@ class SimpleTextPattern(Pattern):
         if text == util.INLINE_PLACEHOLDER_PREFIX:
             return None
         return text
+
+
+class EscapePattern(Pattern):
+    """ Return an escaped character. """
+
+    def handleMatch(self, m):
+        char = m.group(2)
+        if char in self.markdown.ESCAPED_CHARS:
+            return '%s%s%s' % (util.STX, ord(char), util.ETX)
+        else:
+            return '\\%s' % char
+
 
 class SimpleTagPattern(Pattern):
     """

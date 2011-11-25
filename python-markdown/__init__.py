@@ -31,10 +31,11 @@ License: BSD (see LICENSE for details).
 """
 
 version = "2.1.0"
-version_info = (2,1,0, "Dev")
+version_info = (2,1,0, "final")
 
 import re
 import codecs
+import sys
 import logging
 import util
 from preprocessors import build_preprocessors
@@ -72,6 +73,9 @@ class Markdown:
         'xhtml5': to_xhtml_string,
     }
 
+    ESCAPED_CHARS = ['\\', '`', '*', '_', '{', '}', '[', ']', 
+                    '(', ')', '>', '#', '+', '-', '.', '!']
+    
     def __init__(self, *args, **kwargs):
         """
         Creates a new Markdown instance.
@@ -285,7 +289,7 @@ class Markdown:
                 root = newRoot
 
         # Serialize _properly_.  Strip top-level tags.
-        output, length = codecs.utf_8_decode(self.serializer(root, encoding="utf-8"))
+        output = self.serializer(root)
         if self.stripTopLevelTags:
             try:
                 start = output.index('<%s>'%self.doc_tag)+len(self.doc_tag)+2
@@ -311,7 +315,8 @@ class Markdown:
         Decodes the file using the provided encoding (defaults to utf-8),
         passes the file content to markdown, and outputs the html to either
         the provided stream or the file with provided name, using the same
-        encoding as the source file.
+        encoding as the source file. The 'xmlcharrefreplace' error handler is
+        used when encoding the output.
 
         **Note:** This is the only place that decoding and encoding of unicode
         takes place in Python-Markdown.  (All other code is unicode-in /
@@ -319,8 +324,8 @@ class Markdown:
 
         Keyword arguments:
 
-        * input: File object or path of file as string.
-        * output: Name of output file. Writes to stdout if `None`.
+        * input: File object or path. Reads from stdin if `None`.
+        * output: File object or path. Writes to stdout if `None`.
         * encoding: Encoding of input and output files. Defaults to utf-8.
 
         """
@@ -331,6 +336,7 @@ class Markdown:
         if isinstance(input, basestring):
             input_file = codecs.open(input, mode="r", encoding=encoding)
         else:
+            input = input or sys.stdin
             input_file = codecs.getreader(encoding)(input)
         text = input_file.read()
         input_file.close()
@@ -340,12 +346,15 @@ class Markdown:
         html = self.convert(text)
 
         # Write to file or stdout
-        if isinstance(output, (str, unicode)):
-            output_file = codecs.open(output, "w", encoding=encoding)
+        if isinstance(output, basestring):
+            output_file = codecs.open(output, "w", 
+                                      encoding=encoding, 
+                                      errors="xmlcharrefreplace")
             output_file.write(html)
             output_file.close()
         else:
-            output.write(html.encode(encoding))
+            output = output or sys.stdout
+            output.write(html.encode(encoding, "xmlcharrefreplace"))
 
         return self
 
@@ -405,6 +414,4 @@ def markdownFromFile(*args, **kwargs):
     md.convertFile(kwargs.get('input', None), 
                    kwargs.get('output', None),
                    kwargs.get('encoding', None))
-
-
 
