@@ -43,7 +43,7 @@ Specifically, it adds:
 
 		./gedit-markdown.sh install
 
-Markdown support will be added for the current user (so no need root privileges). The folder `gedit-markdown` created by the extraction can be deleted after installation.
+Markdown support will be added for the current user (so no need root privileges). The folder created by the extraction can be deleted after installation.
 
 ### Windows XP
 

@@ -43,7 +43,7 @@ Plus précisément, gedit-markdown ajoute:
 
 		./gedit-markdown.sh installer
 
-Le support de Markdown sera ajouté à l'utilisateur courant (l'installation se fait donc sans les droits d'administration). Le dossier `gedit-markdown` créé par l'extraction de l'archive peut être supprimé après l'installation.
+Le support de Markdown sera ajouté à l'utilisateur courant (l'installation se fait donc sans les droits d'administration). Le dossier créé par l'extraction de l'archive peut être supprimé après l'installation.
 
 ### Windows XP
 
