@@ -43,7 +43,11 @@ class FootnoteExtension(markdown.Extension):
                        'UNIQUE_IDS':
                        [False,
                         "Avoid name collisions across "
-                        "multiple calls to reset()."]}
+                        "multiple calls to reset()."],
+                       "BACKLINK_TEXT":
+                       ["&#8617;",
+                        "The text string that links from the footnote to the reader's place."]
+                       }
 
         for key, value in configs:
             self.config[key][0] = value
@@ -65,10 +69,10 @@ class FootnoteExtension(markdown.Extension):
         md.inlinePatterns.add("footnote", FootnotePattern(FOOTNOTE_RE, self),
                               "<reference")
         # Insert a tree-processor that would actually add the footnote div
-        # This must be before the inline treeprocessor so inline patterns
-        # run on the contents of the div.
+        # This must be before all other treeprocessors (i.e., inline and 
+        # codehilite) so they can run on the the contents of the div.
         md.treeprocessors.add("footnote", FootnoteTreeprocessor(self),
-                                 "<inline")
+                                 "_begin")
         # Insert a postprocessor after amp_substitute oricessor
         md.postprocessors.add("footnote", FootnotePostprocessor(self),
                                   ">amp_substitute")
@@ -282,9 +286,11 @@ class FootnoteTreeprocessor(markdown.treeprocessors.Treeprocessor):
 
 class FootnotePostprocessor(markdown.postprocessors.Postprocessor):
     """ Replace placeholders with html entities. """
+    def __init__(self, footnotes):
+        self.footnotes = footnotes
 
     def run(self, text):
-        text = text.replace(FN_BACKLINK_TEXT, "&#8617;")
+        text = text.replace(FN_BACKLINK_TEXT, self.footnotes.getConfig("BACKLINK_TEXT"))
         return text.replace(NBSP_PLACEHOLDER, "&#160;")
 
 def makeExtension(configs=[]):

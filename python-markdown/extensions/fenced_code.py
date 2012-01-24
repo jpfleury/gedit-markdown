@@ -49,6 +49,18 @@ Language tags:
     <pre><code class="python"># Some python code
     </code></pre>
 
+Optionally backticks instead of tildes as per how github's code block markdown is identified:
+
+    >>> text = '''
+    ... `````
+    ... # Arbitrary code
+    ... ~~~~~ # these tildes will not close the block
+    ... `````'''
+    >>> print markdown.markdown(text, extensions=['fenced_code'])
+    <pre><code># Arbitrary code
+    ~~~~~ # these tildes will not close the block
+    </code></pre>
+
 Copyright 2007-2008 [Waylan Limberg](http://achinghead.com/).
 
 Project website: <http://www.freewisdom.org/project/python-markdown/Fenced__Code__Blocks>
@@ -69,7 +81,7 @@ from markdown.extensions.codehilite import CodeHilite, CodeHiliteExtension
 
 # Global vars
 FENCED_BLOCK_RE = re.compile( \
-    r'(?P<fence>^~{3,})[ ]*(\{?\.(?P<lang>[a-zA-Z0-9_-]*)\}?)?[ ]*\n(?P<code>.*?)(?P=fence)[ ]*$',
+    r'(?P<fence>^(?:~{3,}|`{3,}))[ ]*(\{?\.?(?P<lang>[a-zA-Z0-9_-]*)\}?)?[ ]*\n(?P<code>.*?)(?<=\n)(?P=fence)[ ]*$',
     re.MULTILINE|re.DOTALL
     )
 CODE_WRAP = '<pre><code%s>%s</code></pre>'
@@ -118,12 +130,12 @@ class FencedBlockPreprocessor(markdown.preprocessors.Preprocessor):
                 # is enabled, so we call it to highlite the code
                 if self.codehilite_conf:
                     highliter = CodeHilite(m.group('code'),
-                            linenos=self.codehilite_conf['force_linenos'],
-                            guess_lang=self.codehilite_conf['guess_lang'],
-                            css_class=self.codehilite_conf['css_class'],
-                            style=self.codehilite_conf['pygments_style'],
+                            linenos=self.codehilite_conf['force_linenos'][0],
+                            guess_lang=self.codehilite_conf['guess_lang'][0],
+                            css_class=self.codehilite_conf['css_class'][0],
+                            style=self.codehilite_conf['pygments_style'][0],
                             lang=(m.group('lang') or None),
-                            noclasses=self.codehilite_conf['noclasses'])
+                            noclasses=self.codehilite_conf['noclasses'][0])
 
                     code = highliter.hilite()
                 else:

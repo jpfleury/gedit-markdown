@@ -71,7 +71,8 @@ def build_inlinepatterns(md_instance, **kwargs):
     inlinePatterns["automail"] = AutomailPattern(AUTOMAIL_RE, md_instance)
     inlinePatterns["linebreak2"] = SubstituteTagPattern(LINE_BREAK_2_RE, 'br')
     inlinePatterns["linebreak"] = SubstituteTagPattern(LINE_BREAK_RE, 'br')
-    inlinePatterns["html"] = HtmlPattern(HTML_RE, md_instance)
+    if md_instance.safeMode != 'escape':
+        inlinePatterns["html"] = HtmlPattern(HTML_RE, md_instance)
     inlinePatterns["entity"] = HtmlPattern(ENTITY_RE, md_instance)
     inlinePatterns["not_strong"] = SimpleTextPattern(NOT_STRONG_RE)
     inlinePatterns["strong_em"] = DoubleTagPattern(STRONG_EM_RE, 'strong,em')
@@ -268,10 +269,26 @@ class DoubleTagPattern(SimpleTagPattern):
 class HtmlPattern(Pattern):
     """ Store raw inline html and return a placeholder. """
     def handleMatch (self, m):
-        rawhtml = m.group(2)
-        inline = True
+        rawhtml = self.unescape(m.group(2))
         place_holder = self.markdown.htmlStash.store(rawhtml)
         return place_holder
+
+    def unescape(self, text):
+        """ Return unescaped text given text with an inline placeholder. """
+        try:
+            stash = self.markdown.treeprocessors['inline'].stashed_nodes
+        except KeyError:
+            return text
+        def get_stash(m):
+            id = m.group(1)
+            value = stash.get(id)
+            if value is not None:
+                try:
+                    return self.markdown.serializer(value)
+                except:
+                    return '\%s' % value
+            
+        return util.INLINE_PLACEHOLDER_RE.sub(get_stash, text)
 
 
 class LinkPattern(Pattern):
@@ -311,20 +328,29 @@ class LinkPattern(Pattern):
         `username:password@host:port`.
 
         """
+        if not self.markdown.safeMode:
+            # Return immediately bipassing parsing.
+            return url
+        
+        try:
+            scheme, netloc, path, params, query, fragment = url = urlparse(url)
+        except ValueError:
+            # Bad url - so bad it couldn't be parsed.
+            return ''
+        
         locless_schemes = ['', 'mailto', 'news']
-        scheme, netloc, path, params, query, fragment = url = urlparse(url)
-        safe_url = False
-        if netloc != '' or scheme in locless_schemes:
-            safe_url = True
+        if netloc == '' and scheme not in locless_schemes:
+            # This fails regardless of anything else. 
+            # Return immediately to save additional proccessing
+            return ''
 
         for part in url[2:]:
             if ":" in part:
-                safe_url = False
+                # Not a safe url
+                return ''
 
-        if self.markdown.safeMode and not safe_url:
-            return ''
-        else:
-            return urlunparse(url)
+        # Url passes all tests. Return url as-is.
+        return urlunparse(url)
 
 class ImagePattern(LinkPattern):
     """ Return a img element from the given match. """

@@ -14,7 +14,8 @@ import odict
 def build_preprocessors(md_instance, **kwargs):
     """ Build the default set of preprocessors used by Markdown. """
     preprocessors = odict.OrderedDict()
-    preprocessors["html_block"] = HtmlBlockPreprocessor(md_instance)
+    if md_instance.safeMode != 'escape':
+        preprocessors["html_block"] = HtmlBlockPreprocessor(md_instance)
     preprocessors["reference"] = ReferencePreprocessor(md_instance)
     return preprocessors
 
@@ -78,7 +79,7 @@ class HtmlBlockPreprocessor(Preprocessor):
                         attrs[ma.group('attr2').strip()] = ""
             return tag, len(m.group(0)), attrs
         else:
-            tag = block[1:].replace(">", " ", 1).split()[0].lower()
+            tag = block[1:].split(">", 1)[0].lower()
             return tag, len(tag)+2, {}
 
     def _recursive_tagfind(self, ltag, rtag, start_index, block):
@@ -143,21 +144,20 @@ class HtmlBlockPreprocessor(Preprocessor):
 
             if not in_tag:
                 if block.startswith("<") and len(block.strip()) > 1:
-                    left_tag, left_index, attrs = self._get_left_tag(block)
-                    right_tag, data_index = self._get_right_tag(left_tag, 
-                                                                left_index,
-                                                                block)
 
                     if block[1] == "!":
                         # is a comment block
-                        left_tag = "--"
-                        right_tag, data_index = self._get_right_tag(left_tag, 
-                                                                    left_index,
-                                                                    block)
-                        # keep checking conditions below and maybe just append
+                        left_tag, left_index, attrs  = "--", 2, ()
+                    else:
+                        left_tag, left_index, attrs = self._get_left_tag(block)
+                    right_tag, data_index = self._get_right_tag(left_tag, 
+                                                                left_index,
+                                                                block)
+                    # keep checking conditions below and maybe just append
                     
                     if data_index < len(block) \
-                        and util.isBlockLevel(left_tag): 
+                        and (util.isBlockLevel(left_tag)
+                        or left_tag == '--'): 
                         text.insert(0, block[data_index:])
                         block = block[:data_index]
 
@@ -204,12 +204,16 @@ class HtmlBlockPreprocessor(Preprocessor):
             else:
                 items.append(block)
 
-                right_tag, data_index = self._get_right_tag(left_tag, 
-                                                            left_index, 
-                                                            block)
+                right_tag, data_index = self._get_right_tag(left_tag, 0, block)
 
                 if self._equal_tags(left_tag, right_tag):
                     # if find closing tag
+                    
+                    if data_index < len(block):
+                        # we have more text after right_tag
+                        items[-1] = block[:data_index]
+                        text.insert(0, block[data_index:])
+
                     in_tag = False
                     if self.markdown_in_raw and 'markdown' in attrs.keys():
                         start = re.sub(r'\smarkdown(=[\'"]?[^> ]*[\'"]?)?', 

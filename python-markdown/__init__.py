@@ -22,7 +22,7 @@ Limberg](http://achinghead.com/) and [Artem Yunusov](http://blog.splyer.com).
 
 Contact: markdown@freewisdom.org
 
-Copyright 2007, 2008 The Python Markdown Project (v. 1.7 and later)
+Copyright 2007-2012 The Python Markdown Project (v. 1.7 and later)
 Copyright 200? Django Software Foundation (OrderedDict implementation)
 Copyright 2004, 2005, 2006 Yuri Takhteyev (v. 0.2-1.6b)
 Copyright 2004 Manfred Stienstra (the original version)
@@ -30,8 +30,8 @@ Copyright 2004 Manfred Stienstra (the original version)
 License: BSD (see LICENSE for details).
 """
 
-version = "2.1.0"
-version_info = (2,1,0, "final")
+version = "2.1.1"
+version_info = (2,1,1, "final")
 
 import re
 import codecs
@@ -44,7 +44,7 @@ from treeprocessors import build_treeprocessors
 from inlinepatterns import build_inlinepatterns
 from postprocessors import build_postprocessors
 from extensions import Extension
-from searializers import to_html_string, to_xhtml_string
+from serializers import to_html_string, to_xhtml_string
 
 __all__ = ['Markdown', 'markdown', 'markdownFromFile']
 
@@ -117,7 +117,7 @@ class Markdown:
                 # ignore any additional args
                 break
 
-        # Loop throu kwargs and assign defaults
+        # Loop through kwargs and assign defaults
         for option, default in self.option_defaults.items():
             setattr(self, option, kwargs.get(option, default)) 
 
@@ -148,7 +148,7 @@ class Markdown:
         """
         Register extensions with this instance of Markdown.
 
-        Keyword aurguments:
+        Keyword arguments:
 
         * extensions: A list of extensions, which can either
            be strings or objects.  See the docstring on Markdown.
@@ -189,7 +189,7 @@ class Markdown:
         module_name_new_style = '.'.join([ext_module, ext_name])
         module_name_old_style = '_'.join(['mdx', ext_name])
 
-        # Try loading the extention first from one place, then another
+        # Try loading the extension first from one place, then another
         try: # New style (markdown.extensons.<extension>)
             module = __import__(module_name_new_style, {}, {}, [ext_module])
         except ImportError:
@@ -333,28 +333,38 @@ class Markdown:
         encoding = encoding or "utf-8"
 
         # Read the source
-        if isinstance(input, basestring):
-            input_file = codecs.open(input, mode="r", encoding=encoding)
+        if input:
+            if isinstance(input, str):
+                input_file = codecs.open(input, mode="r", encoding=encoding)
+            else:
+                input_file = codecs.getreader(encoding)(input)
+            text = input_file.read()
+            input_file.close()
         else:
-            input = input or sys.stdin
-            input_file = codecs.getreader(encoding)(input)
-        text = input_file.read()
-        input_file.close()
-        text = text.lstrip(u'\ufeff') # remove the byte-order mark
+            text = sys.stdin.read()
+            if not isinstance(text, unicode):
+                text = text.decode(encoding)
+
+        text = text.lstrip('\ufeff') # remove the byte-order mark
 
         # Convert
         html = self.convert(text)
 
         # Write to file or stdout
-        if isinstance(output, basestring):
-            output_file = codecs.open(output, "w", 
-                                      encoding=encoding, 
-                                      errors="xmlcharrefreplace")
-            output_file.write(html)
-            output_file.close()
+        if output:
+            if isinstance(output, str):
+                output_file = codecs.open(output, "w", 
+                                          encoding=encoding, 
+                                          errors="xmlcharrefreplace")
+                output_file.write(html)
+                output_file.close()
+            else:
+                writer = codecs.getwriter(encoding)
+                output_file = writer(output, errors="xmlcharrefreplace")
+                output_file.write(html)
+                # Don't close here. User may want to write more.
         else:
-            output = output or sys.stdout
-            output.write(html.encode(encoding, "xmlcharrefreplace"))
+            sys.stdout.write(html)
 
         return self
 
@@ -390,7 +400,7 @@ def markdownFromFile(*args, **kwargs):
     """Read markdown code from a file and write it to a file or a stream.
     
     This is a shortcut function which initializes an instance of Markdown,
-    cand calls the convertFile method rather than convert.
+    and calls the convertFile method rather than convert.
     
     Keyword arguments:
     
@@ -400,7 +410,7 @@ def markdownFromFile(*args, **kwargs):
     * Any arguments accepted by the Markdown class.
     
     """
-    # For backward compatability loop through positional args
+    # For backward compatibility loop through positional args
     pos = ['input', 'output', 'extensions', 'encoding']
     c = 0
     for arg in args:
