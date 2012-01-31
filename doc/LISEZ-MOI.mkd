@@ -195,7 +195,7 @@ gedit-markdown dispose également d'un [système de suivi], sur lequel les rappo
 ## Licence
 
 Auteur: Jean-Philippe Fleury <contact@jpfleury.net>  
-Copyright © Jean-Philippe Fleury, 2009-2011.
+Copyright © Jean-Philippe Fleury, 2009-2012.
 
 Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 modifier suivant les termes de la GNU General Public License telle que
@@ -211,9 +211,10 @@ Vous devriez avoir reçu une copie de la Licence publique générale GNU avec
 ce programme; si ce n'est pas le cas, consultez
 <http://www.gnu.org/licenses/>.
 
-### Matériel tierce
+### Matériel tiers
 
 - Le greffon d'aperçu Markdown est basé sur [Markdown Preview], sous licence GPL version 2 ou toute version ultérieure, et sur [Python Markdown], sous licence de style BSD.
 
 [Markdown Preview]: http://live.gnome.org/Gedit/MarkdownSupport
 [Python Markdown]: http://www.freewisdom.org/projects/python-markdown/
+

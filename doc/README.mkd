@@ -195,7 +195,7 @@ gedit-markdown has an [issue tracker], on which bug reports and feature requests
 ## License
 
 Author: Jean-Philippe Fleury <contact@jpfleury.net>  
-Copyright © 2009-2011 Jean-Philippe Fleury
+Copyright © 2009-2012 Jean-Philippe Fleury
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -210,9 +210,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-### Included scripts
+### Third-party code
 
 - The plugin *Markdown Preview* shipped with gedit-markdown is a modification of the [plugin of the same name written by Michele Campeotto][Markdown Preview], under the GPL v2 or any later version, and uses [Python Markdown], under the BSD-style license.
 
 [Markdown Preview]: http://live.gnome.org/Gedit/MarkdownSupport
 [Python Markdown]: http://www.freewisdom.org/projects/python-markdown/
+
