@@ -202,12 +202,22 @@ fi
 ## Version de Python.
 ####################################
 
+# Note: pour l'instant, Python 2.7 est la version la plus récente supportée par gedit. Python 3 ne sera donc pas considéré comme étant une bonne version, même si le greffon «Aperçu Markdown» le supporte.
+
 bonneVersionPython=1
 
-if [[ -z $(which python) ]]; then
-	bonneVersionPython=0
+if [[ -n $(which python2.7) ]]; then
+	binPython=python2.7
+elif [[ -n $(which python2.6) ]]; then
+	binPython=python2.6
+elif [[ -n $(which python) ]]; then
+	binPython=python
 else
-	versionPython=$(python -c 'import sys; print(sys.version[:3])')
+	bonneVersionPython=0
+fi
+
+if [[ $bonneVersionPython != 0 ]]; then
+	versionPython=$($binPython -c 'import sys; print(sys.version[:3])')
 	
 	if [[ ${versionPython:0:1} == 2 ]]; then
 		vercomp $versionPython "2.6"
@@ -216,17 +226,17 @@ else
 			bonneVersionPython=0
 		else
 			cheminPythonMarkdown=python-markdown/python2
-			cheminPythonSitePackages=$(python -m site --user-site)
+			cheminPythonSitePackages=$($binPython -m site --user-site)
 		fi
-	elif [[ ${versionPython:0:1} == 3 ]]; then
-		vercomp $versionPython "3.1"
-		
-		if [[ $? == 2 ]]; then
-			bonneVersionPython=0
-		else
-			cheminPythonMarkdown=python-markdown/python3
-			cheminPythonSitePackages=$(python -m site --user-site)
-		fi
+#	elif [[ ${versionPython:0:1} == 3 ]]; then
+#		vercomp $versionPython "3.1"
+#		
+#		if [[ $? == 2 ]]; then
+#			bonneVersionPython=0
+#		else
+#			cheminPythonMarkdown=python-markdown/python3
+#			cheminPythonSitePackages=$($binPython -m site --user-site)
+#		fi
 	else
 		bonneVersionPython=0
 	fi
@@ -310,7 +320,8 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 	
 	if [[ $bonneVersionPython == 0 ]]; then
 		echo -e $(gettext ""\
-"Le greffon «Aperçu Markdown» ne sera pas installé, car il dépend de Python >= 2.6.")
+"Le greffon «Aperçu Markdown» ne sera pas installé, car il dépend de Python 2 (>= 2.6)\n"\
+"ou de Python 3 (>= 3.1).")
 		echo ""
 	fi
 	
