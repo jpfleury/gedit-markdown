@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-06 21:03-0400\n"
+"POT-Creation-Date: 2012-05-06 18:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,111 +17,111 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gedit-markdown.sh:270
+#: gedit-markdown.sh:298
 msgid "Installation de gedit-markdown"
 msgstr ""
 
-#: gedit-markdown.sh:275
+#: gedit-markdown.sh:303
 msgid "Première étape: vérification des dépendances"
 msgstr ""
 
-#: gedit-markdown.sh:283
+#: gedit-markdown.sh:311
 msgid ""
 "Veuillez installer gedit avant de lancer le script d'installation de gedit-"
 "markdown."
 msgstr ""
 
-#: gedit-markdown.sh:289
+#: gedit-markdown.sh:317
 msgid ""
 "La vérification orthographique ne peut pas être désactivée dans la coloration"
 "\\nsyntaxique pour les contextes non pertinents (par exemple dans les "
 "adresses URL),\\ncar cette fonctionnalité dépend de GtkSourceView >= 2.10."
 msgstr ""
 
-#: gedit-markdown.sh:297
+#: gedit-markdown.sh:325
 msgid ""
-"Le greffon «Aperçu Markdown» ne sera pas installé, car il dépend de Python "
-">= 2.6."
+"Le greffon «Aperçu Markdown» ne sera pas installé, car il dépend de Python 2 "
+"(>= 2.6)\\nou de Python 3 (>= 3.1)."
 msgstr ""
 
-#: gedit-markdown.sh:302 gedit-markdown.sh:328 gedit-markdown.sh:354
-#: gedit-markdown.sh:440 gedit-markdown.sh:462
+#: gedit-markdown.sh:331 gedit-markdown.sh:357 gedit-markdown.sh:383
+#: gedit-markdown.sh:474 gedit-markdown.sh:496
 msgid "Étape terminée."
 msgstr ""
 
-#: gedit-markdown.sh:305
+#: gedit-markdown.sh:334
 msgid "Étape suivante: choix de la syntaxe Markdown à installer"
 msgstr ""
 
-#: gedit-markdown.sh:308
+#: gedit-markdown.sh:337
 msgid ""
 "gedit-markdown peut ajouter le support du langage Markdown standard ou de la"
 "\\nversion spéciale Markdown Extra.\\n\\n\\t1\\tMarkdown standard\\n"
 "\\t2\\tMarkdown Extra\\n"
 msgstr ""
 
-#: gedit-markdown.sh:314 gedit-markdown.sh:340
+#: gedit-markdown.sh:343 gedit-markdown.sh:369
 msgid "Saisissez votre choix [1/2] (2 par défaut): "
 msgstr ""
 
-#: gedit-markdown.sh:322
+#: gedit-markdown.sh:351
 msgid "Le langage Markdown standard sera ajouté."
 msgstr ""
 
-#: gedit-markdown.sh:324
+#: gedit-markdown.sh:353
 msgid "Le langage Markdown Extra sera ajouté."
 msgstr ""
 
-#: gedit-markdown.sh:332
+#: gedit-markdown.sh:361
 msgid "Étape suivante: choix de l'emplacement de l'aperçu Markdown"
 msgstr ""
 
-#: gedit-markdown.sh:335
+#: gedit-markdown.sh:364
 msgid ""
 "L'aperçu Markdown peut être placé dans un des deux panneaux de gedit.\\n\\n"
 "\\t1\\tPanneau latéral\\n\\t2\\tPanneau inférieur\\n"
 msgstr ""
 
-#: gedit-markdown.sh:348
+#: gedit-markdown.sh:377
 msgid "L'aperçu Markdown se trouvera dans le panneau latéral."
 msgstr ""
 
-#: gedit-markdown.sh:350
+#: gedit-markdown.sh:379
 msgid "L'aperçu Markdown se trouvera dans le panneau inférieur."
 msgstr ""
 
-#: gedit-markdown.sh:358
+#: gedit-markdown.sh:387
 msgid "Étape suivante: copie des fichiers"
 msgstr ""
 
-#: gedit-markdown.sh:443
+#: gedit-markdown.sh:477
 msgid "Installation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 
-#: gedit-markdown.sh:451
+#: gedit-markdown.sh:485
 msgid "Désinstallation de gedit-markdown"
 msgstr ""
 
-#: gedit-markdown.sh:456
+#: gedit-markdown.sh:490
 msgid "Première étape: suppression des fichiers"
 msgstr ""
 
-#: gedit-markdown.sh:465
+#: gedit-markdown.sh:499
 msgid "Désinstallation terminée. Veuillez redémarrer gedit s'il est ouvert."
 msgstr ""
 
-#: gedit-markdown.sh:471
+#: gedit-markdown.sh:505
 msgid "Usage:"
 msgstr ""
 
-#: gedit-markdown.sh:471
+#: gedit-markdown.sh:505
 msgid "ACTION [VERSION]"
 msgstr ""
 
-#: gedit-markdown.sh:473
+#: gedit-markdown.sh:507
 msgid "ACTION (obligatoire): action à effectuer. Valeurs possibles:"
 msgstr ""
 
-#: gedit-markdown.sh:474
+#: gedit-markdown.sh:508
 msgid "VERSION (optionnel): version majeure de gedit. Valeurs possibles:"
 msgstr ""
