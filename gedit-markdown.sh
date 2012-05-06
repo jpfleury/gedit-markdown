@@ -206,12 +206,15 @@ fi
 
 bonneVersionPython=1
 
+# Note: sous Archlinux, `/usr/bin/python` correspond à Python 3. On teste donc les chemins pour Python 2 en premier.
 if [[ -n $(which python2.7) ]]; then
-	binPython=python2.7
+	binPython=$(which python2.7)
 elif [[ -n $(which python2.6) ]]; then
-	binPython=python2.6
+	binPython=$(which python2.6)
+elif [[ -n $(which python2) ]]; then
+	binPython=$(which python2)
 elif [[ -n $(which python) ]]; then
-	binPython=python
+	binPython=$(which python)
 else
 	bonneVersionPython=0
 fi
@@ -441,8 +444,13 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 		fi
 		
 		# Outil externe.
+		
 		mkdir -pv $cheminTools
 		cp -v tools/export-to-html $cheminTools
+		
+		if [[ $binPython != /usr/bin/python ]]; then
+			sed -i "0,\|^#!/usr/bin/python$|s||#!$binPython|" $cheminTools/export-to-html
+		fi
 		
 		# Greffon «Aperçu Markdown».
 		
