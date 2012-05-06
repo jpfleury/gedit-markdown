@@ -2,7 +2,7 @@
 
 # Le fichier gedit-markdown.sh fait partie de gedit-markdown.
 # Auteur: Jean-Philippe Fleury <contact@jpfleury.net>
-# Copyright © Jean-Philippe Fleury, 2009, 2011.
+# Copyright © Jean-Philippe Fleury, 2009, 2011-2012.
 
 # Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 # modifier suivant les termes de la GNU General Public License telle que
@@ -208,12 +208,27 @@ if [[ -z $(which python) ]]; then
 	bonneVersionPython=0
 else
 	versionPython=$(python -c 'import sys; print(sys.version[:3])')
-	vercomp $versionPython "2.6"
 	
-	if [[ $? == 2 ]]; then
-		bonneVersionPython=0
+	if [[ ${versionPython:0:1} == 2 ]]; then
+		vercomp $versionPython "2.6"
+		
+		if [[ $? == 2 ]]; then
+			bonneVersionPython=0
+		else
+			cheminPythonMarkdown=python-markdown/python2
+			cheminPythonSitePackages=$(python -m site --user-site)
+		fi
+	elif [[ ${versionPython:0:1} == 3 ]]; then
+		vercomp $versionPython "3.1"
+		
+		if [[ $? == 2 ]]; then
+			bonneVersionPython=0
+		else
+			cheminPythonMarkdown=python-markdown/python3
+			cheminPythonSitePackages=$(python -m site --user-site)
+		fi
 	else
-		cheminPythonSitePackages=$(python -m site --user-site)
+		bonneVersionPython=0
 	fi
 fi
 
@@ -405,7 +420,7 @@ if [[ $1 == "installer" || $1 == "install" ]]; then
 		# Python-Markdown.
 		
 		mkdir -pv $cheminPythonSitePackages
-		cp -rv python-markdown $cheminPythonSitePackages/markdown
+		cp -rv $cheminPythonMarkdown $cheminPythonSitePackages/markdown
 		
 		# Mise à jour de la configuration.
 		if [[ -n $(grep "^pythonSitePackages=" $cheminFichierConfig) ]]; then
