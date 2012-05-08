@@ -1,3 +1,8 @@
+2to3:
+	rm -rf python-markdown/python3
+	cp -r python-markdown/python2 python-markdown/python3
+	2to3 -w -n python-markdown/python3
+
 menagePot:
 	rm -f locale/gedit-markdown.pot
 	rm -f plugins/gedit2/markdown-preview/locale/markdown-preview.pot
