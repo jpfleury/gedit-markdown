@@ -178,29 +178,58 @@ fi
 
 if [[ ${versionGedit:0:1} == 3 ]]; then
 	# gedit 3.
+	
 	cheminGeditMarkdownPluginsGedit=plugins/gedit3
-	cheminLanguageSpecs=~/.local/share/gtksourceview-3.0/language-specs
+	
+	if [[ -n $XDG_DATA_HOME ]]; then
+		cheminLanguageSpecs=$XDG_DATA_HOME/gtksourceview-3.0/language-specs
+		cheminPlugins=$XDG_DATA_HOME/gedit/plugins
+		cheminPluginsMarkdownPreview=$XDG_DATA_HOME/gedit/plugins/markdown-preview
+		cheminStyles=$XDG_DATA_HOME/gtksourceview-3.0/styles
+	else
+		cheminLanguageSpecs=$HOME/.local/share/gtksourceview-3.0/language-specs
+		cheminPlugins=$HOME/.local/share/gedit/plugins
+		cheminPluginsMarkdownPreview=$HOME/.local/share/gedit/plugins/markdown-preview
+		cheminStyles=$HOME/.local/share/gtksourceview-3.0/styles
+	fi
+	
 	cheminSystemeLanguageSpecs=/usr/share/gtksourceview-3.0/language-specs
-	cheminPlugins=~/.local/share/gedit/plugins
-	cheminPluginsMarkdownPreview=~/.local/share/gedit/plugins/markdown-preview
-	cheminSnippets=~/.config/gedit/snippets
 	cheminSystemeSnippets=/usr/share/gedit/plugins/snippets
-	cheminStyles=~/.local/share/gtksourceview-3.0/styles
-	cheminTools=~/.config/gedit/tools
+	
+	if [[ -n $XDG_CONFIG_HOME ]]; then
+		cheminSnippets=$XDG_CONFIG_HOME/gedit/snippets
+		cheminTools=$XDG_CONFIG_HOME/gedit/tools
+	else
+		cheminSnippets=$HOME/.config/gedit/snippets
+		cheminTools=$HOME/.config/gedit/tools
+	fi
 else
 	# gedit 2.
+	
 	cheminGeditMarkdownPluginsGedit=plugins/gedit2
-	cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
+	
+	if [[ -n $XDG_DATA_HOME ]]; then
+		cheminLanguageSpecs=$XDG_DATA_HOME/gtksourceview-2.0/language-specs
+		cheminStyles=$XDG_DATA_HOME/gtksourceview-2.0/styles
+	else
+		cheminLanguageSpecs=$HOME/.local/share/gtksourceview-2.0/language-specs
+		cheminStyles=$HOME/.local/share/gtksourceview-2.0/styles
+	fi
+	
 	cheminSystemeLanguageSpecs=/usr/share/gtksourceview-2.0/language-specs
-	cheminPlugins=~/.gnome2/gedit/plugins
-	cheminPluginsMarkdownPreview=~/.gnome2/gedit/plugins/markdown-preview
-	cheminSnippets=~/.gnome2/gedit/snippets
+	cheminPlugins=$HOME/.gnome2/gedit/plugins
+	cheminPluginsMarkdownPreview=$HOME/.gnome2/gedit/plugins/markdown-preview
+	cheminSnippets=$HOME/.gnome2/gedit/snippets
 	cheminSystemeSnippets=/usr/share/gedit-2/plugins/snippets
-	cheminStyles=~/.local/share/gtksourceview-2.0/styles
-	cheminTools=~/.gnome2/gedit/tools
+	cheminTools=$HOME/.gnome2/gedit/tools
 fi
 
-cheminConfig=~/.config
+if [[ -n $XDG_CONFIG_HOME ]]; then
+	cheminConfig=$XDG_CONFIG_HOME/gedit
+else
+	cheminConfig=$HOME/.config/gedit
+fi
+
 cheminFichierConfig=$cheminConfig/gedit-markdown.ini
 
 if [[ -f $cheminFichierConfig ]]; then
@@ -289,15 +318,16 @@ fichiersAsupprimer=(
 
 # Fichiers d'anciennes versions.
 
-cheminAncienFichierConfig=~/.gedit-markdown.ini
-cheminMimePackages=~/.local/share/mime/packages
+ancienCheminFichierConfig1=$HOME/.gedit-markdown.ini
+ancienCheminFichierConfig2=$HOME/.config/gedit-markdown.ini
+cheminMimePackages=$HOME/.local/share/mime/packages
 
 # Dossiers invalides utilisés un certain temps pour gedit 3.
-cheminInvalideGeditSnippets=~/.local/share/gedit/snippets
-cheminInvalideGeditTools=~/.local/share/gedit/tools
+cheminInvalideGeditSnippets=$HOME/.local/share/gedit/snippets
+cheminInvalideGeditTools=$HOME/.local/share/gedit/tools
 
 anciensFichiersAsupprimer=(
-	"$cheminAncienFichierConfig"
+	"$ancienCheminFichierConfig1"
 	"$cheminInvalideGeditSnippets/markdown.xml"
 	"$cheminInvalideGeditSnippets/markdown-extra.xml"
 	"$cheminInvalideGeditTools/export-to-html"
@@ -421,7 +451,11 @@ if [[ $1 == installer || $1 == install ]]; then
 	
 	# Copie des fichiers.
 	
-	if [[ ! -e $cheminFichierConfig ]]; then
+	if [[ -e $ancienCheminFichierConfig2 && ! -e $cheminFichierConfig ]]; then
+		mv "$ancienCheminFichierConfig2" "$cheminFichierConfig"
+	elif [[ -e $ancienCheminFichierConfig2 && -e $cheminFichierConfig ]]; then
+		rm -f "$ancienCheminFichierConfig2"
+	elif [[ ! -e $cheminFichierConfig ]]; then
 		cp -v config/gedit-markdown.ini "$cheminFichierConfig"
 	fi
 	

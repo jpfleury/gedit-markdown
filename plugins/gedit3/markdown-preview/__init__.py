@@ -38,12 +38,38 @@ except:
 HTML_TEMPLATE = "%s"
 
 # Configuration.
-CONFIG_PATH = os.path.expanduser('~') + '/.config/gedit-markdown.ini'
+
+try:
+	import xdg.BaseDirectory
+except ImportError:
+	home = os.environ.get('HOME')
+	xdg_config_home = os.path.join(home, '.config/')
+else:
+	xdg_config_home = xdg.BaseDirectory.xdg_config_home
+
+confDir =  os.path.join(xdg_config_home, 'gedit/')
+confFile =  os.path.join(confDir, 'gedit-markdown.ini')
 parser = SafeConfigParser()
-parser.read(CONFIG_PATH)
-markdownPanel = parser.get('markdown-preview', 'panel')
-markdownShortcut = parser.get('markdown-preview', 'shortcut')
-markdownVersion = parser.get('markdown-preview', 'version')
+
+if os.path.isfile(confFile):
+	parser.read(confFile)
+	markdownPanel = parser.get('markdown-preview', 'panel')
+	markdownShortcut = parser.get('markdown-preview', 'shortcut')
+	markdownVersion = parser.get('markdown-preview', 'version')
+else:
+	markdownPanel = 'bottom'
+	markdownShortcut = '<Control><Alt>m'
+	markdownVersion = 'extra'
+	
+	if not os.path.exists(confDir):
+		os.makedirs(confDir)
+	
+	parser.add_section('markdown-preview')
+	parser.set('markdown-preview', 'panel', markdownPanel)
+	parser.set('markdown-preview', 'shortcut', markdownShortcut)
+	parser.set('markdown-preview', 'version', markdownVersion)
+	with open(confFile, 'wb') as confFile:
+		parser.write(confFile)
 
 class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 	__gtype_name__ = "MarkdownPreviewPlugin"

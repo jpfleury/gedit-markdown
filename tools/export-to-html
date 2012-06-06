@@ -17,10 +17,24 @@ import markdown
 from ConfigParser import SafeConfigParser
 
 # Configuration.
-CONFIG_PATH = os.path.expanduser('~') + '/.config/gedit-markdown.ini'
+
+try:
+	import xdg.BaseDirectory
+except ImportError:
+	home = os.environ.get('HOME')
+	xdg_config_home = os.path.join(home, '.config/')
+else:
+	xdg_config_home = xdg.BaseDirectory.xdg_config_home
+
+confDir =  os.path.join(xdg_config_home, 'gedit/')
+confFile =  os.path.join(confDir, 'gedit-markdown.ini')
 parser = SafeConfigParser()
-parser.read(CONFIG_PATH)
-markdownVersion = parser.get('markdown-preview', 'version')
+
+if os.path.isfile(confFile):
+	parser.read(confFile)
+	markdownVersion = parser.get('markdown-preview', 'version')
+else:
+	markdownVersion = 'extra'
 
 text = sys.stdin.read().decode('utf-8')
 print "<!-- Markdown => HTML -->"

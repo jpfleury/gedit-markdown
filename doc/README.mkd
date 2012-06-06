@@ -119,7 +119,11 @@ An optional color scheme is installed by gedit-markdown. To use it, go to *Edit 
 
 The configuration file of gedit-markdown is the following:
 
-	~/.config/gedit-markdown.ini
+	$XDG_CONFIG_HOME/gedit/gedit-markdown.ini
+
+Most of the time, it will correspond to:
+
+	$HOME/.config/gedit/gedit-markdown.ini
 
 Only the section `markdown-preview` can be edited. It contains three properties:
 
@@ -185,7 +189,7 @@ For now, gedit-markdown is available in French and English.
 
 ## Development
 
-Last version: 1.1.1 (2012-05-22)
+Last version: 1.2 (2012-06-06)
 
 Git is used for revision control. [Repository can be browsed online or cloned.][git]
 

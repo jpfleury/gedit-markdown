@@ -119,7 +119,11 @@ Un jeu de couleurs optionnel est installé automatiquement par gedit-markdown. P
 
 Le fichier de configuration de gedit-markdown est le suivant:
 
-	~/.config/gedit-markdown.ini
+	$XDG_CONFIG_HOME/gedit/gedit-markdown.ini
+
+ce qui correspond la plupart du temps à:
+
+	$HOME/.config/gedit/gedit-markdown.ini
 
 Seule la section `markdown-preview` peut être modifiée, et contient trois paramètres:
 
@@ -185,7 +189,7 @@ Pour l'instant, gedit-markdown est disponible en français et en anglais.
 
 ## Développement
 
-Dernière version: 1.1.1 (2012-05-22)
+Dernière version: 1.2 (2012-06-06)
 
 Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.][git]
 
