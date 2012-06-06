@@ -178,13 +178,23 @@ fi
 
 if [[ ${versionGedit:0:1} == 3 ]]; then
 	# gedit 3.
+	
 	cheminGeditMarkdownPluginsGedit=plugins/gedit3
-	cheminLanguageSpecs=~/.local/share/gtksourceview-3.0/language-specs
+	
+	if [[ -n $XDG_DATA_HOME ]]; then
+		cheminLanguageSpecs=$XDG_DATA_HOME/gtksourceview-3.0/language-specs
+		cheminPlugins=$XDG_DATA_HOME/gedit/plugins
+		cheminPluginsMarkdownPreview=$XDG_DATA_HOME/gedit/plugins/markdown-preview
+		cheminStyles=$XDG_DATA_HOME/gtksourceview-3.0/styles
+	else
+		cheminLanguageSpecs=~/.local/share/gtksourceview-3.0/language-specs
+		cheminPlugins=~/.local/share/gedit/plugins
+		cheminPluginsMarkdownPreview=~/.local/share/gedit/plugins/markdown-preview
+		cheminStyles=~/.local/share/gtksourceview-3.0/styles
+	fi
+	
 	cheminSystemeLanguageSpecs=/usr/share/gtksourceview-3.0/language-specs
-	cheminPlugins=~/.local/share/gedit/plugins
-	cheminPluginsMarkdownPreview=~/.local/share/gedit/plugins/markdown-preview
 	cheminSystemeSnippets=/usr/share/gedit/plugins/snippets
-	cheminStyles=~/.local/share/gtksourceview-3.0/styles
 	
 	if [[ -n $XDG_CONFIG_HOME ]]; then
 		cheminSnippets=$XDG_CONFIG_HOME/gedit/snippets
@@ -195,14 +205,22 @@ if [[ ${versionGedit:0:1} == 3 ]]; then
 	fi
 else
 	# gedit 2.
+	
 	cheminGeditMarkdownPluginsGedit=plugins/gedit2
-	cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
+	
+	if [[ -n $XDG_DATA_HOME ]]; then
+		cheminLanguageSpecs=$XDG_DATA_HOME/gtksourceview-2.0/language-specs
+		cheminStyles=$XDG_DATA_HOME/gtksourceview-2.0/styles
+	else
+		cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
+		cheminStyles=~/.local/share/gtksourceview-2.0/styles
+	fi
+	
 	cheminSystemeLanguageSpecs=/usr/share/gtksourceview-2.0/language-specs
 	cheminPlugins=~/.gnome2/gedit/plugins
 	cheminPluginsMarkdownPreview=~/.gnome2/gedit/plugins/markdown-preview
 	cheminSnippets=~/.gnome2/gedit/snippets
 	cheminSystemeSnippets=/usr/share/gedit-2/plugins/snippets
-	cheminStyles=~/.local/share/gtksourceview-2.0/styles
 	cheminTools=~/.gnome2/gedit/tools
 fi
 
