@@ -123,7 +123,7 @@ The configuration file of gedit-markdown is the following:
 
 Most of the time, it will correspond to:
 
-	~/.config/gedit/gedit-markdown.ini
+	$HOME/.config/gedit/gedit-markdown.ini
 
 Only the section `markdown-preview` can be edited. It contains three properties:
 
