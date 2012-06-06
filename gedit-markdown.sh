@@ -183,10 +183,16 @@ if [[ ${versionGedit:0:1} == 3 ]]; then
 	cheminSystemeLanguageSpecs=/usr/share/gtksourceview-3.0/language-specs
 	cheminPlugins=~/.local/share/gedit/plugins
 	cheminPluginsMarkdownPreview=~/.local/share/gedit/plugins/markdown-preview
-	cheminSnippets=~/.config/gedit/snippets
 	cheminSystemeSnippets=/usr/share/gedit/plugins/snippets
 	cheminStyles=~/.local/share/gtksourceview-3.0/styles
-	cheminTools=~/.config/gedit/tools
+	
+	if [[ -n $XDG_CONFIG_HOME ]]; then
+		cheminSnippets=$XDG_CONFIG_HOME/gedit/snippets
+		cheminTools=$XDG_CONFIG_HOME/gedit/tools
+	else
+		cheminSnippets=~/.config/gedit/snippets
+		cheminTools=~/.config/gedit/tools
+	fi
 else
 	# gedit 2.
 	cheminGeditMarkdownPluginsGedit=plugins/gedit2
@@ -206,6 +212,7 @@ else
 	cheminConfig=$HOME/.config/gedit/plugins
 fi
 
+ancienCheminFichierConfig=$HOME/.config/gedit-markdown.ini
 cheminFichierConfig=$cheminConfig/gedit-markdown.ini
 
 if [[ -f $cheminFichierConfig ]]; then
@@ -426,7 +433,11 @@ if [[ $1 == installer || $1 == install ]]; then
 	
 	# Copie des fichiers.
 	
-	if [[ ! -e $cheminFichierConfig ]]; then
+	if [[ -e $ancienCheminFichierConfig && ! -e $cheminFichierConfig ]]; then
+		mv "$ancienCheminFichierConfig" "$cheminFichierConfig"
+	elif [[ -e $ancienCheminFichierConfig && -e $cheminFichierConfig ]]; then
+		rm -f "$ancienCheminFichierConfig"
+	elif [[ ! -e $cheminFichierConfig ]]; then
 		cp -v config/gedit-markdown.ini "$cheminFichierConfig"
 	fi
 	
