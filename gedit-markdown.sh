@@ -200,7 +200,12 @@ else
 	cheminTools=~/.gnome2/gedit/tools
 fi
 
-cheminConfig=~/.config
+if [ "$XDG_CONFIG_HOME" ]; then
+	cheminConfig="$XDG_CONFIG_HOME/gedit/plugins"
+else
+	cheminConfig="$HOME/.config/gedit/plugins"
+fi
+
 cheminFichierConfig=$cheminConfig/gedit-markdown.ini
 
 if [[ -f $cheminFichierConfig ]]; then
