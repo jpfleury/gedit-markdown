@@ -119,7 +119,11 @@ An optional color scheme is installed by gedit-markdown. To use it, go to *Edit 
 
 The configuration file of gedit-markdown is the following:
 
-	~/.config/gedit-markdown.ini
+	$XDG_CONFIG_HOME/gedit/gedit-markdown.ini
+
+Most of the time, it will correspond to:
+
+	~/.config/gedit/gedit-markdown.ini
 
 Only the section `markdown-preview` can be edited. It contains three properties:
 

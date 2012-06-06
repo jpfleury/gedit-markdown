@@ -47,7 +47,7 @@ except ImportError:
 else:
 	xdg_config_home = xdg.BaseDirectory.xdg_config_home
 
-confDir =  os.path.join(xdg_config_home, 'gedit/plugins/')
+confDir =  os.path.join(xdg_config_home, 'gedit/')
 confFile =  os.path.join(confDir, 'gedit-markdown.ini')
 parser = SafeConfigParser()
 

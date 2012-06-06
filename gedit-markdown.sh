@@ -207,9 +207,9 @@ else
 fi
 
 if [[ -n $XDG_CONFIG_HOME ]]; then
-	cheminConfig=$XDG_CONFIG_HOME/gedit/plugins
+	cheminConfig=$XDG_CONFIG_HOME/gedit
 else
-	cheminConfig=$HOME/.config/gedit/plugins
+	cheminConfig=$HOME/.config/gedit
 fi
 
 ancienCheminFichierConfig=$HOME/.config/gedit-markdown.ini
