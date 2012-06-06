@@ -38,6 +38,7 @@ except:
 HTML_TEMPLATE = "%s"
 
 # Configuration.
+
 try:
 	import xdg.BaseDirectory
 except ImportError:
@@ -48,7 +49,6 @@ else:
 
 confDir =  os.path.join(xdg_config_home, 'gedit/plugins/')
 confFile =  os.path.join(confDir, 'gedit-markdown.ini')
-
 parser = SafeConfigParser()
 
 if os.path.isfile(confFile):
@@ -59,9 +59,11 @@ if os.path.isfile(confFile):
 else:
 	markdownPanel = 'bottom'
 	markdownShortcut = '<Control><Alt>m'
-	markdownVersion = 'standard'
+	markdownVersion = 'extra'
+	
 	if not os.path.exists(confDir):
 		os.makedirs(confDir)
+	
 	parser.add_section('markdown-preview')
 	parser.set('markdown-preview', 'panel', markdownPanel)
 	parser.set('markdown-preview', 'shortcut', markdownShortcut)
