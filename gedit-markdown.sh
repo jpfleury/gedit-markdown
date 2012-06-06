@@ -230,7 +230,6 @@ else
 	cheminConfig=$HOME/.config/gedit
 fi
 
-ancienCheminFichierConfig=$HOME/.config/gedit-markdown.ini
 cheminFichierConfig=$cheminConfig/gedit-markdown.ini
 
 if [[ -f $cheminFichierConfig ]]; then
@@ -319,7 +318,8 @@ fichiersAsupprimer=(
 
 # Fichiers d'anciennes versions.
 
-cheminAncienFichierConfig=$HOME/.gedit-markdown.ini
+ancienCheminFichierConfig1=$HOME/.gedit-markdown.ini
+ancienCheminFichierConfig2=$HOME/.config/gedit-markdown.ini
 cheminMimePackages=$HOME/.local/share/mime/packages
 
 # Dossiers invalides utilisés un certain temps pour gedit 3.
@@ -327,7 +327,7 @@ cheminInvalideGeditSnippets=$HOME/.local/share/gedit/snippets
 cheminInvalideGeditTools=$HOME/.local/share/gedit/tools
 
 anciensFichiersAsupprimer=(
-	"$cheminAncienFichierConfig"
+	"$ancienCheminFichierConfig1"
 	"$cheminInvalideGeditSnippets/markdown.xml"
 	"$cheminInvalideGeditSnippets/markdown-extra.xml"
 	"$cheminInvalideGeditTools/export-to-html"
@@ -451,10 +451,10 @@ if [[ $1 == installer || $1 == install ]]; then
 	
 	# Copie des fichiers.
 	
-	if [[ -e $ancienCheminFichierConfig && ! -e $cheminFichierConfig ]]; then
-		mv "$ancienCheminFichierConfig" "$cheminFichierConfig"
-	elif [[ -e $ancienCheminFichierConfig && -e $cheminFichierConfig ]]; then
-		rm -f "$ancienCheminFichierConfig"
+	if [[ -e $ancienCheminFichierConfig2 && ! -e $cheminFichierConfig ]]; then
+		mv "$ancienCheminFichierConfig2" "$cheminFichierConfig"
+	elif [[ -e $ancienCheminFichierConfig2 && -e $cheminFichierConfig ]]; then
+		rm -f "$ancienCheminFichierConfig2"
 	elif [[ ! -e $cheminFichierConfig ]]; then
 		cp -v config/gedit-markdown.ini "$cheminFichierConfig"
 	fi
