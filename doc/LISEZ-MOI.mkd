@@ -95,7 +95,7 @@ Il y a trois façons d'afficher dans le panneau latéral ou inférieur l'aperçu
 
 - par le raccourci-clavier *Ctrl+Alt+m* (peut être modifié dans le fichier de configuration);
 
-- par l'élément *Actualiser l'aperçu Markdown* du menu *Outils*;
+- par l'élément *Actualiser l'aperçu Markdown* du menu *Outils*. Dans ce même menu, un élément *Afficher ou cacher l'aperçu Markdown* peut également être sélectionné.
 
 - en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Actualiser l'aperçu* (gedit 3 seulement). Dans ce même menu contextuel, un élément *Effacer l'aperçu* peut également être sélectionné.
 

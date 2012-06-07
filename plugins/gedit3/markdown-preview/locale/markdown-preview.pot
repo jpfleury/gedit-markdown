@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-07 00:48-0400\n"
+"POT-Creation-Date: 2012-06-07 16:07-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,22 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: plugins/gedit3/markdown-preview/__init__.py:82
-msgid "Update Markdown Preview"
-msgstr ""
-
-#: plugins/gedit3/markdown-preview/__init__.py:83
-msgid "Preview in HTML of the current document or the selection"
-msgstr ""
-
-#: plugins/gedit3/markdown-preview/__init__.py:108
+#: plugins/gedit3/markdown-preview/__init__.py:124
 msgid "Markdown Preview"
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:195
+#: plugins/gedit3/markdown-preview/__init__.py:133
+msgid "Update Markdown Preview"
+msgstr ""
+
+#: plugins/gedit3/markdown-preview/__init__.py:135
+msgid "Preview in HTML of the current document or the selection"
+msgstr ""
+
+#: plugins/gedit3/markdown-preview/__init__.py:141
+msgid "Toggle Markdown Preview visibility"
+msgstr ""
+
+#: plugins/gedit3/markdown-preview/__init__.py:143
+msgid "Display or hide the Markdown Preview panel tab"
+msgstr ""
+
+#: plugins/gedit3/markdown-preview/__init__.py:170
 msgid "Update Preview"
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:198
+#: plugins/gedit3/markdown-preview/__init__.py:173
 msgid "Clear Preview"
 msgstr ""

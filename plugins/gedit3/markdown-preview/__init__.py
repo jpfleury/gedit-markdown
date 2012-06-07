@@ -79,9 +79,6 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		GObject.Object.__init__(self)
 	
 	def do_activate(self):
-		action = ("Markdown Preview", None, _("Update Markdown Preview"), markdownShortcut,
-		          _("Preview in HTML of the current document or the selection"), lambda x, y: self.update_preview(y, False))
-		
 		# Store data in the window object.
 		windowdata = dict()
 		self.window.set_data("MarkdownPreviewData", windowdata)
@@ -98,6 +95,25 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		scrolled_window.add(html_view)
 		scrolled_window.show_all()
 		
+		windowdata["panel"] = scrolled_window
+		windowdata["html_doc"] = html_view
+		
+		self.add_markdown_preview_tab(windowdata)
+		self.add_menu_items(windowdata)
+	
+	def do_deactivate(self):
+		# Retreive data of the window object.
+		windowdata = self.window.get_data("MarkdownPreviewData")
+		
+		# Remove menu items.
+		manager = self.window.get_ui_manager()
+		manager.remove_ui(windowdata["ui_id"])
+		manager.remove_action_group(windowdata["action_group"])
+		
+		# Remove Markdown Preview from the panel.
+		self.remove_markdown_preview_tab(windowdata)
+	
+	def add_markdown_preview_tab(self, windowdata):
 		if markdownPanel == "side":
 			panel = self.window.get_side_panel()
 		else:
@@ -105,12 +121,27 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		
 		image = Gtk.Image()
 		image.set_from_icon_name("gnome-mime-text-html", Gtk.IconSize.MENU)
-		panel.add_item(scrolled_window, "MarkdownPreview", _("Markdown Preview"), image)
+		panel.add_item(windowdata["panel"], "MarkdownPreview", _("Markdown Preview"), image)
 		panel.show()
-		
-		windowdata["panel"] = scrolled_window
-		windowdata["html_doc"] = html_view
+		panel.activate_item(windowdata["panel"])
+	
+	def add_menu_items(self, windowdata):
 		windowdata["action_group"] = Gtk.ActionGroup("MarkdownPreviewActions")
+		
+		action = ("MarkdownPreview",
+		          None,
+		          _("Update Markdown Preview"),
+		          markdownShortcut,
+		          _("Preview in HTML of the current document or the selection"),
+		          lambda x, y: self.update_preview(y, False))
+		windowdata["action_group"].add_actions([action], self.window)
+		
+		action = ("ToggleTab",
+		          None,
+		          _("Toggle Markdown Preview visibility"),
+		          None,
+		          _("Display or hide the Markdown Preview panel tab"),
+		          lambda x, y: self.toggle_tab(windowdata))
 		windowdata["action_group"].add_actions([action], self.window)
 		
 		manager = self.window.get_ui_manager()
@@ -118,26 +149,50 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		
 		windowdata["ui_id"] = manager.new_merge_id()
 		
-		manager.add_ui(windowdata["ui_id"], "/MenuBar/ToolsMenu/ToolsOps_5",
-		               "Markdown Preview", "Markdown Preview", Gtk.UIManagerItemType.MENUITEM, True)
+		manager.add_ui(windowdata["ui_id"], "/MenuBar/ToolsMenu/ToolsOps_4",
+		               "ToggleTab", "ToggleTab", Gtk.UIManagerItemType.MENUITEM, True)
+		manager.add_ui(windowdata["ui_id"], "/MenuBar/ToolsMenu/ToolsOps_4",
+		               "MarkdownPreview", "MarkdownPreview", Gtk.UIManagerItemType.MENUITEM, True)
 	
-	def do_deactivate(self):
-		# Retreive data of the window object.
-		windowdata = self.window.get_data("MarkdownPreviewData")
+	def populate_popup(self, view, menu):
+		for item in menu.get_children():
+			try:
+				icon = item.get_image().get_stock()[0]
+				
+				if (icon == "gtk-copy" or icon == "gtk-go-back" or
+				    icon == "gtk-go-forward" or icon == "gtk-stop"):
+					continue
+				else:
+					menu.remove(item)
+			except:
+				menu.remove(item)
 		
-		# Remove the menu action.
-		manager = self.window.get_ui_manager()
-		manager.remove_ui(windowdata["ui_id"])
-		manager.remove_action_group(windowdata["action_group"])
-		
-		# Remove Markdown Preview from the panel.
-		
+		item = Gtk.MenuItem(label=_("Update Preview"))
+		item.connect('activate', lambda x: self.update_preview(self, False))
+		menu.append(item)
+		item = Gtk.MenuItem(label=_("Clear Preview"))
+		item.connect('activate', lambda x: self.update_preview(self, True))
+		menu.append(item)
+		menu.show_all()
+	
+	def remove_markdown_preview_tab(self, windowdata):
 		if markdownPanel == "side":
 			panel = self.window.get_side_panel()
 		else:
 			panel = self.window.get_bottom_panel()
 		
 		panel.remove_item(windowdata["panel"])
+	
+	def toggle_tab(self, windowdata):
+		if markdownPanel == "side":
+			panel = self.window.get_side_panel()
+		else:
+			panel = self.window.get_bottom_panel()
+		
+		if panel.activate_item(windowdata["panel"]):
+			self.remove_markdown_preview_tab(windowdata)
+		else:
+			self.add_markdown_preview_tab(windowdata)
 	
 	def update_preview(self, window, clear):
 		# Retreive data of the window object.
@@ -177,26 +232,8 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 			panel = self.window.get_bottom_panel()
 		
 		panel.show()
-		panel.activate_item(windowdata["panel"])
-	
-	def populate_popup(self, view, menu):
-		for item in menu.get_children():
-			try:
-				icon = item.get_image().get_stock()[0]
-				
-				if (icon == "gtk-copy" or icon == "gtk-go-back" or
-				    icon == "gtk-go-forward" or icon == "gtk-stop"):
-					continue
-				else:
-					menu.remove(item)
-			except:
-				menu.remove(item)
 		
-		item = Gtk.MenuItem(label=_("Update Preview"))
-		item.connect('activate', lambda x: self.update_preview(self, False))
-		menu.append(item)
-		item = Gtk.MenuItem(label=_("Clear Preview"))
-		item.connect('activate', lambda x: self.update_preview(self, True))
-		menu.append(item)
-		menu.show_all()
+		if not panel.activate_item(windowdata["panel"]):
+			self.add_markdown_preview_tab(windowdata)
+			panel.activate_item(windowdata["panel"])
 
