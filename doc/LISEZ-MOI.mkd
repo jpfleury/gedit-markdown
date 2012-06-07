@@ -89,7 +89,15 @@ La coloration syntaxique devrait s'activer automatiquement pour les fichiers rec
 
 ### Greffon *Aperçu Markdown*
 
-Pour activer le greffon, aller dans *Édition > Préférences > Greffons* et activer *Aperçu Markdown*. Maintenant vous trouverez dans le menu *Outils* une action *Aperçu Markdown*, qui affichera dans le panneau latéral ou inférieur l'aperçu en HTML du document courant ou de la sélection. Le raccourci-clavier *Ctrl+Alt+m* (peut être modifié dans le fichier de configuration) peut également être utilisé pour effectuer la même chose.
+Pour activer le greffon, aller dans *Édition > Préférences > Greffons* et sélectionner *Aperçu Markdown*.
+
+Il y a trois façons d'afficher dans le panneau latéral ou inférieur l'aperçu en HTML du document courant ou de la sélection:
+
+- par l'élément *Aperçu Markdown* du menu *Outils*;
+
+- par le raccourci-clavier *Ctrl+Alt+m* (peut être modifié dans le fichier de configuration);
+
+- en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Mettre à jour l'aperçu* (gedit 3 seulement). Dans ce même menu contextuel, un élément *Effacer l'aperçu* peut également être sélectionné.
 
 Voici une capture d'écran du greffon lorsqu'il est situé dans le panneau inférieur:
 

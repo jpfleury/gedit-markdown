@@ -3,7 +3,7 @@
 
 # HTML preview of Markdown formatted text in gedit
 # Copyright © 2005, 2006 Michele Campeotto
-# Copyright © 2009, 2011 Jean-Philippe Fleury <contact@jpfleury.net>
+# Copyright © 2009, 2011-2012 Jean-Philippe Fleury <contact@jpfleury.net>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -80,19 +80,19 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 	
 	def do_activate(self):
 		action = ("Markdown Preview", None, _("Markdown Preview"), markdownShortcut,
-		          _("Update the HTML preview"), lambda x, y: self.update_preview(y))
+		          _("Update the HTML preview"), lambda x, y: self.update_preview(y, False))
 		
 		# Store data in the window object.
 		windowdata = dict()
 		self.window.set_data("MarkdownPreviewData", windowdata)
-	
+		
 		scrolled_window = Gtk.ScrolledWindow()
 		scrolled_window.set_property("hscrollbar-policy", Gtk.PolicyType.AUTOMATIC)
 		scrolled_window.set_property("vscrollbar-policy", Gtk.PolicyType.AUTOMATIC)
 		scrolled_window.set_property("shadow-type", Gtk.ShadowType.IN)
 		
 		html_view = WebKit.WebView()
-		html_view.props.settings.props.enable_default_context_menu = False
+		html_view.connect("populate-popup", self.populate_popup)
 		html_view.load_string((HTML_TEMPLATE % ("", )), "text/html", "utf-8", "file:///")
 		
 		scrolled_window.add(html_view)
@@ -112,12 +112,12 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		windowdata["html_doc"] = html_view
 		windowdata["action_group"] = Gtk.ActionGroup("MarkdownPreviewActions")
 		windowdata["action_group"].add_actions([action], self.window)
-
+		
 		manager = self.window.get_ui_manager()
 		manager.insert_action_group(windowdata["action_group"], -1)
-
+		
 		windowdata["ui_id"] = manager.new_merge_id()
-
+		
 		manager.add_ui(windowdata["ui_id"], "/MenuBar/ToolsMenu/ToolsOps_5",
 		               "Markdown Preview", "Markdown Preview", Gtk.UIManagerItemType.MENUITEM, True)
 	
@@ -139,7 +139,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		
 		panel.remove_item(windowdata["panel"])
 	
-	def update_preview(self, window):
+	def update_preview(self, window, clear):
 		# Retreive data of the window object.
 		windowdata = self.window.get_data("MarkdownPreviewData")
 		
@@ -156,12 +156,15 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 			start = doc.get_iter_at_mark(doc.get_insert())
 			end = doc.get_iter_at_mark(doc.get_selection_bound())
 		
-		text = doc.get_text(start, end, True).decode('utf-8')
+		html = ""
 		
-		if markdownVersion == "standard":
-			html = HTML_TEMPLATE % (markdown.markdown(text, smart_emphasis=False), )
-		else:
-			html = HTML_TEMPLATE % (markdown.markdown(text, extensions=['extra', 'headerid(forceid=False)']), )
+		if not clear:
+			text = doc.get_text(start, end, True).decode('utf-8')
+			
+			if markdownVersion == "standard":
+				html = HTML_TEMPLATE % (markdown.markdown(text, smart_emphasis=False), )
+			else:
+				html = HTML_TEMPLATE % (markdown.markdown(text, extensions=['extra', 'headerid(forceid=False)']), )
 		
 		p = windowdata["panel"].get_placement()
 		html_doc = windowdata["html_doc"]
@@ -175,4 +178,25 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		
 		panel.show()
 		panel.activate_item(windowdata["panel"])
+	
+	def populate_popup(self, view, menu):
+		for item in menu.get_children():
+			try:
+				icon = item.get_image().get_stock()[0]
+				
+				if (icon == "gtk-copy" or icon == "gtk-go-back" or
+				    icon == "gtk-go-forward" or icon == "gtk-stop"):
+					continue
+				else:
+					menu.remove(item)
+			except:
+				menu.remove(item)
+		
+		item = Gtk.MenuItem(label=_("Update Preview"))
+		item.connect('activate', lambda x: self.update_preview(self, False))
+		menu.append(item)
+		item = Gtk.MenuItem(label=_("Clear Preview"))
+		item.connect('activate', lambda x: self.update_preview(self, True))
+		menu.append(item)
+		menu.show_all()
 
