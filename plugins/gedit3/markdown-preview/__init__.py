@@ -79,8 +79,8 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		GObject.Object.__init__(self)
 	
 	def do_activate(self):
-		action = ("Markdown Preview", None, _("Markdown Preview"), markdownShortcut,
-		          _("Update the HTML preview"), lambda x, y: self.update_preview(y, False))
+		action = ("Markdown Preview", None, _("Update Markdown Preview"), markdownShortcut,
+		          _("Preview in HTML of the current document or the selection"), lambda x, y: self.update_preview(y, False))
 		
 		# Store data in the window object.
 		windowdata = dict()

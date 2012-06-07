@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Markdown Preview\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-07 00:35-0400\n"
+"POT-Creation-Date: 2012-06-07 00:48-0400\n"
 "PO-Revision-Date: 2011-06-22 00:16-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -17,18 +17,22 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: plugins/gedit3/markdown-preview/__init__.py:82
+msgid "Update Markdown Preview"
+msgstr "Actualiser l'aperçu Markdown"
+
+#: plugins/gedit3/markdown-preview/__init__.py:83
+msgid "Preview in HTML of the current document or the selection"
+msgstr "Aperçu en HTML du document courant ou de la sélection"
+
 #: plugins/gedit3/markdown-preview/__init__.py:108
 msgid "Markdown Preview"
 msgstr "Aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:83
-msgid "Update the HTML preview"
-msgstr "Mettre à jour l'aperçu HTML"
-
 #: plugins/gedit3/markdown-preview/__init__.py:195
 msgid "Update Preview"
-msgstr "Mettre à jour l'aperçu"
+msgstr "Actualiser l'aperçu"
 
 #: plugins/gedit3/markdown-preview/__init__.py:198
 msgid "Clear Preview"
 msgstr "Effacer l'aperçu"
+

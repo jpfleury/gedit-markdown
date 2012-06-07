@@ -93,11 +93,11 @@ Pour activer le greffon, aller dans *Édition > Préférences > Greffons* et sé
 
 Il y a trois façons d'afficher dans le panneau latéral ou inférieur l'aperçu en HTML du document courant ou de la sélection:
 
-- par l'élément *Aperçu Markdown* du menu *Outils*;
-
 - par le raccourci-clavier *Ctrl+Alt+m* (peut être modifié dans le fichier de configuration);
 
-- en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Mettre à jour l'aperçu* (gedit 3 seulement). Dans ce même menu contextuel, un élément *Effacer l'aperçu* peut également être sélectionné.
+- par l'élément *Actualiser l'aperçu Markdown* du menu *Outils*;
+
+- en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Actualiser l'aperçu* (gedit 3 seulement). Dans ce même menu contextuel, un élément *Effacer l'aperçu* peut également être sélectionné.
 
 Voici une capture d'écran du greffon lorsqu'il est situé dans le panneau inférieur:
 

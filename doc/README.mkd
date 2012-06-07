@@ -93,9 +93,9 @@ To enable this plugin, go to *Edit > Preferences > Plugins* and check *Markdown 
 
 There are three ways to display in the side panel or in the bottom panel a preview in HTML of the currently opened file or the selection:
 
-- with the item *Markdown Preview* in the menu *Tools*;
-
 - with the keyboard shortcut *Ctrl+Alt+m* (can be changed in the configuration file);
+
+- with the item *Update Markdown Preview* in the menu *Tools*;
 
 - by right clicking in the preview area (side or bottom panel) and selecting the item *Update Preview* (gedit 3 only). In the same context menu, an item *Clear Preview* can also be selected.
 
