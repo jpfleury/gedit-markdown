@@ -182,7 +182,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 				xUrlTooltip = xUrlTooltip - xOverflow
 			
 			self.urlTooltip.move(xUrlTooltip, yUrlTooltip)
-		elif self.urlTooltip:
+		elif self.urlTooltipVisible():
 			self.urlTooltip.destroy()
 	
 	def navigation_requested(self, view, frame, networkRequest):
@@ -190,7 +190,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		return False
 	
 	def populate_popup(self, view, menu):
-		if self.urlTooltip:
+		if self.urlTooltipVisible():
 			self.urlTooltip.destroy()
 		
 		for item in menu.get_children():
@@ -277,4 +277,10 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		if not panel.activate_item(windowdata["panel"]):
 			self.add_markdown_preview_tab(windowdata)
 			panel.activate_item(windowdata["panel"])
+	
+	def urlTooltipVisible(self):
+		if getattr(self, "urlTooltip", False):
+			return True
+		
+		return False
 
