@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Markdown Preview\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-08 15:50-0400\n"
+"POT-Creation-Date: 2012-06-08 16:45-0400\n"
 "PO-Revision-Date: 2012-06-08 15:50-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -16,34 +16,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: plugins/gedit3/markdown-preview/__init__.py:126
+#: plugins/gedit3/markdown-preview/__init__.py:129
 msgid "Markdown Preview"
 msgstr "Aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:135
+#: plugins/gedit3/markdown-preview/__init__.py:138
 msgid "Update Markdown Preview"
 msgstr "Actualiser l'aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:137
+#: plugins/gedit3/markdown-preview/__init__.py:140
 msgid "Preview in HTML of the current document or the selection"
 msgstr "Aperçu en HTML du document courant ou de la sélection"
 
-#: plugins/gedit3/markdown-preview/__init__.py:143
+#: plugins/gedit3/markdown-preview/__init__.py:146
 msgid "Toggle Markdown Preview visibility"
 msgstr "Afficher ou cacher l'aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:145
+#: plugins/gedit3/markdown-preview/__init__.py:148
 msgid "Display or hide the Markdown Preview panel tab"
 msgstr "Affiche ou cache l'onglet d'aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:215
+#: plugins/gedit3/markdown-preview/__init__.py:227
+msgid "Open in the default Web browser"
+msgstr "Ouvrir dans le navigateur Web par défaut"
+
+#: plugins/gedit3/markdown-preview/__init__.py:231
+msgid "Copy URL being displayed"
+msgstr "Copier l'URL du document affiché"
+
+#: plugins/gedit3/markdown-preview/__init__.py:239
 msgid "Update Preview"
 msgstr "Actualiser l'aperçu"
 
-#: plugins/gedit3/markdown-preview/__init__.py:219
+#: plugins/gedit3/markdown-preview/__init__.py:243
 msgid "Clear Preview"
 msgstr "Effacer l'aperçu"
 
-#: plugins/gedit3/markdown-preview/__init__.py:223
-msgid "Copy current URL"
-msgstr "Copier l'URL actuelle"

@@ -25,6 +25,7 @@ import sys
 import markdown
 import gettext
 from ConfigParser import SafeConfigParser
+import webbrowser
 
 try:
 	APP_NAME = 'markdown-preview'
@@ -74,6 +75,8 @@ else:
 class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 	__gtype_name__ = "MarkdownPreviewPlugin"
 	window = GObject.property(type=Gedit.Window)
+	currentUri = ""
+	overLinkUrl = ""
 	
 	def __init__(self):
 		GObject.Object.__init__(self)
@@ -158,10 +161,12 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 	
 	def copyCurrentUrl(self):
 		self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
-		self.clipboard.set_text(self.window.currentUri, -1)
+		self.clipboard.set_text(self.currentUri, -1)
 	
 	def hovering_over_link(self, page, title, url):
-		if url:
+		if url and not self.overLinkUrl:
+			self.overLinkUrl = url
+			
 			self.urlTooltip = Gtk.Window.new(Gtk.WindowType.POPUP)
 			self.urlTooltip.set_border_width(2)
 			self.urlTooltip.modify_bg(0, Gdk.color_parse("white"))
@@ -186,12 +191,18 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 				xUrlTooltip = xUrlTooltip - xOverflow
 			
 			self.urlTooltip.move(xUrlTooltip, yUrlTooltip)
-		elif self.urlTooltipVisible():
-			self.urlTooltip.destroy()
+		else:
+			self.overLinkUrl = ""
+			
+			if self.urlTooltipVisible():
+				self.urlTooltip.destroy()
 	
 	def navigation_policy_decision_requested(self, view, frame, networkRequest, navAct, polDec):
-		self.window.currentUri = networkRequest.get_uri()
+		self.currentUri = networkRequest.get_uri()
 		return False
+	
+	def openInDefaultBrowser(self):
+		webbrowser.open_new_tab(self.overLinkUrl)
 	
 	def populate_popup(self, view, menu):
 		if self.urlTooltipVisible():
@@ -205,17 +216,22 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 				    icon == "gtk-go-forward" or icon == "gtk-stop"):
 					continue
 				elif icon == "gtk-refresh":
-					if self.window.currentUri == "file:///":
+					if self.currentUri == "file:///":
 						item.set_sensitive(False)
 				else:
 					menu.remove(item)
 			except:
 				menu.remove(item)
 		
-		item = Gtk.MenuItem(label=_("Copy current URL"))
+		if self.overLinkUrl:
+			item = Gtk.MenuItem(label=_("Open in the default Web browser"))
+			item.connect('activate', lambda x: self.openInDefaultBrowser())
+			menu.append(item)
+		
+		item = Gtk.MenuItem(label=_("Copy the URL of the document being displayed"))
 		item.connect('activate', lambda x: self.copyCurrentUrl())
 		
-		if self.window.currentUri == "file:///":
+		if self.currentUri == "file:///":
 			item.set_sensitive(False)
 		
 		menu.append(item)
@@ -293,7 +309,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 			panel.activate_item(windowdata["panel"])
 	
 	def urlTooltipVisible(self):
-		if getattr(self, "urlTooltip", False):
+		if hasattr(self, "urlTooltip") and self.urlTooltip.get_property("visible"):
 			return True
 		
 		return False
