@@ -90,7 +90,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		
 		html_view = WebKit.WebView()
 		html_view.connect("hovering-over-link", self.hovering_over_link)
-		html_view.connect("navigation-requested", self.navigation_requested)
+		html_view.connect("navigation-policy-decision-requested", self.navigation_policy_decision_requested)
 		html_view.connect("populate-popup", self.populate_popup)
 		html_view.load_string((HTML_TEMPLATE % ("", )), "text/html", "utf-8", "file:///")
 		
@@ -189,7 +189,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		elif self.urlTooltipVisible():
 			self.urlTooltip.destroy()
 	
-	def navigation_requested(self, view, frame, networkRequest):
+	def navigation_policy_decision_requested(self, view, frame, networkRequest, navAct, polDec):
 		self.window.currentUri = networkRequest.get_uri()
 		return False
 	
@@ -212,20 +212,20 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 			except:
 				menu.remove(item)
 		
-		item = Gtk.MenuItem(label=_("Update Preview"))
-		item.connect('activate', lambda x: self.update_preview(self, False))
-		menu.append(item)
-		
-		item = Gtk.MenuItem(label=_("Clear Preview"))
-		item.connect('activate', lambda x: self.update_preview(self, True))
-		menu.append(item)
-		
 		item = Gtk.MenuItem(label=_("Copy current URL"))
 		item.connect('activate', lambda x: self.copyCurrentUrl())
 		
 		if self.window.currentUri == "file:///":
 			item.set_sensitive(False)
 		
+		menu.append(item)
+		
+		item = Gtk.MenuItem(label=_("Update Preview"))
+		item.connect('activate', lambda x: self.update_preview(self, False))
+		menu.append(item)
+		
+		item = Gtk.MenuItem(label=_("Clear Preview"))
+		item.connect('activate', lambda x: self.update_preview(self, True))
 		menu.append(item)
 		
 		menu.show_all()
