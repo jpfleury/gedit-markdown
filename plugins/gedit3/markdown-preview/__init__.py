@@ -181,7 +181,8 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 			self.urlTooltip.destroy()
 	
 	def navigation_requested(self, view, frame, networkRequest):
-		self.currentUri = networkRequest.get_uri()
+		self.window.currentUri = networkRequest.get_uri()
+		return False
 	
 	def populate_popup(self, view, menu):
 		for item in menu.get_children():
