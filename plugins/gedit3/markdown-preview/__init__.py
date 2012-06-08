@@ -89,6 +89,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		scrolled_window.set_property("shadow-type", Gtk.ShadowType.IN)
 		
 		html_view = WebKit.WebView()
+		html_view.connect("hovering-over-link", self.hovering_over_link)
 		html_view.connect("populate-popup", self.populate_popup)
 		html_view.load_string((HTML_TEMPLATE % ("", )), "text/html", "utf-8", "file:///")
 		
@@ -153,6 +154,30 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		               "ToggleTab", "ToggleTab", Gtk.UIManagerItemType.MENUITEM, True)
 		manager.add_ui(windowdata["ui_id"], "/MenuBar/ToolsMenu/ToolsOps_4",
 		               "MarkdownPreview", "MarkdownPreview", Gtk.UIManagerItemType.MENUITEM, True)
+	
+	def hovering_over_link(self, page, title, url):
+		if url:
+			self.urlTooltip = Gtk.Window.new(Gtk.WindowType.POPUP)
+			label = Gtk.Label(url)
+			self.urlTooltip.add(label)
+			label.show()
+			self.urlTooltip.show()
+			
+			xPointer, yPointer = self.urlTooltip.get_pointer()
+			xWindow = self.window.get_position()[0]
+			widthWindow = self.window.get_size()[0]
+			widthUrlTooltip = self.urlTooltip.get_size()[0]
+			
+			xUrlTooltip = xPointer + 15
+			yUrlTooltip = yPointer + 15
+			xOverflow = (xUrlTooltip + widthUrlTooltip) - (xWindow + widthWindow)
+			
+			if xOverflow > 0:
+				xUrlTooltip = xUrlTooltip - xOverflow
+			
+			self.urlTooltip.move(xUrlTooltip, yUrlTooltip)
+		else:
+			self.urlTooltip.destroy()
 	
 	def populate_popup(self, view, menu):
 		for item in menu.get_children():
