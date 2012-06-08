@@ -90,6 +90,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		
 		html_view = WebKit.WebView()
 		html_view.connect("hovering-over-link", self.hovering_over_link)
+		html_view.connect("navigation-requested", self.navigation_requested)
 		html_view.connect("populate-popup", self.populate_popup)
 		html_view.load_string((HTML_TEMPLATE % ("", )), "text/html", "utf-8", "file:///")
 		
@@ -178,6 +179,9 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 			self.urlTooltip.move(xUrlTooltip, yUrlTooltip)
 		else:
 			self.urlTooltip.destroy()
+	
+	def navigation_requested(self, view, frame, networkRequest):
+		self.currentUri = networkRequest.get_uri()
 	
 	def populate_popup(self, view, menu):
 		for item in menu.get_children():
