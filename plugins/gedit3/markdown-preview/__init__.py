@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk, Gedit, GObject, WebKit
+from gi.repository import Gdk, Gtk, Gedit, GObject, WebKit
 import codecs
 import os
 import sys
@@ -159,7 +159,12 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 	def hovering_over_link(self, page, title, url):
 		if url:
 			self.urlTooltip = Gtk.Window.new(Gtk.WindowType.POPUP)
-			label = Gtk.Label(url)
+			self.urlTooltip.set_border_width(2)
+			self.urlTooltip.modify_bg(0, Gdk.color_parse("white"))
+			label = Gtk.Label()
+			text = (url[:75] + '...') if len(url) > 75 else url
+			label.set_text(text)
+			label.modify_fg(0, Gdk.color_parse("black"))
 			self.urlTooltip.add(label)
 			label.show()
 			self.urlTooltip.show()
@@ -169,7 +174,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 			widthWindow = self.window.get_size()[0]
 			widthUrlTooltip = self.urlTooltip.get_size()[0]
 			
-			xUrlTooltip = xPointer + 15
+			xUrlTooltip = xPointer
 			yUrlTooltip = yPointer + 15
 			xOverflow = (xUrlTooltip + widthUrlTooltip) - (xWindow + widthWindow)
 			
@@ -177,7 +182,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 				xUrlTooltip = xUrlTooltip - xOverflow
 			
 			self.urlTooltip.move(xUrlTooltip, yUrlTooltip)
-		else:
+		elif self.urlTooltip:
 			self.urlTooltip.destroy()
 	
 	def navigation_requested(self, view, frame, networkRequest):
@@ -185,6 +190,9 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		return False
 	
 	def populate_popup(self, view, menu):
+		if self.urlTooltip:
+			self.urlTooltip.destroy()
+		
 		for item in menu.get_children():
 			try:
 				icon = item.get_image().get_stock()[0]
