@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Markdown Preview\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-07 16:07-0400\n"
-"PO-Revision-Date: 2011-06-22 00:16-0400\n"
+"POT-Creation-Date: 2012-06-08 15:50-0400\n"
+"PO-Revision-Date: 2012-06-08 15:50-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -16,30 +16,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: plugins/gedit3/markdown-preview/__init__.py:124
+#: plugins/gedit3/markdown-preview/__init__.py:126
 msgid "Markdown Preview"
 msgstr "Aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:133
+#: plugins/gedit3/markdown-preview/__init__.py:135
 msgid "Update Markdown Preview"
 msgstr "Actualiser l'aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:135
+#: plugins/gedit3/markdown-preview/__init__.py:137
 msgid "Preview in HTML of the current document or the selection"
 msgstr "Aperçu en HTML du document courant ou de la sélection"
 
-#: plugins/gedit3/markdown-preview/__init__.py:141
+#: plugins/gedit3/markdown-preview/__init__.py:143
 msgid "Toggle Markdown Preview visibility"
 msgstr "Afficher ou cacher l'aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:143
+#: plugins/gedit3/markdown-preview/__init__.py:145
 msgid "Display or hide the Markdown Preview panel tab"
 msgstr "Affiche ou cache l'onglet d'aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:170
+#: plugins/gedit3/markdown-preview/__init__.py:215
 msgid "Update Preview"
 msgstr "Actualiser l'aperçu"
 
-#: plugins/gedit3/markdown-preview/__init__.py:173
+#: plugins/gedit3/markdown-preview/__init__.py:219
 msgid "Clear Preview"
 msgstr "Effacer l'aperçu"
+
+#: plugins/gedit3/markdown-preview/__init__.py:223
+msgid "Copy current URL"
+msgstr "Copier l'URL actuelle"
