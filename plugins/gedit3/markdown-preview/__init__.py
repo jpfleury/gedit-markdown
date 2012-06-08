@@ -156,6 +156,10 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		manager.add_ui(windowdata["ui_id"], "/MenuBar/ToolsMenu/ToolsOps_4",
 		               "MarkdownPreview", "MarkdownPreview", Gtk.UIManagerItemType.MENUITEM, True)
 	
+	def copyCurrentUrl(self):
+		self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+		self.clipboard.set_text(self.window.currentUri, -1)
+	
 	def hovering_over_link(self, page, title, url):
 		if url:
 			self.urlTooltip = Gtk.Window.new(Gtk.WindowType.POPUP)
@@ -211,9 +215,19 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		item = Gtk.MenuItem(label=_("Update Preview"))
 		item.connect('activate', lambda x: self.update_preview(self, False))
 		menu.append(item)
+		
 		item = Gtk.MenuItem(label=_("Clear Preview"))
 		item.connect('activate', lambda x: self.update_preview(self, True))
 		menu.append(item)
+		
+		item = Gtk.MenuItem(label=_("Copy current URL"))
+		item.connect('activate', lambda x: self.copyCurrentUrl())
+		
+		if self.window.currentUri == "file:///":
+			item.set_sensitive(False)
+		
+		menu.append(item)
+		
 		menu.show_all()
 	
 	def remove_markdown_preview_tab(self, windowdata):
