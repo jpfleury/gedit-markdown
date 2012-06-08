@@ -192,6 +192,9 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 				if (icon == "gtk-copy" or icon == "gtk-go-back" or
 				    icon == "gtk-go-forward" or icon == "gtk-stop"):
 					continue
+				elif icon == "gtk-refresh":
+					if self.window.currentUri == "file:///":
+						item.set_sensitive(False)
 				else:
 					menu.remove(item)
 			except:
