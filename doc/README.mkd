@@ -125,7 +125,7 @@ Now the same plugin displayed in the side panel (click to download the original 
 
 Note that when the cursor passes over a link in the preview area, a tooltip displays the URL:
 
-
+<img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple5.png" width="684" height="128" alt="Tooltip displaying URL when the cursor passes over a link." />
 
 ### Snippets
 

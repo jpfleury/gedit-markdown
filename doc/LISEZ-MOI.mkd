@@ -125,7 +125,7 @@ Voici maintenant le même greffon situé dans le panneau latéral (cliquer pour 
 
 À noter que lorsque le curseur passe au-dessus d'un lien dans la zone d'aperçu, une infobulle affiche l'URL:
 
-
+<img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple5.png" width="684" height="128" alt="Infobulle affichant l'URL lorsque le curseur passe au-dessus d'un lien." />
 
 ### Extraits de code
 
