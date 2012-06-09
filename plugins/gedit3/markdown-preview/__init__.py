@@ -179,7 +179,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		                           Gtk.ButtonsType.OK_CANCEL,
 		                           _("Enter URL"))
 		dialog.set_title(_("Enter URL"))
-		dialog.format_secondary_markup(_("Enter the URL of the page (local or distant) to display."))
+		dialog.format_secondary_markup(_("Enter the URL (local or distant) of the document or page to display."))
 		entry = Gtk.Entry()
 		entry.connect("activate", self.goToAnotherUrlDialogActivate, dialog, Gtk.ResponseType.OK)
 		dialog.vbox.pack_end(entry, True, True, 0)
@@ -234,6 +234,17 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 	
 	def navigation_policy_decision_requested(self, view, frame, networkRequest, navAct, polDec):
 		self.currentUri = networkRequest.get_uri()
+		
+		if self.currentUri == "file:///":
+			active_document = self.window.get_active_document()
+			
+			if hasattr(active_document, "get_uri_for_display"):
+				uri_active_document = active_document.get_uri_for_display()
+				
+				# Make sure we have an absolute path (so the file exists).
+				if uri_active_document.startswith("/"):
+					self.currentUri = uri_active_document
+		
 		return False
 	
 	def openInDefaultBrowser(self):
@@ -263,7 +274,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 			item.connect('activate', lambda x: self.openInDefaultBrowser())
 			menu.append(item)
 		
-		item = Gtk.MenuItem(label=_("Copy the URL of the current page"))
+		item = Gtk.MenuItem(label=_("Copy the current URL"))
 		item.connect('activate', lambda x: self.copyCurrentUrl())
 		
 		if self.currentUri == "file:///":

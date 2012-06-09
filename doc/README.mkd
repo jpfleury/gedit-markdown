@@ -8,9 +8,9 @@ Specifically, it adds:
 
 - Markdown syntax highlighting and snippets;
 
-- plugin *Markdown Preview* for gedit, displayed in the side panel or the bottom panel and previewing in HTML the selection or the currently opened file (this plugin can also be used as a Web browser; see section *Usage*);
+- plugin *Markdown Preview* for gedit, displayed in the side panel or the bottom panel and previewing in HTML the current document or selection (this plugin can also be used as a Web browser; see section *Usage*);
 
-- an external tool exporting to HTML the selection or the currently opened file;
+- an external tool exporting to HTML the current document or selection;
 
 - a color scheme, optional, highlighting Markdown files in a manner more similar to HTML rendering.
 
@@ -93,7 +93,7 @@ To enable this plugin, go to *Edit > Preferences > Plugins* and check *Markdown 
 
 Two items are added in the gedit menu *Tools*:
 
-- *Update Markdown Preview*: displays in the side panel or in the bottom panel a preview in HTML of the currently opened file or the selection.
+- *Update Markdown Preview*: displays in the side panel or in the bottom panel a preview in HTML of the current document or selection.
 
 	Note: there are two other ways to update preview:
 	
@@ -105,13 +105,13 @@ Two items are added in the gedit menu *Tools*:
 
 If gedit 3 is used, when right clicking in the preview area, a context menu appears and lists several options. Besides the default ones (previous page, next page, copy, etc.), we have:
 
-- *Copy the URL of the current page*: copy in the clipboard the URL of the page being displayed in the preview tab.
+- *Copy the current URL*: copy in the clipboard the URL of the document or the page being displayed in the preview tab. If it's a document that has not yet been saved to disk, this menu item is disabled.
 
-- *Go to another URL*: allows to manually enter a URL (local or distant) to visit in the preview tab.
+- *Go to another URL*: allows to manually enter a local or distant URL of a document or page to visit in the preview tab.
 
 - *Open in the default Web browser*: allows to open the link in an external browser.
 
-- *Update Preview*: reloads in the side panel or in the bottom panel the preview in HTML of the currently opened file or the selection.
+- *Update Preview*: reloads in the side panel or in the bottom panel the preview in HTML of the current document or selection.
 
 - *Clear Preview*: clear content of the preview tab.
 
