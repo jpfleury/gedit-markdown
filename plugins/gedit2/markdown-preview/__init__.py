@@ -77,8 +77,8 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		gedit.Plugin.__init__(self)
 	
 	def activate(self, window):
-		action = ("Markdown Preview", None, _("Markdown Preview"), markdownShortcut,
-		          _("Update the HTML preview"), lambda x, y: self.update_preview(y))
+		action = ("Markdown Preview", None, _("Update Markdown Preview"), markdownShortcut,
+		          _("Preview in HTML of the current document or the selection"), lambda x, y: self.update_preview(y))
 		
 		# Store data in the window object.
 		windowdata = dict()

@@ -8,7 +8,7 @@ Plus précisément, gedit-markdown ajoute:
 
 - la coloration syntaxique des fichiers Markdown ainsi que des extraits de code pour accélérer la rédaction;
 
-- le greffon *Aperçu Markdown*, affichant dans le panneau latéral ou inférieur de gedit un aperçu en HTML de la sélection ou du fichier en cours d'édition;
+- le greffon *Aperçu Markdown*, affichant dans le panneau latéral ou inférieur de gedit un aperçu en HTML de la sélection ou du document en cours d'édition (ce greffon peut également être utilisé comme navigateur Web; voir la section *Utilisation*);
 
 - un outil externe permettant d'exporter le code HTML de la sélection ou du document en cours d'édition;
 
@@ -89,7 +89,31 @@ La coloration syntaxique devrait s'activer automatiquement pour les fichiers rec
 
 ### Greffon *Aperçu Markdown*
 
-Pour activer le greffon, aller dans *Édition > Préférences > Greffons* et activer *Aperçu Markdown*. Maintenant vous trouverez dans le menu *Outils* une action *Aperçu Markdown*, qui affichera dans le panneau latéral ou inférieur l'aperçu en HTML du document courant ou de la sélection. Le raccourci-clavier *Ctrl+Alt+m* (peut être modifié dans le fichier de configuration) peut également être utilisé pour effectuer la même chose.
+Pour activer le greffon, aller dans *Édition > Préférences > Greffons* et sélectionner *Aperçu Markdown*.
+
+Deux éléments sont ajoutés dans le menu *Outils* de gedit:
+
+- *Actualiser l'aperçu Markdown*: permet d'afficher dans le panneau latéral ou inférieur l'aperçu en HTML du document courant ou de la sélection.
+
+	Note: il y a deux autres façons d'actualiser l'aperçu:
+	
+		- par le raccourci-clavier *Ctrl+Alt+m* (peut être modifié dans le fichier de configuration);
+		
+		- en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Actualiser l'aperçu* (gedit 3 seulement).
+
+- *Afficher ou cacher l'aperçu Markdown* (gedit 3 seulement): permet d'afficher ou de cacher l'onglet d'aperçu dans le panneau de gedit.
+
+Si gedit 3 est utilisé, en cliquant droit dans la zone d'aperçu, un menu contextuel apparaît et offre plusieurs options. Outre celles par défaut (page suivante, page précédente, copie, etc.), on trouve:
+
+- *Copier l'URL courante*: permet de copier dans le presse-papiers l'adresse du document ou de la page dont le contenu est actuellement affiché dans l'onglet d'aperçu. S'il s'agit d'un document qui n'a pas encore été sauvegardé sur le disque, cet élément de menu est désactivé.
+
+- *Aller à une autre URL*: permet de spécifier manuellement une URL locale ou distante d'un document ou d'une page à visiter dans l'onglet d'aperçu.
+
+- *Ouvrir dans le navigateur Web par défaut*: permet d'ouvrir le lien cliqué dans un navigateur externe.
+
+- *Actualiser l'aperçu*: permet d'actualiser l'aperçu avec le contenu du document courant ou de la sélection.
+
+- *Effacer l'aperçu*: efface le contenu de la zone d'aperçu.
 
 Voici une capture d'écran du greffon lorsqu'il est situé dans le panneau inférieur:
 
@@ -98,6 +122,10 @@ Voici une capture d'écran du greffon lorsqu'il est situé dans le panneau infé
 Voici maintenant le même greffon situé dans le panneau latéral (cliquer pour télécharger l'image au format original):
 
 <a href="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4-grand.png"><img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4-petit.png" width="684" height="445" alt="Aperçu en HTML d'un document Markdown dans le panneau latéral de gedit." /></a>
+
+À noter que lorsque le curseur passe au-dessus d'un lien dans la zone d'aperçu, une infobulle affiche l'URL:
+
+<img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple5.png" width="684" height="128" alt="Infobulle affichant l'URL lorsque le curseur passe au-dessus d'un lien." />
 
 ### Extraits de code
 
@@ -189,7 +217,7 @@ Pour l'instant, gedit-markdown est disponible en français et en anglais.
 
 ## Développement
 
-Dernière version: 1.2 (2012-06-06)
+Dernière version: 1.3 (2012-06-09)
 
 Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.][git]
 
