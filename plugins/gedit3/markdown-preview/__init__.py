@@ -104,10 +104,14 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		# Remove menu items.
 		manager = self.window.get_ui_manager()
 		manager.remove_ui(self.ui_id)
-		manager.remove_action_group(self.action_group)
+		manager.remove_action_group(self.action_group1)
+		manager.remove_action_group(self.action_group2)
 		
 		# Remove Markdown Preview from the panel.
 		self.remove_markdown_preview_tab()
+	
+	def do_update_state(self):
+		self.action_group1.set_sensitive(self.window.get_active_document() != None)
 	
 	def add_markdown_preview_tab(self):
 		if markdownPanel == "side":
@@ -122,26 +126,27 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		panel.activate_item(self.scrolled_window)
 	
 	def add_menu_items(self):
-		self.action_group = Gtk.ActionGroup("MarkdownPreviewActions")
+		manager = self.window.get_ui_manager()
 		
+		self.action_group1 = Gtk.ActionGroup("UpdateMarkdownPreview")
 		action = ("MarkdownPreview",
 		          None,
 		          _("Update Markdown Preview"),
 		          markdownShortcut,
 		          _("Preview in HTML of the current document or the selection"),
 		          lambda x, y: self.update_preview(y, False))
-		self.action_group.add_actions([action], self.window)
+		self.action_group1.add_actions([action], self.window)
+		manager.insert_action_group(self.action_group1, -1)
 		
+		self.action_group2 = Gtk.ActionGroup("ToggleTab")
 		action = ("ToggleTab",
 		          None,
 		          _("Toggle Markdown Preview visibility"),
 		          None,
 		          _("Display or hide the Markdown Preview panel tab"),
 		          lambda x, y: self.toggle_tab())
-		self.action_group.add_actions([action], self.window)
-		
-		manager = self.window.get_ui_manager()
-		manager.insert_action_group(self.action_group, -1)
+		self.action_group2.add_actions([action], self.window)
+		manager.insert_action_group(self.action_group2, -1)
 		
 		self.ui_id = manager.new_merge_id()
 		
