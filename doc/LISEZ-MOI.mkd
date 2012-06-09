@@ -97,9 +97,9 @@ Deux éléments sont ajoutés dans le menu *Outils* de gedit:
 
 	Note: il y a deux autres façons d'actualiser l'aperçu:
 	
-		- par le raccourci-clavier *Ctrl+Alt+m* (peut être modifié dans le fichier de configuration);
-		
-		- en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Actualiser l'aperçu* (gedit 3 seulement).
+	  - par le raccourci-clavier *Ctrl+Alt+m* (peut être modifié dans le fichier de configuration);
+	
+	  - en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Actualiser l'aperçu* (gedit 3 seulement).
 
 - *Afficher ou cacher l'aperçu Markdown* (gedit 3 seulement): permet d'afficher ou de cacher l'onglet d'aperçu dans le panneau de gedit.
 

@@ -97,9 +97,9 @@ Two items are added in the gedit menu *Tools*:
 
 	Note: there are two other ways to update preview:
 	
-		- with the keyboard shortcut *Ctrl+Alt+m* (can be changed in the configuration file);
-		
-		- by right clicking in the preview area (side or bottom panel) and selecting the item *Update Preview* (gedit 3 only).
+	  - with the keyboard shortcut *Ctrl+Alt+m* (can be changed in the configuration file);
+	
+	  - by right clicking in the preview area (side or bottom panel) and selecting the item *Update Preview* (gedit 3 only).
 
 - *Toggle Markdown Preview visibility* (gedit 3 only): allows to display or hide the Markdown Preview panel tab.
 
