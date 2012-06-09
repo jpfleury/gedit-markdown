@@ -8,7 +8,7 @@ Plus précisément, gedit-markdown ajoute:
 
 - la coloration syntaxique des fichiers Markdown ainsi que des extraits de code pour accélérer la rédaction;
 
-- le greffon *Aperçu Markdown*, affichant dans le panneau latéral ou inférieur de gedit un aperçu en HTML de la sélection ou du fichier en cours d'édition;
+- le greffon *Aperçu Markdown*, affichant dans le panneau latéral ou inférieur de gedit un aperçu en HTML de la sélection ou du fichier en cours d'édition (ce greffon peut également être utilisé comme navigateur Web; voir la section *Utilisation*);
 
 - un outil externe permettant d'exporter le code HTML de la sélection ou du document en cours d'édition;
 
@@ -91,13 +91,29 @@ La coloration syntaxique devrait s'activer automatiquement pour les fichiers rec
 
 Pour activer le greffon, aller dans *Édition > Préférences > Greffons* et sélectionner *Aperçu Markdown*.
 
-Il y a trois façons d'afficher dans le panneau latéral ou inférieur l'aperçu en HTML du document courant ou de la sélection:
+Deux éléments sont ajoutés dans le menu *Outils* de gedit:
 
-- par le raccourci-clavier *Ctrl+Alt+m* (peut être modifié dans le fichier de configuration);
+- *Actualiser l'aperçu Markdown*: permet d'afficher dans le panneau latéral ou inférieur l'aperçu en HTML du document courant ou de la sélection.
 
-- par l'élément *Actualiser l'aperçu Markdown* du menu *Outils*. Dans ce même menu, un élément *Afficher ou cacher l'aperçu Markdown* peut également être sélectionné.
+	Note: il y a deux autres façons d'actualiser l'aperçu:
+	
+		- par le raccourci-clavier *Ctrl+Alt+m* (peut être modifié dans le fichier de configuration);
+		
+		- en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Actualiser l'aperçu* (gedit 3 seulement).
 
-- en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Actualiser l'aperçu* (gedit 3 seulement). Dans ce même menu contextuel, un élément *Effacer l'aperçu* peut également être sélectionné.
+- *Afficher ou cacher l'aperçu Markdown* (gedit 3 seulement): permet d'afficher ou de cacher l'onglet d'aperçu dans le panneau de gedit.
+
+Si gedit 3 est utilisé, en cliquant droit dans la zone d'aperçu, un menu contextuel apparaît et offre plusieurs options. Outre celles par défaut (page suivante, page précédente, copie, etc.), on trouve:
+
+- *Copier l'URL de la page courante*: permet de copier dans le presse-papiers l'adresse de la page actuellement affichée dans l'onglet d'aperçu.
+
+- *Aller à une autre URL*: permet de spécifier manuellement une URL (locale ou distante) à visiter dans l'onglet d'aperçu.
+
+- *Ouvrir dans le navigateur Web par défaut*: permet d'ouvrir le lien cliqué dans un navigateur externe.
+
+- *Actualiser l'aperçu*: permet d'actualiser l'aperçu avec le contenu du document courant ou de la sélection.
+
+- *Effacer l'aperçu*: efface le contenu de la zone d'aperçu.
 
 Voici une capture d'écran du greffon lorsqu'il est situé dans le panneau inférieur:
 
@@ -107,7 +123,7 @@ Voici maintenant le même greffon situé dans le panneau latéral (cliquer pour 
 
 <a href="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4-grand.png"><img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4-petit.png" width="684" height="445" alt="Aperçu en HTML d'un document Markdown dans le panneau latéral de gedit." /></a>
 
-Lorsque le curseur passe au-dessus d'un lien, une infobulle affiche l'URL:
+À noter que lorsque le curseur passe au-dessus d'un lien dans la zone d'aperçu, une infobulle affiche l'URL:
 
 
 

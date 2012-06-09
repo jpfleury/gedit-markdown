@@ -51,7 +51,7 @@ msgstr "Ouvrir dans le navigateur Web par défaut"
 
 #: plugins/gedit3/markdown-preview/__init__.py:266
 msgid "Copy the URL of the current page"
-msgstr "Copier l'URL de la page affichée"
+msgstr "Copier l'URL de la page courante"
 
 #: plugins/gedit3/markdown-preview/__init__.py:274
 msgid "Go to another URL"
