@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Markdown Preview\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-09 00:34-0400\n"
+"POT-Creation-Date: 2012-06-09 10:06-0400\n"
 "PO-Revision-Date: 2012-06-08 15:50-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -16,52 +16,52 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: plugins/gedit3/markdown-preview/__init__.py:129
+#: plugins/gedit3/markdown-preview/__init__.py:124
 msgid "Markdown Preview"
 msgstr "Aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:138
+#: plugins/gedit3/markdown-preview/__init__.py:134
 msgid "Update Markdown Preview"
 msgstr "Actualiser l'aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:140
+#: plugins/gedit3/markdown-preview/__init__.py:136
 msgid "Preview in HTML of the current document or the selection"
 msgstr "Aperçu en HTML du document courant ou de la sélection"
 
-#: plugins/gedit3/markdown-preview/__init__.py:146
+#: plugins/gedit3/markdown-preview/__init__.py:144
 msgid "Toggle Markdown Preview visibility"
 msgstr "Afficher ou cacher l'aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:148
+#: plugins/gedit3/markdown-preview/__init__.py:146
 msgid "Display or hide the Markdown Preview panel tab"
 msgstr "Affiche ou cache l'onglet d'aperçu Markdown"
 
-#: plugins/gedit3/markdown-preview/__init__.py:180
-#: plugins/gedit3/markdown-preview/__init__.py:181
+#: plugins/gedit3/markdown-preview/__init__.py:177
+#: plugins/gedit3/markdown-preview/__init__.py:178
 msgid "Enter URL"
 msgstr "Entrer l'URL"
 
-#: plugins/gedit3/markdown-preview/__init__.py:182
+#: plugins/gedit3/markdown-preview/__init__.py:179
 msgid "Enter the URL (local or distant) of the document or page to display."
 msgstr ""
 "Entrer l'URL (locale ou distante) du document ou de la page à afficher."
 
-#: plugins/gedit3/markdown-preview/__init__.py:273
+#: plugins/gedit3/markdown-preview/__init__.py:270
 msgid "Open in the default Web browser"
 msgstr "Ouvrir dans le navigateur Web par défaut"
 
-#: plugins/gedit3/markdown-preview/__init__.py:277
+#: plugins/gedit3/markdown-preview/__init__.py:274
 msgid "Copy the current URL"
 msgstr "Copier l'URL courante"
 
-#: plugins/gedit3/markdown-preview/__init__.py:285
+#: plugins/gedit3/markdown-preview/__init__.py:282
 msgid "Go to another URL"
 msgstr "Aller à une autre URL"
 
-#: plugins/gedit3/markdown-preview/__init__.py:289
+#: plugins/gedit3/markdown-preview/__init__.py:286
 msgid "Update Preview"
 msgstr "Actualiser l'aperçu"
 
-#: plugins/gedit3/markdown-preview/__init__.py:293
+#: plugins/gedit3/markdown-preview/__init__.py:296
 msgid "Clear Preview"
 msgstr "Effacer l'aperçu"
