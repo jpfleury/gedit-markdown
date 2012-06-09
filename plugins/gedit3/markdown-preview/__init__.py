@@ -201,7 +201,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 			
 			self.urlTooltip = Gtk.Window.new(Gtk.WindowType.POPUP)
 			self.urlTooltip.set_border_width(2)
-			self.urlTooltip.modify_bg(0, Gdk.color_parse("white"))
+			self.urlTooltip.modify_bg(0, Gdk.color_parse("#d9d9d9"))
 			label = Gtk.Label()
 			text = (url[:75] + '...') if len(url) > 75 else url
 			label.set_text(text)
