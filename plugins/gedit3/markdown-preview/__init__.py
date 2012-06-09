@@ -155,9 +155,10 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		windowdata["ui_id"] = manager.new_merge_id()
 		
 		manager.add_ui(windowdata["ui_id"], "/MenuBar/ToolsMenu/ToolsOps_4",
-		               "ToggleTab", "ToggleTab", Gtk.UIManagerItemType.MENUITEM, True)
-		manager.add_ui(windowdata["ui_id"], "/MenuBar/ToolsMenu/ToolsOps_4",
 		               "MarkdownPreview", "MarkdownPreview", Gtk.UIManagerItemType.MENUITEM, True)
+		
+		manager.add_ui(windowdata["ui_id"], "/MenuBar/ToolsMenu/ToolsOps_4",
+		               "ToggleTab", "ToggleTab", Gtk.UIManagerItemType.MENUITEM, False)
 	
 	def copyCurrentUrl(self):
 		self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
@@ -238,7 +239,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		if self.currentUri == "file:///":
 			active_document = self.window.get_active_document()
 			
-			if hasattr(active_document, "get_uri_for_display"):
+			if active_document:
 				uri_active_document = active_document.get_uri_for_display()
 				
 				# Make sure we have an absolute path (so the file exists).
@@ -288,6 +289,12 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		
 		item = Gtk.MenuItem(label=_("Update Preview"))
 		item.connect('activate', lambda x: self.update_preview(self, False))
+		
+		documents = self.window.get_documents()
+		
+		if not documents:
+			item.set_sensitive(False)
+		
 		menu.append(item)
 		
 		item = Gtk.MenuItem(label=_("Clear Preview"))
@@ -321,7 +328,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		
 		view = self.window.get_active_view()
 		
-		if not view:
+		if not view and not clear:
 			return
 		
 		html = ""
