@@ -91,17 +91,17 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		scrolled_window.set_property("vscrollbar-policy", Gtk.PolicyType.AUTOMATIC)
 		scrolled_window.set_property("shadow-type", Gtk.ShadowType.IN)
 		
-		html_view = WebKit.WebView()
-		html_view.connect("hovering-over-link", self.hovering_over_link)
-		html_view.connect("navigation-policy-decision-requested", self.navigation_policy_decision_requested)
-		html_view.connect("populate-popup", self.populate_popup)
-		html_view.load_string((HTML_TEMPLATE % ("", )), "text/html", "utf-8", "file:///")
+		self.html_view = WebKit.WebView()
+		self.html_view.connect("hovering-over-link", self.hovering_over_link)
+		self.html_view.connect("navigation-policy-decision-requested", self.navigation_policy_decision_requested)
+		self.html_view.connect("populate-popup", self.populate_popup)
+		self.html_view.load_string((HTML_TEMPLATE % ("", )), "text/html", "utf-8", "file:///")
 		
-		scrolled_window.add(html_view)
+		scrolled_window.add(self.html_view)
 		scrolled_window.show_all()
 		
 		windowdata["panel"] = scrolled_window
-		windowdata["html_doc"] = html_view
+		windowdata["html_doc"] = self.html_view
 		
 		self.add_markdown_preview_tab(windowdata)
 		self.add_menu_items(windowdata)
@@ -162,6 +162,41 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 	def copyCurrentUrl(self):
 		self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 		self.clipboard.set_text(self.currentUri, -1)
+	
+	def goToAnotherUrl(self):
+		new_url = self.goToAnotherUrlDialog()
+		
+		if new_url:
+			if new_url.startswith("/"):
+				new_url = "file://" + new_url
+			
+			self.html_view.open(new_url)
+	
+	def goToAnotherUrlDialog(self):
+		dialog = Gtk.MessageDialog(None,
+		                           Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+		                           Gtk.MessageType.QUESTION,
+		                           Gtk.ButtonsType.OK_CANCEL,
+		                           _("Enter URL"))
+		dialog.set_title(_("Enter URL"))
+		dialog.format_secondary_markup(_("Enter the URL of the page (local or distant) to display."))
+		entry = Gtk.Entry()
+		entry.connect("activate", self.goToAnotherUrlDialogActivate, dialog, Gtk.ResponseType.OK)
+		dialog.vbox.pack_end(entry, True, True, 0)
+		dialog.show_all()
+		response = dialog.run()
+		
+		new_url = ""
+		
+		if response == Gtk.ResponseType.OK:
+			new_url = entry.get_text()
+		
+		dialog.destroy()
+		
+		return new_url
+	
+	def goToAnotherUrlDialogActivate(self, entry, dialog, response):
+		dialog.response(response)
 	
 	def hovering_over_link(self, page, title, url):
 		if url and not self.overLinkUrl:
@@ -228,12 +263,16 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 			item.connect('activate', lambda x: self.openInDefaultBrowser())
 			menu.append(item)
 		
-		item = Gtk.MenuItem(label=_("Copy the URL of the document being displayed"))
+		item = Gtk.MenuItem(label=_("Copy the URL of the current page"))
 		item.connect('activate', lambda x: self.copyCurrentUrl())
 		
 		if self.currentUri == "file:///":
 			item.set_sensitive(False)
 		
+		menu.append(item)
+		
+		item = Gtk.MenuItem(label=_("Go to another URL"))
+		item.connect('activate', lambda x: self.goToAnotherUrl())
 		menu.append(item)
 		
 		item = Gtk.MenuItem(label=_("Update Preview"))
@@ -274,23 +313,24 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		if not view:
 			return
 		
-		doc = view.get_buffer()
-		start = doc.get_start_iter()
-		end = doc.get_end_iter()
-		
-		if doc.get_selection_bounds():
-			start = doc.get_iter_at_mark(doc.get_insert())
-			end = doc.get_iter_at_mark(doc.get_selection_bound())
-		
 		html = ""
 		
 		if not clear:
+			doc = view.get_buffer()
+			start = doc.get_start_iter()
+			end = doc.get_end_iter()
+			
+			if doc.get_selection_bounds():
+				start = doc.get_iter_at_mark(doc.get_insert())
+				end = doc.get_iter_at_mark(doc.get_selection_bound())
+			
 			text = doc.get_text(start, end, True).decode('utf-8')
 			
 			if markdownVersion == "standard":
 				html = HTML_TEMPLATE % (markdown.markdown(text, smart_emphasis=False), )
 			else:
-				html = HTML_TEMPLATE % (markdown.markdown(text, extensions=['extra', 'headerid(forceid=False)']), )
+				html = HTML_TEMPLATE % (markdown.markdown(text, extensions=['extra',
+				       'headerid(forceid=False)']), )
 		
 		p = windowdata["panel"].get_placement()
 		html_doc = windowdata["html_doc"]

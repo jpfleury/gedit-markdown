@@ -107,6 +107,10 @@ Voici maintenant le même greffon situé dans le panneau latéral (cliquer pour 
 
 <a href="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4-grand.png"><img src="http://jpfleury.indefero.net/p/gedit-markdown/source/tree/master/doc/exemple4-petit.png" width="684" height="445" alt="Aperçu en HTML d'un document Markdown dans le panneau latéral de gedit." /></a>
 
+Lorsque le curseur passe au-dessus d'un lien, une infobulle affiche l'URL:
+
+
+
 ### Extraits de code
 
 Pour utiliser les extraits de code de Markdown, il faut activer le greffon *Extraits de code* dans le menu *Édition > Préférences > Greffons* de gedit. Ensuite, aller dans *Outils > Gérer les extraits de code...* pour consulter les différentes possibilités.
