@@ -3,7 +3,7 @@
 
 # HTML preview of Markdown formatted text in gedit
 # Copyright © 2005, 2006 Michele Campeotto
-# Copyright © 2009, 2011 Jean-Philippe Fleury <contact@jpfleury.net>
+# Copyright © 2009, 2011-2012 Jean-Philippe Fleury <contact@jpfleury.net>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,48 +28,50 @@ import gettext
 from ConfigParser import SafeConfigParser
 
 try:
-	APP_NAME = 'markdown-preview'
-	LOCALE_PATH = os.path.dirname(__file__) + '/locale'
-	gettext.bindtextdomain(APP_NAME, LOCALE_PATH)
-	_ = lambda s: gettext.dgettext(APP_NAME, s);
+	appName = "markdown-preview"
+	fileDir = os.path.dirname(__file__)
+	localePath = os.path.join(fileDir, "locale")
+	gettext.bindtextdomain(appName, localePath)
+	_ = lambda s: gettext.dgettext(appName, s);
 except:
 	_ = lambda s: s
 
 # Can be used to add default HTML code (e.g. default header section with CSS).
-HTML_TEMPLATE = "%s"
+htmlTemplate = "%s"
 
 # Configuration.
 
 try:
 	import xdg.BaseDirectory
 except ImportError:
-	home = os.environ.get('HOME')
-	xdg_config_home = os.path.join(home, '.config/')
+	homeDir = os.environ.get("HOME")
+	xdgConfigHome = os.path.join(homeDir, ".config")
 else:
-	xdg_config_home = xdg.BaseDirectory.xdg_config_home
+	xdgConfigHome = xdg.BaseDirectory.xdg_config_home
 
-confDir =  os.path.join(xdg_config_home, 'gedit/')
-confFile =  os.path.join(confDir, 'gedit-markdown.ini')
+confDir =  os.path.join(xdgConfigHome, "gedit")
+confFile =  os.path.join(confDir, "gedit-markdown.ini")
 parser = SafeConfigParser()
 
 if os.path.isfile(confFile):
 	parser.read(confFile)
-	markdownPanel = parser.get('markdown-preview', 'panel')
-	markdownShortcut = parser.get('markdown-preview', 'shortcut')
-	markdownVersion = parser.get('markdown-preview', 'version')
+	markdownPanel = parser.get("markdown-preview", "panel")
+	markdownShortcut = parser.get("markdown-preview", "shortcut")
+	markdownVersion = parser.get("markdown-preview", "version")
 else:
-	markdownPanel = 'bottom'
-	markdownShortcut = '<Control><Alt>m'
-	markdownVersion = 'extra'
+	markdownPanel = "bottom"
+	markdownShortcut = "<Control><Alt>m"
+	markdownVersion = "extra"
 	
 	if not os.path.exists(confDir):
 		os.makedirs(confDir)
 	
-	parser.add_section('markdown-preview')
-	parser.set('markdown-preview', 'panel', markdownPanel)
-	parser.set('markdown-preview', 'shortcut', markdownShortcut)
-	parser.set('markdown-preview', 'version', markdownVersion)
-	with open(confFile, 'wb') as confFile:
+	parser.add_section("markdown-preview")
+	parser.set("markdown-preview", "panel", markdownPanel)
+	parser.set("markdown-preview", "shortcut", markdownShortcut)
+	parser.set("markdown-preview", "version", markdownVersion)
+	
+	with open(confFile, "wb") as confFile:
 		parser.write(confFile)
 
 class MarkdownPreviewPlugin(gedit.Plugin):
@@ -77,25 +79,31 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		gedit.Plugin.__init__(self)
 	
 	def activate(self, window):
-		action = ("Markdown Preview", None, _("Update Markdown Preview"), markdownShortcut,
-		          _("Preview in HTML of the current document or the selection"), lambda x, y: self.update_preview(y))
+		self.scrolledWindow = gtk.ScrolledWindow()
+		self.scrolledWindow.set_property("hscrollbar-policy", gtk.POLICY_AUTOMATIC)
+		self.scrolledWindow.set_property("vscrollbar-policy", gtk.POLICY_AUTOMATIC)
+		self.scrolledWindow.set_property("shadow-type", gtk.SHADOW_IN)
 		
-		# Store data in the window object.
-		windowdata = dict()
-		window.set_data("MarkdownPreviewData", windowdata)
+		self.htmlView = webkit.WebView()
+		self.htmlView.props.settings.props.enable_default_context_menu = False
+		self.htmlView.load_string((htmlTemplate % ("", )), "text/html", "utf-8", "file:///")
+		
+		self.scrolledWindow.add(self.htmlView)
+		self.scrolledWindow.show_all()
+		
+		self.addMarkdownPreviewTab(window)
+		self.addMenuItems(window)
 	
-		scrolled_window = gtk.ScrolledWindow()
-		scrolled_window.set_property("hscrollbar-policy", gtk.POLICY_AUTOMATIC)
-		scrolled_window.set_property("vscrollbar-policy", gtk.POLICY_AUTOMATIC)
-		scrolled_window.set_property("shadow-type", gtk.SHADOW_IN)
+	def deactivate(self, window):
+		# Remove the menu item.
+		manager = window.get_ui_manager()
+		manager.remove_ui(self.uiId)
+		manager.remove_action_group(self.actionGroup1)
 		
-		html_view = webkit.WebView()
-		html_view.props.settings.props.enable_default_context_menu = False
-		html_view.load_string((HTML_TEMPLATE % ("", )), "text/html", "utf-8", "file:///")
-		
-		scrolled_window.add(html_view)
-		scrolled_window.show_all()
-		
+		# Remove Markdown Preview from the panel.
+		self.removeMarkdownPreviewTab(window)
+	
+	def addMarkdownPreviewTab(self, window):
 		if markdownPanel == "side":
 			panel = window.get_side_panel()
 		else:
@@ -103,44 +111,39 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		
 		image = gtk.Image()
 		image.set_from_icon_name("gnome-mime-text-html", gtk.ICON_SIZE_MENU)
-		panel.add_item(scrolled_window, _("Markdown Preview"), image)
+		
+		panel.add_item(self.scrolledWindow, _("Markdown Preview"), image)
 		panel.show()
-		
-		windowdata["panel"] = scrolled_window
-		windowdata["html_doc"] = html_view
-		windowdata["action_group"] = gtk.ActionGroup("MarkdownPreviewActions")
-		windowdata["action_group"].add_actions([action], window)
-
-		manager = window.get_ui_manager()
-		manager.insert_action_group(windowdata["action_group"], -1)
-
-		windowdata["ui_id"] = manager.new_merge_id()
-
-		manager.add_ui(windowdata["ui_id"], "/MenuBar/ToolsMenu/ToolsOps_5",
-		               "Markdown Preview", "Markdown Preview", gtk.UI_MANAGER_MENUITEM, True)
+		panel.activate_item(self.scrolledWindow)
 	
-	def deactivate(self, window):
-		# Retreive data of the window object.
-		windowdata = window.get_data("MarkdownPreviewData")
-		
-		# Remove the menu action.
+	def addMenuItems(self, window):
 		manager = window.get_ui_manager()
-		manager.remove_ui(windowdata["ui_id"])
-		manager.remove_action_group(windowdata["action_group"])
 		
-		# Remove Markdown Preview from the panel.
+		self.actionGroup1 = gtk.ActionGroup("UpdateMarkdownPreview")
+		action = ("MarkdownPreview",
+		          None,
+		          _("Update Markdown Preview"),
+		          markdownShortcut,
+		          _("Preview in HTML of the current document or the selection"),
+		          lambda x, y: self.updatePreview(y))
+		self.actionGroup1.add_actions([action], window)
+		manager.insert_action_group(self.actionGroup1, -1)
 		
+		self.uiId = manager.new_merge_id()
+		
+		manager.add_ui(self.uiId, "/MenuBar/ToolsMenu/ToolsOps_4",
+		               "MarkdownPreview", "MarkdownPreview",
+		               gtk.UI_MANAGER_MENUITEM, True)
+	
+	def removeMarkdownPreviewTab(self, window):
 		if markdownPanel == "side":
 			panel = window.get_side_panel()
 		else:
 			panel = window.get_bottom_panel()
 		
-		panel.remove_item(windowdata["panel"])
+		panel.remove_item(self.scrolledWindow)
 	
-	def update_preview(self, window):
-		# Retreive data of the window object.
-		windowdata = window.get_data("MarkdownPreviewData")
-		
+	def updatePreview(self, window):
 		view = window.get_active_view()
 		
 		if not view:
@@ -157,14 +160,17 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		text = doc.get_text(start, end)
 		
 		if markdownVersion == "standard":
-			html = HTML_TEMPLATE % (markdown.markdown(text, smart_emphasis=False), )
+			html = htmlTemplate % (markdown.markdown(text, smart_emphasis=False), )
 		else:
-			html = HTML_TEMPLATE % (markdown.markdown(text, extensions=['extra', 'headerid(forceid=False)']), )
+			html = htmlTemplate % (markdown.markdown(text, extensions=["extra",
+			                       "headerid(forceid=False)"]), )
 		
-		p = windowdata["panel"].get_placement()
-		html_doc = windowdata["html_doc"]
-		html_doc.load_string(html, "text/html", "utf-8", "file:///")
-		windowdata["panel"].set_placement(p)
+		placement = self.scrolledWindow.get_placement()
+		
+		htmlDoc = self.htmlView
+		htmlDoc.load_string(html, "text/html", "utf-8", "file:///")
+		
+		self.scrolledWindow.set_placement(placement)
 		
 		if markdownPanel == "side":
 			panel = window.get_side_panel()
@@ -172,5 +178,5 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 			panel = window.get_bottom_panel()
 		
 		panel.show()
-		panel.activate_item(windowdata["panel"])
+		panel.activate_item(self.scrolledWindow)
 

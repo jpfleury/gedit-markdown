@@ -28,48 +28,50 @@ from ConfigParser import SafeConfigParser
 import webbrowser
 
 try:
-	APP_NAME = 'markdown-preview'
-	LOCALE_PATH = os.path.dirname(__file__) + '/locale'
-	gettext.bindtextdomain(APP_NAME, LOCALE_PATH)
-	_ = lambda s: gettext.dgettext(APP_NAME, s);
+	appName = "markdown-preview"
+	fileDir = os.path.dirname(__file__)
+	localePath = os.path.join(fileDir, "locale")
+	gettext.bindtextdomain(appName, localePath)
+	_ = lambda s: gettext.dgettext(appName, s);
 except:
 	_ = lambda s: s
 
 # Can be used to add default HTML code (e.g. default header section with CSS).
-HTML_TEMPLATE = "%s"
+htmlTemplate = "%s"
 
 # Configuration.
 
 try:
 	import xdg.BaseDirectory
 except ImportError:
-	home = os.environ.get('HOME')
-	xdg_config_home = os.path.join(home, '.config/')
+	homeDir = os.environ.get("HOME")
+	xdgConfigHome = os.path.join(homeDir, ".config")
 else:
-	xdg_config_home = xdg.BaseDirectory.xdg_config_home
+	xdgConfigHome = xdg.BaseDirectory.xdg_config_home
 
-confDir =  os.path.join(xdg_config_home, 'gedit/')
-confFile =  os.path.join(confDir, 'gedit-markdown.ini')
+confDir =  os.path.join(xdgConfigHome, "gedit")
+confFile =  os.path.join(confDir, "gedit-markdown.ini")
 parser = SafeConfigParser()
 
 if os.path.isfile(confFile):
 	parser.read(confFile)
-	markdownPanel = parser.get('markdown-preview', 'panel')
-	markdownShortcut = parser.get('markdown-preview', 'shortcut')
-	markdownVersion = parser.get('markdown-preview', 'version')
+	markdownPanel = parser.get("markdown-preview", "panel")
+	markdownShortcut = parser.get("markdown-preview", "shortcut")
+	markdownVersion = parser.get("markdown-preview", "version")
 else:
-	markdownPanel = 'bottom'
-	markdownShortcut = '<Control><Alt>m'
-	markdownVersion = 'extra'
+	markdownPanel = "bottom"
+	markdownShortcut = "<Control><Alt>m"
+	markdownVersion = "extra"
 	
 	if not os.path.exists(confDir):
 		os.makedirs(confDir)
 	
-	parser.add_section('markdown-preview')
-	parser.set('markdown-preview', 'panel', markdownPanel)
-	parser.set('markdown-preview', 'shortcut', markdownShortcut)
-	parser.set('markdown-preview', 'version', markdownVersion)
-	with open(confFile, 'wb') as confFile:
+	parser.add_section("markdown-preview")
+	parser.set("markdown-preview", "panel", markdownPanel)
+	parser.set("markdown-preview", "shortcut", markdownShortcut)
+	parser.set("markdown-preview", "version", markdownVersion)
+	
+	with open(confFile, "wb") as confFile:
 		parser.write(confFile)
 
 class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
@@ -82,38 +84,38 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		GObject.Object.__init__(self)
 	
 	def do_activate(self):
-		self.scrolled_window = Gtk.ScrolledWindow()
-		self.scrolled_window.set_property("hscrollbar-policy", Gtk.PolicyType.AUTOMATIC)
-		self.scrolled_window.set_property("vscrollbar-policy", Gtk.PolicyType.AUTOMATIC)
-		self.scrolled_window.set_property("shadow-type", Gtk.ShadowType.IN)
+		self.scrolledWindow = Gtk.ScrolledWindow()
+		self.scrolledWindow.set_property("hscrollbar-policy", Gtk.PolicyType.AUTOMATIC)
+		self.scrolledWindow.set_property("vscrollbar-policy", Gtk.PolicyType.AUTOMATIC)
+		self.scrolledWindow.set_property("shadow-type", Gtk.ShadowType.IN)
 		
-		self.html_view = WebKit.WebView()
-		self.html_view.connect("hovering-over-link", self.hovering_over_link)
-		self.html_view.connect("navigation-policy-decision-requested",
-		                       self.navigation_policy_decision_requested)
-		self.html_view.connect("populate-popup", self.populate_popup)
-		self.html_view.load_string((HTML_TEMPLATE % ("", )), "text/html", "utf-8", "file:///")
+		self.htmlView = WebKit.WebView()
+		self.htmlView.connect("hovering-over-link", self.onHoveringOverLinkCb)
+		self.htmlView.connect("navigation-policy-decision-requested",
+		                       self.onNavigationPolicyDecisionRequestedCb)
+		self.htmlView.connect("populate-popup", self.onPopulatePopupCb)
+		self.htmlView.load_string((htmlTemplate % ("", )), "text/html", "utf-8", "file:///")
 		
-		self.scrolled_window.add(self.html_view)
-		self.scrolled_window.show_all()
+		self.scrolledWindow.add(self.htmlView)
+		self.scrolledWindow.show_all()
 		
-		self.add_markdown_preview_tab()
-		self.add_menu_items()
+		self.addMarkdownPreviewTab()
+		self.addMenuItems()
 	
 	def do_deactivate(self):
 		# Remove menu items.
 		manager = self.window.get_ui_manager()
-		manager.remove_ui(self.ui_id)
-		manager.remove_action_group(self.action_group1)
-		manager.remove_action_group(self.action_group2)
+		manager.remove_ui(self.uiId)
+		manager.remove_action_group(self.actionGroup1)
+		manager.remove_action_group(self.actionGroup2)
 		
 		# Remove Markdown Preview from the panel.
-		self.remove_markdown_preview_tab()
+		self.removeMarkdownPreviewTab()
 	
 	def do_update_state(self):
-		self.action_group1.set_sensitive(self.window.get_active_document() != None)
+		self.actionGroup1.set_sensitive(self.window.get_active_document() != None)
 	
-	def add_markdown_preview_tab(self):
+	def addMarkdownPreviewTab(self):
 		if markdownPanel == "side":
 			panel = self.window.get_side_panel()
 		else:
@@ -121,53 +123,56 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		
 		image = Gtk.Image()
 		image.set_from_icon_name("gnome-mime-text-html", Gtk.IconSize.MENU)
-		panel.add_item(self.scrolled_window, "MarkdownPreview", _("Markdown Preview"), image)
+		
+		panel.add_item(self.scrolledWindow, "MarkdownPreview", _("Markdown Preview"), image)
 		panel.show()
-		panel.activate_item(self.scrolled_window)
+		panel.activate_item(self.scrolledWindow)
 	
-	def add_menu_items(self):
+	def addMenuItems(self):
 		manager = self.window.get_ui_manager()
 		
-		self.action_group1 = Gtk.ActionGroup("UpdateMarkdownPreview")
+		self.actionGroup1 = Gtk.ActionGroup("UpdateMarkdownPreview")
 		action = ("MarkdownPreview",
 		          None,
 		          _("Update Markdown Preview"),
 		          markdownShortcut,
 		          _("Preview in HTML of the current document or the selection"),
-		          lambda x, y: self.update_preview(y, False))
-		self.action_group1.add_actions([action], self.window)
-		manager.insert_action_group(self.action_group1, -1)
+		          lambda x, y: self.updatePreview(y, False))
+		self.actionGroup1.add_actions([action], self.window)
+		manager.insert_action_group(self.actionGroup1, -1)
 		
-		self.action_group2 = Gtk.ActionGroup("ToggleTab")
+		self.actionGroup2 = Gtk.ActionGroup("ToggleTab")
 		action = ("ToggleTab",
 		          None,
 		          _("Toggle Markdown Preview visibility"),
 		          None,
 		          _("Display or hide the Markdown Preview panel tab"),
-		          lambda x, y: self.toggle_tab())
-		self.action_group2.add_actions([action], self.window)
-		manager.insert_action_group(self.action_group2, -1)
+		          lambda x, y: self.toggleTab())
+		self.actionGroup2.add_actions([action], self.window)
+		manager.insert_action_group(self.actionGroup2, -1)
 		
-		self.ui_id = manager.new_merge_id()
+		self.uiId = manager.new_merge_id()
 		
-		manager.add_ui(self.ui_id, "/MenuBar/ToolsMenu/ToolsOps_4",
-		               "MarkdownPreview", "MarkdownPreview", Gtk.UIManagerItemType.MENUITEM, True)
+		manager.add_ui(self.uiId, "/MenuBar/ToolsMenu/ToolsOps_4",
+		               "MarkdownPreview", "MarkdownPreview",
+		               Gtk.UIManagerItemType.MENUITEM, True)
 		
-		manager.add_ui(self.ui_id, "/MenuBar/ToolsMenu/ToolsOps_4",
-		               "ToggleTab", "ToggleTab", Gtk.UIManagerItemType.MENUITEM, False)
+		manager.add_ui(self.uiId, "/MenuBar/ToolsMenu/ToolsOps_4",
+		               "ToggleTab", "ToggleTab",
+		               Gtk.UIManagerItemType.MENUITEM, False)
 	
 	def copyCurrentUrl(self):
 		self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 		self.clipboard.set_text(self.currentUri, -1)
 	
 	def goToAnotherUrl(self):
-		new_url = self.goToAnotherUrlDialog()
+		newUrl = self.goToAnotherUrlDialog()
 		
-		if new_url:
-			if new_url.startswith("/"):
-				new_url = "file://" + new_url
+		if newUrl:
+			if newUrl.startswith("/"):
+				newUrl = "file://" + newUrl
 			
-			self.html_view.open(new_url)
+			self.htmlView.open(newUrl)
 	
 	def goToAnotherUrlDialog(self):
 		dialog = Gtk.MessageDialog(None,
@@ -177,46 +182,54 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		                           _("Enter URL"))
 		dialog.set_title(_("Enter URL"))
 		dialog.format_secondary_markup(_("Enter the URL (local or distant) of the document or page to display."))
+		
 		entry = Gtk.Entry()
-		entry.connect("activate", self.goToAnotherUrlDialogActivate, dialog, Gtk.ResponseType.OK)
+		entry.connect("activate", self.onGoToAnotherUrlDialogActivateCb, dialog,
+		              Gtk.ResponseType.OK)
+		
 		dialog.vbox.pack_end(entry, True, True, 0)
 		dialog.show_all()
+		
 		response = dialog.run()
 		
-		new_url = ""
+		newUrl = ""
 		
 		if response == Gtk.ResponseType.OK:
-			new_url = entry.get_text()
+			newUrl = entry.get_text()
 		
 		dialog.destroy()
 		
-		return new_url
+		return newUrl
 	
-	def goToAnotherUrlDialogActivate(self, entry, dialog, response):
+	def onGoToAnotherUrlDialogActivateCb(self, entry, dialog, response):
 		dialog.response(response)
 	
-	def hovering_over_link(self, page, title, url):
+	def onHoveringOverLinkCb(self, page, title, url):
 		if url and not self.overLinkUrl:
 			self.overLinkUrl = url
 			
 			self.urlTooltip = Gtk.Window.new(Gtk.WindowType.POPUP)
 			self.urlTooltip.set_border_width(2)
 			self.urlTooltip.modify_bg(0, Gdk.color_parse("#d9d9d9"))
+			
 			label = Gtk.Label()
-			text = (url[:75] + '...') if len(url) > 75 else url
+			text = (url[:75] + "...") if len(url) > 75 else url
 			label.set_text(text)
 			label.modify_fg(0, Gdk.color_parse("black"))
 			self.urlTooltip.add(label)
 			label.show()
+			
 			self.urlTooltip.show()
 			
 			xPointer, yPointer = self.urlTooltip.get_pointer()
+			
 			xWindow = self.window.get_position()[0]
 			widthWindow = self.window.get_size()[0]
-			widthUrlTooltip = self.urlTooltip.get_size()[0]
 			
+			widthUrlTooltip = self.urlTooltip.get_size()[0]
 			xUrlTooltip = xPointer
 			yUrlTooltip = yPointer + 15
+			
 			xOverflow = (xUrlTooltip + widthUrlTooltip) - (xWindow + widthWindow)
 			
 			if xOverflow > 0:
@@ -229,25 +242,26 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 			if self.urlTooltipVisible():
 				self.urlTooltip.destroy()
 	
-	def navigation_policy_decision_requested(self, view, frame, networkRequest, navAct, polDec):
+	def onNavigationPolicyDecisionRequestedCb(self, view, frame, networkRequest,
+	                                          navAct, polDec):
 		self.currentUri = networkRequest.get_uri()
 		
 		if self.currentUri == "file:///":
-			active_document = self.window.get_active_document()
+			activeDocument = self.window.get_active_document()
 			
-			if active_document:
-				uri_active_document = active_document.get_uri_for_display()
+			if activeDocument:
+				uriActiveDocument = activeDocument.get_uri_for_display()
 				
 				# Make sure we have an absolute path (so the file exists).
-				if uri_active_document.startswith("/"):
-					self.currentUri = uri_active_document
+				if uriActiveDocument.startswith("/"):
+					self.currentUri = uriActiveDocument
 		
 		return False
 	
 	def openInDefaultBrowser(self):
 		webbrowser.open_new_tab(self.overLinkUrl)
 	
-	def populate_popup(self, view, menu):
+	def onPopulatePopupCb(self, view, menu):
 		if self.urlTooltipVisible():
 			self.urlTooltip.destroy()
 		
@@ -268,11 +282,11 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		
 		if self.overLinkUrl:
 			item = Gtk.MenuItem(label=_("Open in the default Web browser"))
-			item.connect('activate', lambda x: self.openInDefaultBrowser())
+			item.connect("activate", lambda x: self.openInDefaultBrowser())
 			menu.append(item)
 		
 		item = Gtk.MenuItem(label=_("Copy the current URL"))
-		item.connect('activate', lambda x: self.copyCurrentUrl())
+		item.connect("activate", lambda x: self.copyCurrentUrl())
 		
 		if self.currentUri == "file:///":
 			item.set_sensitive(False)
@@ -280,11 +294,11 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		menu.append(item)
 		
 		item = Gtk.MenuItem(label=_("Go to another URL"))
-		item.connect('activate', lambda x: self.goToAnotherUrl())
+		item.connect("activate", lambda x: self.goToAnotherUrl())
 		menu.append(item)
 		
 		item = Gtk.MenuItem(label=_("Update Preview"))
-		item.connect('activate', lambda x: self.update_preview(self, False))
+		item.connect("activate", lambda x: self.updatePreview(self, False))
 		
 		documents = self.window.get_documents()
 		
@@ -294,31 +308,31 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		menu.append(item)
 		
 		item = Gtk.MenuItem(label=_("Clear Preview"))
-		item.connect('activate', lambda x: self.update_preview(self, True))
+		item.connect("activate", lambda x: self.updatePreview(self, True))
 		menu.append(item)
 		
 		menu.show_all()
 	
-	def remove_markdown_preview_tab(self):
+	def removeMarkdownPreviewTab(self):
 		if markdownPanel == "side":
 			panel = self.window.get_side_panel()
 		else:
 			panel = self.window.get_bottom_panel()
 		
-		panel.remove_item(self.scrolled_window)
+		panel.remove_item(self.scrolledWindow)
 	
-	def toggle_tab(self):
+	def toggleTab(self):
 		if markdownPanel == "side":
 			panel = self.window.get_side_panel()
 		else:
 			panel = self.window.get_bottom_panel()
 		
-		if panel.activate_item(self.scrolled_window):
-			self.remove_markdown_preview_tab()
+		if panel.activate_item(self.scrolledWindow):
+			self.removeMarkdownPreviewTab()
 		else:
-			self.add_markdown_preview_tab()
+			self.addMarkdownPreviewTab()
 	
-	def update_preview(self, window, clear):
+	def updatePreview(self, window, clear):
 		view = self.window.get_active_view()
 		
 		if not view and not clear:
@@ -335,18 +349,20 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 				start = doc.get_iter_at_mark(doc.get_insert())
 				end = doc.get_iter_at_mark(doc.get_selection_bound())
 			
-			text = doc.get_text(start, end, True).decode('utf-8')
+			text = doc.get_text(start, end, True).decode("utf-8")
 			
 			if markdownVersion == "standard":
-				html = HTML_TEMPLATE % (markdown.markdown(text, smart_emphasis=False), )
+				html = htmlTemplate % (markdown.markdown(text, smart_emphasis=False), )
 			else:
-				html = HTML_TEMPLATE % (markdown.markdown(text, extensions=['extra',
-				       'headerid(forceid=False)']), )
+				html = htmlTemplate % (markdown.markdown(text, extensions=["extra",
+				       "headerid(forceid=False)"]), )
 		
-		p = self.scrolled_window.get_placement()
-		html_doc = self.html_view
-		html_doc.load_string(html, "text/html", "utf-8", "file:///")
-		self.scrolled_window.set_placement(p)
+		placement = self.scrolledWindow.get_placement()
+		
+		htmlDoc = self.htmlView
+		htmlDoc.load_string(html, "text/html", "utf-8", "file:///")
+		
+		self.scrolledWindow.set_placement(placement)
 		
 		if markdownPanel == "side":
 			panel = self.window.get_side_panel()
@@ -355,9 +371,9 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		
 		panel.show()
 		
-		if not panel.activate_item(self.scrolled_window):
-			self.add_markdown_preview_tab()
-			panel.activate_item(self.scrolled_window)
+		if not panel.activate_item(self.scrolledWindow):
+			self.addMarkdownPreviewTab()
+			panel.activate_item(self.scrolledWindow)
 	
 	def urlTooltipVisible(self):
 		if hasattr(self, "urlTooltip") and self.urlTooltip.get_property("visible"):

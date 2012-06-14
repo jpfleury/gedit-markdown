@@ -21,26 +21,27 @@ from ConfigParser import SafeConfigParser
 try:
 	import xdg.BaseDirectory
 except ImportError:
-	home = os.environ.get('HOME')
-	xdg_config_home = os.path.join(home, '.config/')
+	homeDir = os.environ.get("HOME")
+	xdgConfigHome = os.path.join(homeDir, ".config")
 else:
-	xdg_config_home = xdg.BaseDirectory.xdg_config_home
+	xdgConfigHome = xdg.BaseDirectory.xdg_config_home
 
-confDir =  os.path.join(xdg_config_home, 'gedit/')
-confFile =  os.path.join(confDir, 'gedit-markdown.ini')
+confDir =  os.path.join(xdgConfigHome, "gedit")
+confFile =  os.path.join(confDir, "gedit-markdown.ini")
 parser = SafeConfigParser()
 
 if os.path.isfile(confFile):
 	parser.read(confFile)
-	markdownVersion = parser.get('markdown-preview', 'version')
+	markdownVersion = parser.get("markdown-preview", "version")
 else:
-	markdownVersion = 'extra'
+	markdownVersion = "extra"
 
-text = sys.stdin.read().decode('utf-8')
+text = sys.stdin.read().decode("utf-8")
 print "<!-- Markdown => HTML -->"
 
 if markdownVersion == "standard":
-	print markdown.markdown(text, smart_emphasis=False).encode('utf-8')
+	print markdown.markdown(text, smart_emphasis=False).encode("utf-8")
 else:
-	print markdown.markdown(text, extensions=['extra', 'headerid(forceid=False)']).encode('utf-8')
+	print markdown.markdown(text, extensions=["extra",
+	                        "headerid(forceid=False)"]).encode("utf-8")
 
