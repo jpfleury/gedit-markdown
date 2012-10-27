@@ -57,6 +57,7 @@ markdownPanel = "bottom"
 markdownShortcut = "<Control><Alt>m"
 markdownVersion = "extra"
 markdownVisibility = "1"
+markdownVisibilityShortcut = "<Control><Alt>v"
 
 if os.path.isfile(confFile):
 	parser.read(confFile)
@@ -66,6 +67,7 @@ if os.path.isfile(confFile):
 		markdownShortcut = parser.get("markdown-preview", "shortcut")
 		markdownVersion = parser.get("markdown-preview", "version")
 		markdownVisibility = parser.get("markdown-preview", "visibility")
+		markdownVisibilityShortcut = parser.get("markdown-preview", "visibilityShortcut")
 	except Exception, e:
 		print e
 else:
@@ -77,6 +79,7 @@ else:
 	parser.set("markdown-preview", "shortcut", markdownShortcut)
 	parser.set("markdown-preview", "version", markdownVersion)
 	parser.set("markdown-preview", "visibility", markdownVisibility)
+	parser.set("markdown-preview", "visibilityShortcut", markdownVisibilityShortcut)
 	
 	with open(confFile, "wb") as confFile:
 		parser.write(confFile)
@@ -154,7 +157,7 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 		action = ("ToggleTab",
 		          None,
 		          _("Toggle Markdown Preview visibility"),
-		          None,
+		          markdownVisibilityShortcut,
 		          _("Display or hide the Markdown Preview panel tab"),
 		          lambda x, y: self.toggleTab())
 		self.actionGroup2.add_actions([action], self.window)

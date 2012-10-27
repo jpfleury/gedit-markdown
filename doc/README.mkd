@@ -163,6 +163,8 @@ Only the section `markdown-preview` can be edited. It contains three properties:
 
 - `visibility`: visibility of the Markdown Preview panel tab when gedit starts. Possible values: `0` (hidden) or `1` (displayed; default value).
 
+- `visibilityShortcut` (gedit 3 only): shortcut to toggle Markdown Preview visibility. The default value is `<Control><Alt>v`.
+
 ## Details and limitations
 
 - Syntax highlighting and snippets for standard Markdown were officially added in GtkSourceView and gedit > 3.1.1. The installer of gedit-markdown will ensure that no already existing files are copied (no check is done for Markdown Extra because this is not the default version shipped with GtkSourceView and gedit > 3.1.1).

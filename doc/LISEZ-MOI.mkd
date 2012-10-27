@@ -163,6 +163,8 @@ Seule la section `markdown-preview` peut être modifiée, et contient trois para
 
 - `visibility`: visibilité de l'onglet d'aperçu dans le panneau lors de l'ouverture de gedit. Valeurs possibles: `0` (caché) ou `1` (affiché; valeur par défaut).
 
+- `visibilityShortcut` (gedit 3 seulement): raccourci-clavier pour afficher ou cacher l'onglet d'aperçu dans le panneau de gedit. La valeur par défaut est `<Control><Alt>v`.
+
 ## Précisions ou limitations
 
 - La coloration syntaxique ainsi que les extraits de code pour Markdown (version standard) ont été ajoutés officiellement à GtkSourceView et gedit > 3.1.1. Dans l'installateur de gedit-markdown, si la version choisie est Markdown standard, une vérification sera effectuée pour ne pas copier des fichiers qui existent déjà (aucune vérification ne sera effectuée pour l'installation de Markdown Extra puisqu'il ne s'agit pas de la version livrée par défaut avec GtkSourceView et gedit > 3.1.1).
