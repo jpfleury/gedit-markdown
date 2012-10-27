@@ -57,6 +57,7 @@ markdownPanel = "bottom"
 markdownShortcut = "<Control><Alt>m"
 markdownVersion = "extra"
 markdownVisibility = "1"
+markdownVisibilityShortcut = "<Control><Alt>v"
 
 if os.path.isfile(confFile):
 	parser.read(confFile)
@@ -66,6 +67,7 @@ if os.path.isfile(confFile):
 		markdownShortcut = parser.get("markdown-preview", "shortcut")
 		markdownVersion = parser.get("markdown-preview", "version")
 		markdownVisibility = parser.get("markdown-preview", "visibility")
+		markdownVisibilityShortcut = parser.get("markdown-preview", "visibilityShortcut")
 	except Exception, e:
 		print e
 else:
@@ -77,6 +79,7 @@ else:
 	parser.set("markdown-preview", "shortcut", markdownShortcut)
 	parser.set("markdown-preview", "version", markdownVersion)
 	parser.set("markdown-preview", "visibility", markdownVisibility)
+	parser.set("markdown-preview", "visibilityShortcut", markdownVisibilityShortcut)
 	
 	with open(confFile, "wb") as confFile:
 		parser.write(confFile)
@@ -138,11 +141,25 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		self.actionGroup1.add_actions([action], window)
 		manager.insert_action_group(self.actionGroup1, -1)
 		
+		self.actionGroup2 = gtk.ActionGroup("ToggleTab")
+		action = ("ToggleTab",
+		          None,
+		          _("Toggle Markdown Preview visibility"),
+		          markdownVisibilityShortcut,
+		          _("Display or hide the Markdown Preview panel tab"),
+		          lambda x, y: self.toggleTab(y))
+		self.actionGroup2.add_actions([action], window)
+		manager.insert_action_group(self.actionGroup2, -1)
+		
 		self.uiId = manager.new_merge_id()
 		
 		manager.add_ui(self.uiId, "/MenuBar/ToolsMenu/ToolsOps_4",
 		               "MarkdownPreview", "MarkdownPreview",
 		               gtk.UI_MANAGER_MENUITEM, True)
+		
+		manager.add_ui(self.uiId, "/MenuBar/ToolsMenu/ToolsOps_4",
+		               "ToggleTab", "ToggleTab",
+		               gtk.UI_MANAGER_MENUITEM, False)
 	
 	def removeMarkdownPreviewTab(self, window):
 		if markdownPanel == "side":
@@ -151,6 +168,17 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 			panel = window.get_bottom_panel()
 		
 		panel.remove_item(self.scrolledWindow)
+	
+	def toggleTab(self, window):
+		if markdownPanel == "side":
+			panel = window.get_side_panel()
+		else:
+			panel = window.get_bottom_panel()
+		
+		if panel.activate_item(self.scrolledWindow):
+			self.removeMarkdownPreviewTab(window)
+		else:
+			self.addMarkdownPreviewTab(window)
 	
 	def updatePreview(self, window):
 		view = window.get_active_view()
@@ -185,6 +213,9 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 			panel = window.get_side_panel()
 		else:
 			panel = window.get_bottom_panel()
+		
+		if not panel.activate_item(self.scrolledWindow):
+			self.addMarkdownPreviewTab(window)
 		
 		panel.show()
 		panel.activate_item(self.scrolledWindow)

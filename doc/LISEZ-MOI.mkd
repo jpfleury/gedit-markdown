@@ -101,7 +101,9 @@ Deux éléments sont ajoutés dans le menu *Outils* de gedit:
 	
 	  - en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Actualiser l'aperçu* (gedit 3 seulement).
 
-- *Afficher ou cacher l'aperçu Markdown* (gedit 3 seulement): permet d'afficher ou de cacher l'onglet d'aperçu dans le panneau de gedit.
+- *Afficher ou cacher l'aperçu Markdown*: permet d'afficher ou de cacher l'onglet d'aperçu dans le panneau de gedit.
+
+	Note: le raccourci-clavier *Ctrl+Alt+v* (peut être modifié dans le fichier de configuration) peut être utilisé pour effectuer la même action.
 
 Si gedit 3 est utilisé, en cliquant droit dans la zone d'aperçu, un menu contextuel apparaît et offre plusieurs options. Outre celles par défaut (page suivante, page précédente, copie, etc.), on trouve:
 
@@ -163,7 +165,7 @@ Seule la section `markdown-preview` peut être modifiée, et contient trois para
 
 - `visibility`: visibilité de l'onglet d'aperçu dans le panneau lors de l'ouverture de gedit. Valeurs possibles: `0` (caché) ou `1` (affiché; valeur par défaut).
 
-- `visibilityShortcut` (gedit 3 seulement): raccourci-clavier pour afficher ou cacher l'onglet d'aperçu dans le panneau de gedit. La valeur par défaut est `<Control><Alt>v`.
+- `visibilityShortcut`: raccourci-clavier pour afficher ou cacher l'onglet d'aperçu dans le panneau de gedit. La valeur par défaut est `<Control><Alt>v`.
 
 ## Précisions ou limitations
 
