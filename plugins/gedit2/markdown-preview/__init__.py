@@ -53,16 +53,22 @@ confDir =  os.path.join(xdgConfigHome, "gedit")
 confFile =  os.path.join(confDir, "gedit-markdown.ini")
 parser = SafeConfigParser()
 
+markdownPanel = "bottom"
+markdownShortcut = "<Control><Alt>m"
+markdownVersion = "extra"
+markdownVisibility = "1"
+
 if os.path.isfile(confFile):
 	parser.read(confFile)
-	markdownPanel = parser.get("markdown-preview", "panel")
-	markdownShortcut = parser.get("markdown-preview", "shortcut")
-	markdownVersion = parser.get("markdown-preview", "version")
-else:
-	markdownPanel = "bottom"
-	markdownShortcut = "<Control><Alt>m"
-	markdownVersion = "extra"
 	
+	try:
+		markdownPanel = parser.get("markdown-preview", "panel")
+		markdownShortcut = parser.get("markdown-preview", "shortcut")
+		markdownVersion = parser.get("markdown-preview", "version")
+		markdownVisibility = parser.get("markdown-preview", "visibility")
+	except Exception, e:
+		print e
+else:
 	if not os.path.exists(confDir):
 		os.makedirs(confDir)
 	
@@ -70,6 +76,7 @@ else:
 	parser.set("markdown-preview", "panel", markdownPanel)
 	parser.set("markdown-preview", "shortcut", markdownShortcut)
 	parser.set("markdown-preview", "version", markdownVersion)
+	parser.set("markdown-preview", "visibility", markdownVisibility)
 	
 	with open(confFile, "wb") as confFile:
 		parser.write(confFile)
@@ -91,7 +98,9 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		self.scrolledWindow.add(self.htmlView)
 		self.scrolledWindow.show_all()
 		
-		self.addMarkdownPreviewTab(window)
+		if markdownVisibility == "1":
+			self.addMarkdownPreviewTab(window)
+		
 		self.addMenuItems(window)
 	
 	def deactivate(self, window):
