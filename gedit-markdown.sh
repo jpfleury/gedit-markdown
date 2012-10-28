@@ -473,6 +473,10 @@ if [[ $1 == installer || $1 == install ]]; then
 		if [[ -n $(grep "^version *=" "$cheminFichierConfig") ]]; then
 			sed -i "s/^\(version *= *\).*$/\1standard/" "$cheminFichierConfig"
 		else
+			if [[ -z $(grep "^\[markdown-preview\]" "$cheminFichierConfig") ]]; then
+				echo "[markdown-preview]" >> "$cheminFichierConfig"
+			fi
+			
 			sed -i "s/^\(\[markdown-preview\]\)$/\1\nversion = standard/" "$cheminFichierConfig"
 		fi
 	else
@@ -497,6 +501,10 @@ if [[ $1 == installer || $1 == install ]]; then
 			sed -i "s|^\(pythonSitePackages *= *\).*$|\1$cheminPythonSitePackages|"\
 				"$cheminFichierConfig"
 		else
+			if [[ -z $(grep "^\[python\]" "$cheminFichierConfig") ]]; then
+				echo "[python]" >> "$cheminFichierConfig"
+			fi
+			
 			sed -i "s|^\(\[python\]\)$|\1\npythonSitePackages = $cheminPythonSitePackages|"\
 				$cheminFichierConfig
 		fi
@@ -521,6 +529,10 @@ if [[ $1 == installer || $1 == install ]]; then
 			if [[ -n $(grep "^panel *=" "$cheminFichierConfig") ]]; then
 				sed -i "s/^\(panel *= *\).*$/\1side/" "$cheminFichierConfig"
 			else
+				if [[ -z $(grep "^\[markdown-preview\]" "$cheminFichierConfig") ]]; then
+					echo "[markdown-preview]" >> "$cheminFichierConfig"
+				fi
+				
 				sed -i "s/^\(\[markdown-preview\]\)$/\1\npanel = side/" "$cheminFichierConfig"
 			fi
 		fi
