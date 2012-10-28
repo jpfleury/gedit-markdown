@@ -111,7 +111,11 @@ Si gedit 3 est utilisé, en cliquant droit dans la zone d'aperçu, un menu conte
 
 - *Aller à une autre URL*: permet de spécifier manuellement une URL locale ou distante d'un document ou d'une page à visiter dans l'onglet d'aperçu.
 
-- *Ouvrir dans le navigateur Web par défaut*: permet d'ouvrir le lien cliqué dans un navigateur externe.
+- Une des deux options suivantes, selon la valeur du paramètre `externalBrowser` du fichier de configuration:
+
+	- *Ouvrir dans un navigateur externe*: permet d'ouvrir le lien cliqué dans un navigateur externe.
+
+	- *Ouvrir dans le navigateur intégré*: permet d'ouvrir le lien cliqué directement dans le panneau de gedit.
 
 - *Actualiser l'aperçu*: permet d'actualiser l'aperçu avec le contenu du document courant ou de la sélection.
 
@@ -155,7 +159,11 @@ ce qui correspond la plupart du temps à:
 
 	$HOME/.config/gedit/gedit-markdown.ini
 
-Seule la section `markdown-preview` peut être modifiée, et contient trois paramètres:
+Seule la section `markdown-preview` peut être modifiée, et contient plusieurs paramètres:
+
+- `externalBrowser`: ouverture des liens dans un navigateur externe par défaut. Valeurs possibles: `0` (ne pas ouvrir les liens dans un navigateur externe par défaut; valeur par défaut) ou `1` (ouvrir les liens dans un navigateur externe par défaut).
+
+	Si `externalBrowser` vaut `0`, alors le menu contextuel apparaissant lors d'un clic droit sur un lien contiendra une option pour ouvrir le lien dans un navigateur externe. Si `externalBrowser` vaut `1`, alors le menu contextuel contiendra une option pour ouvrir le lien dans le navigateur interne.
 
 - `panel`: emplacement de l'aperçu Markdown. Valeurs possibles: `side` (panneau latéral) ou `bottom` (panneau inférieur).
 

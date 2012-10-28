@@ -53,6 +53,7 @@ confDir =  os.path.join(xdgConfigHome, "gedit")
 confFile =  os.path.join(confDir, "gedit-markdown.ini")
 parser = SafeConfigParser()
 
+markdownExternalBrowser = "0"
 markdownPanel = "bottom"
 markdownShortcut = "<Control><Alt>m"
 markdownVersion = "extra"
@@ -63,6 +64,7 @@ if os.path.isfile(confFile):
 	parser.read(confFile)
 	
 	try:
+		markdownExternalBrowser = parser.get("markdown-preview", "externalBrowser")
 		markdownPanel = parser.get("markdown-preview", "panel")
 		markdownShortcut = parser.get("markdown-preview", "shortcut")
 		markdownVersion = parser.get("markdown-preview", "version")
@@ -75,6 +77,7 @@ else:
 		os.makedirs(confDir)
 	
 	parser.add_section("markdown-preview")
+	parser.set("markdown-preview", "externalBrowser", markdownExternalBrowser)
 	parser.set("markdown-preview", "panel", markdownPanel)
 	parser.set("markdown-preview", "shortcut", markdownShortcut)
 	parser.set("markdown-preview", "version", markdownVersion)
@@ -268,9 +271,20 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 				if uriActiveDocument.startswith("/"):
 					self.currentUri = uriActiveDocument
 		
+		if navAct.get_reason().value_nick == "link-clicked" and markdownExternalBrowser == "1":
+			webbrowser.open_new_tab(self.currentUri)
+			
+			if self.urlTooltipVisible():
+				self.urlTooltip.destroy()
+			
+			polDec.ignore()
+		
 		return False
 	
-	def openInDefaultBrowser(self):
+	def openInEmbeddedBrowser(self):
+		self.htmlView.open(self.overLinkUrl)
+	
+	def openInExternalBrowser(self):
 		webbrowser.open_new_tab(self.overLinkUrl)
 	
 	def onPopulatePopupCb(self, view, menu):
@@ -293,8 +307,13 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 				menu.remove(item)
 		
 		if self.overLinkUrl:
-			item = Gtk.MenuItem(label=_("Open in the default Web browser"))
-			item.connect("activate", lambda x: self.openInDefaultBrowser())
+			if markdownExternalBrowser == "1":
+				item = Gtk.MenuItem(label=_("Open in the embedded browser"))
+				item.connect("activate", lambda x: self.openInEmbeddedBrowser())
+			else:
+				item = Gtk.MenuItem(label=_("Open in an external browser"))
+				item.connect("activate", lambda x: self.openInExternalBrowser())
+			
 			menu.append(item)
 		
 		item = Gtk.MenuItem(label=_("Copy the current URL"))

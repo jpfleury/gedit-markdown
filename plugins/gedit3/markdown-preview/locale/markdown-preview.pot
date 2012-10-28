@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-27 19:34-0400\n"
+"POT-Creation-Date: 2012-10-28 00:16-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,51 +17,55 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: plugins/gedit3/markdown-preview/__init__.py:139
+#: plugins/gedit3/markdown-preview/__init__.py:142
 msgid "Markdown Preview"
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:149
+#: plugins/gedit3/markdown-preview/__init__.py:152
 msgid "Update Markdown Preview"
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:151
+#: plugins/gedit3/markdown-preview/__init__.py:154
 msgid "Preview in HTML of the current document or the selection"
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:159
+#: plugins/gedit3/markdown-preview/__init__.py:162
 msgid "Toggle Markdown Preview visibility"
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:161
+#: plugins/gedit3/markdown-preview/__init__.py:164
 msgid "Display or hide the Markdown Preview panel tab"
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:194
-#: plugins/gedit3/markdown-preview/__init__.py:195
+#: plugins/gedit3/markdown-preview/__init__.py:197
+#: plugins/gedit3/markdown-preview/__init__.py:198
 msgid "Enter URL"
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:196
+#: plugins/gedit3/markdown-preview/__init__.py:199
 msgid "Enter the URL (local or distant) of the document or page to display."
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:296
-msgid "Open in the default Web browser"
+#: plugins/gedit3/markdown-preview/__init__.py:307
+msgid "Open in the embedded browser"
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:300
+#: plugins/gedit3/markdown-preview/__init__.py:310
+msgid "Open in an external browser"
+msgstr ""
+
+#: plugins/gedit3/markdown-preview/__init__.py:315
 msgid "Copy the current URL"
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:308
+#: plugins/gedit3/markdown-preview/__init__.py:323
 msgid "Go to another URL"
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:312
+#: plugins/gedit3/markdown-preview/__init__.py:327
 msgid "Update Preview"
 msgstr ""
 
-#: plugins/gedit3/markdown-preview/__init__.py:322
+#: plugins/gedit3/markdown-preview/__init__.py:337
 msgid "Clear Preview"
 msgstr ""
