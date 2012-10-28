@@ -468,21 +468,21 @@ if [[ $1 == installer || $1 == install ]]; then
 		if [[ ! -e $cheminSystemeSnippets/markdown.xml ]]; then
 			cp -v snippets/markdown.xml "$cheminSnippets"
 		fi
-		
-		# Mise à jour de la configuration.
-		if [[ -n $(grep "^version *=" "$cheminFichierConfig") ]]; then
-			sed -i "s/^\(version *= *\).*$/\1standard/" "$cheminFichierConfig"
-		else
-			if [[ -z $(grep "^\[markdown-preview\]" "$cheminFichierConfig") ]]; then
-				echo "[markdown-preview]" >> "$cheminFichierConfig"
-			fi
-			
-			sed -i "s/^\(\[markdown-preview\]\)$/\1\nversion = standard/" "$cheminFichierConfig"
-		fi
 	else
 		cp -v language-specs/markdown-extra.lang "$cheminLanguageSpecs"
 		cheminLanguageSpecsMarkdownLang=$cheminLanguageSpecs/markdown-extra.lang
 		cp -v snippets/markdown-extra.xml "$cheminSnippets"
+	fi
+	
+	# Mise à jour de la configuration.
+	if [[ -n $(grep "^version *=" "$cheminFichierConfig") ]]; then
+		sed -i "s/^\(version *= *\).*$/\1$markdown/" "$cheminFichierConfig"
+	else
+		if [[ -z $(grep "^\[markdown-preview\]" "$cheminFichierConfig") ]]; then
+			echo "[markdown-preview]" >> "$cheminFichierConfig"
+		fi
+		
+		sed -i "s/^\(\[markdown-preview\]\)$/\1\nversion = $markdown/" "$cheminFichierConfig"
 	fi
 	
 	# Compatibilité avec GtkSourceView < 2.10.
@@ -524,17 +524,15 @@ if [[ $1 == installer || $1 == install ]]; then
 		rm -v "$cheminPluginsMarkdownPreview/locale/markdown-preview.pot"
 		find "$cheminPluginsMarkdownPreview/locale/" -name "*.po" -exec rm -vf {} \;
 		
-		if [[ $panneau == side ]]; then
-			# Mise à jour de la configuration.
-			if [[ -n $(grep "^panel *=" "$cheminFichierConfig") ]]; then
-				sed -i "s/^\(panel *= *\).*$/\1side/" "$cheminFichierConfig"
-			else
-				if [[ -z $(grep "^\[markdown-preview\]" "$cheminFichierConfig") ]]; then
-					echo "[markdown-preview]" >> "$cheminFichierConfig"
-				fi
-				
-				sed -i "s/^\(\[markdown-preview\]\)$/\1\npanel = side/" "$cheminFichierConfig"
+		# Mise à jour de la configuration.
+		if [[ -n $(grep "^panel *=" "$cheminFichierConfig") ]]; then
+			sed -i "s/^\(panel *= *\).*$/\1$panneau/" "$cheminFichierConfig"
+		else
+			if [[ -z $(grep "^\[markdown-preview\]" "$cheminFichierConfig") ]]; then
+				echo "[markdown-preview]" >> "$cheminFichierConfig"
 			fi
+			
+			sed -i "s/^\(\[markdown-preview\]\)$/\1\npanel = $panneau/" "$cheminFichierConfig"
 		fi
 	fi
 	
