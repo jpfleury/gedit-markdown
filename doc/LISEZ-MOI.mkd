@@ -101,7 +101,9 @@ Deux éléments sont ajoutés dans le menu *Outils* de gedit:
 	
 	  - en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Actualiser l'aperçu* (gedit 3 seulement).
 
-- *Afficher ou cacher l'aperçu Markdown* (gedit 3 seulement): permet d'afficher ou de cacher l'onglet d'aperçu dans le panneau de gedit.
+- *Afficher ou cacher l'aperçu Markdown*: permet d'afficher ou de cacher l'onglet d'aperçu dans le panneau de gedit.
+
+	Note: le raccourci-clavier *Ctrl+Alt+v* (peut être modifié dans le fichier de configuration) peut être utilisé pour effectuer la même action.
 
 Si gedit 3 est utilisé, en cliquant droit dans la zone d'aperçu, un menu contextuel apparaît et offre plusieurs options. Outre celles par défaut (page suivante, page précédente, copie, etc.), on trouve:
 
@@ -109,7 +111,11 @@ Si gedit 3 est utilisé, en cliquant droit dans la zone d'aperçu, un menu conte
 
 - *Aller à une autre URL*: permet de spécifier manuellement une URL locale ou distante d'un document ou d'une page à visiter dans l'onglet d'aperçu.
 
-- *Ouvrir dans le navigateur Web par défaut*: permet d'ouvrir le lien cliqué dans un navigateur externe.
+- Une des deux options suivantes, selon la valeur du paramètre `externalBrowser` du fichier de configuration:
+
+	- *Ouvrir dans un navigateur externe*: permet d'ouvrir le lien cliqué dans un navigateur externe.
+
+	- *Ouvrir dans le navigateur intégré*: permet d'ouvrir le lien cliqué directement dans le panneau de gedit.
 
 - *Actualiser l'aperçu*: permet d'actualiser l'aperçu avec le contenu du document courant ou de la sélection.
 
@@ -153,13 +159,21 @@ ce qui correspond la plupart du temps à:
 
 	$HOME/.config/gedit/gedit-markdown.ini
 
-Seule la section `markdown-preview` peut être modifiée, et contient trois paramètres:
+Seule la section `markdown-preview` peut être modifiée, et contient plusieurs paramètres:
+
+- `externalBrowser`: ouverture des liens dans un navigateur externe par défaut. Valeurs possibles: `0` (ne pas ouvrir les liens dans un navigateur externe par défaut; valeur par défaut) ou `1` (ouvrir les liens dans un navigateur externe par défaut).
+
+	Si `externalBrowser` vaut `0`, alors le menu contextuel apparaissant lors d'un clic droit sur un lien contiendra une option pour ouvrir le lien dans un navigateur externe. Si `externalBrowser` vaut `1`, alors le menu contextuel contiendra une option pour ouvrir le lien dans le navigateur interne.
 
 - `panel`: emplacement de l'aperçu Markdown. Valeurs possibles: `side` (panneau latéral) ou `bottom` (panneau inférieur).
 
 - `shortcut`: raccourci-clavier pour générer l'aperçu en HTML du document courant. La valeur par défaut est `<Control><Alt>m`.
 
 - `version`: la version du langage Markdown à utiliser pour générer l'aperçu et exporter en HTML. Valeurs possibles: `standard` ou `extra`.
+
+- `visibility`: visibilité de l'onglet d'aperçu dans le panneau lors de l'ouverture de gedit. Valeurs possibles: `0` (caché) ou `1` (affiché; valeur par défaut).
+
+- `visibilityShortcut`: raccourci-clavier pour afficher ou cacher l'onglet d'aperçu dans le panneau de gedit. La valeur par défaut est `<Control><Alt>v`.
 
 ## Précisions ou limitations
 
@@ -217,7 +231,7 @@ Pour l'instant, gedit-markdown est disponible en français et en anglais.
 
 ## Développement
 
-Dernière version: 1.3.2 (2012-06-14)
+Dernière version: 1.4 (2012-10-28)
 
 Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.][git]
 

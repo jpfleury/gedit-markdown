@@ -99,17 +99,23 @@ Two items are added in the gedit menu *Tools*:
 	
 	  - with the keyboard shortcut *Ctrl+Alt+m* (can be changed in the configuration file);
 	
-	  - by right clicking in the preview area (side or bottom panel) and selecting the item *Update Preview* (gedit 3 only).
+	  - by right clicking on the preview area (side or bottom panel) and selecting the item *Update Preview* (gedit 3 only).
 
-- *Toggle Markdown Preview visibility* (gedit 3 only): allows to display or hide the Markdown Preview panel tab.
+- *Toggle Markdown Preview visibility*: allows to display or hide the Markdown Preview panel tab.
 
-If gedit 3 is used, when right clicking in the preview area, a context menu appears and lists several options. Besides the default ones (previous page, next page, copy, etc.), we have:
+	Note: the keyboard shortcut *Ctrl+Alt+v* (can be changed in the configuration file) can be used to do the same.
+
+If gedit 3 is used, when right clicking on the preview area, a context menu appears and lists several options. Besides the default ones (previous page, next page, copy, etc.), we have:
 
 - *Copy the current URL*: copy in the clipboard the URL of the document or the page being displayed in the preview tab. If it's a document that has not yet been saved to disk, this menu item is disabled.
 
 - *Go to another URL*: allows to manually enter a local or distant URL of a document or page to visit in the preview tab.
 
-- *Open in the default Web browser*: allows to open the link in an external browser.
+- One of the following two options, depending on the value of the property `externalBrowser` in the configuration file:
+
+	- *Open in an external browser*: allows to open the link in an external browser.
+
+	- *Open in the embedded browser*: allows to open the link in the panel.
 
 - *Update Preview*: reloads in the side panel or in the bottom panel the preview in HTML of the current document or selection.
 
@@ -153,13 +159,21 @@ Most of the time, it will correspond to:
 
 	$HOME/.config/gedit/gedit-markdown.ini
 
-Only the section `markdown-preview` can be edited. It contains three properties:
+Only the section `markdown-preview` can be edited. It contains several properties:
+
+- `externalBrowser`: open links in an external browser by default. Possible values: `0` (don't open links in an external browser by default; default value) or `1` (open links in an external browser by default).
+
+	If `externalBrowser` has a value of `0`, the context menu displayed when right clicking on a link will contain an option to open the link in an external browser. If `externalBrowser` equals `1`, the context menu will contain an option to open the link in the embedded browser.
 
 - `panel`: emplacement of the preview. Possibles values: `side` or `bottom`.
 
 - `shortcut`: shortcut to refresh the preview. The default value is `<Control><Alt>m`.
 
 - `version`: the Markdown version to use for the HTML preview and to export to HTML. Possible values: `standard` or `extra`.
+
+- `visibility`: visibility of the Markdown Preview panel tab when gedit starts. Possible values: `0` (hidden) or `1` (displayed; default value).
+
+- `visibilityShortcut`: shortcut to toggle Markdown Preview visibility. The default value is `<Control><Alt>v`.
 
 ## Details and limitations
 
@@ -217,7 +231,7 @@ For now, gedit-markdown is available in French and English.
 
 ## Development
 
-Last version: 1.3.2 (2012-06-14)
+Last version: 1.4 (2012-10-28)
 
 Git is used for revision control. [Repository can be browsed online or cloned.][git]
 

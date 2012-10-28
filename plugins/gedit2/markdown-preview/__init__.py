@@ -41,6 +41,12 @@ htmlTemplate = "%s"
 
 # Configuration.
 
+markdownPanel = "bottom"
+markdownShortcut = "<Control><Alt>m"
+markdownVersion = "extra"
+markdownVisibility = "1"
+markdownVisibilityShortcut = "<Control><Alt>v"
+
 try:
 	import xdg.BaseDirectory
 except ImportError:
@@ -51,28 +57,31 @@ else:
 
 confDir =  os.path.join(xdgConfigHome, "gedit")
 confFile =  os.path.join(confDir, "gedit-markdown.ini")
+
 parser = SafeConfigParser()
+parser.optionxform = str
+parser.add_section("markdown-preview")
+parser.set("markdown-preview", "panel", markdownPanel)
+parser.set("markdown-preview", "shortcut", markdownShortcut)
+parser.set("markdown-preview", "version", markdownVersion)
+parser.set("markdown-preview", "visibility", markdownVisibility)
+parser.set("markdown-preview", "visibilityShortcut", markdownVisibilityShortcut)
 
 if os.path.isfile(confFile):
 	parser.read(confFile)
 	markdownPanel = parser.get("markdown-preview", "panel")
 	markdownShortcut = parser.get("markdown-preview", "shortcut")
 	markdownVersion = parser.get("markdown-preview", "version")
-else:
-	markdownPanel = "bottom"
-	markdownShortcut = "<Control><Alt>m"
-	markdownVersion = "extra"
-	
-	if not os.path.exists(confDir):
-		os.makedirs(confDir)
-	
-	parser.add_section("markdown-preview")
-	parser.set("markdown-preview", "panel", markdownPanel)
-	parser.set("markdown-preview", "shortcut", markdownShortcut)
-	parser.set("markdown-preview", "version", markdownVersion)
-	
-	with open(confFile, "wb") as confFile:
-		parser.write(confFile)
+	markdownVisibility = parser.get("markdown-preview", "visibility")
+	markdownVisibilityShortcut = parser.get("markdown-preview", "visibilityShortcut")
+	# Delete an option mistakenly added in previous versions.
+	parser.remove_option("markdown-preview", "pythonSitePackages")
+
+if not os.path.exists(confDir):
+	os.makedirs(confDir)
+
+with open(confFile, "wb") as confFile:
+	parser.write(confFile)
 
 class MarkdownPreviewPlugin(gedit.Plugin):
 	def __init__(self):
@@ -91,7 +100,9 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		self.scrolledWindow.add(self.htmlView)
 		self.scrolledWindow.show_all()
 		
-		self.addMarkdownPreviewTab(window)
+		if markdownVisibility == "1":
+			self.addMarkdownPreviewTab(window)
+		
 		self.addMenuItems(window)
 	
 	def deactivate(self, window):
@@ -129,11 +140,25 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		self.actionGroup1.add_actions([action], window)
 		manager.insert_action_group(self.actionGroup1, -1)
 		
+		self.actionGroup2 = gtk.ActionGroup("ToggleTab")
+		action = ("ToggleTab",
+		          None,
+		          _("Toggle Markdown Preview visibility"),
+		          markdownVisibilityShortcut,
+		          _("Display or hide the Markdown Preview panel tab"),
+		          lambda x, y: self.toggleTab(y))
+		self.actionGroup2.add_actions([action], window)
+		manager.insert_action_group(self.actionGroup2, -1)
+		
 		self.uiId = manager.new_merge_id()
 		
 		manager.add_ui(self.uiId, "/MenuBar/ToolsMenu/ToolsOps_4",
 		               "MarkdownPreview", "MarkdownPreview",
 		               gtk.UI_MANAGER_MENUITEM, True)
+		
+		manager.add_ui(self.uiId, "/MenuBar/ToolsMenu/ToolsOps_4",
+		               "ToggleTab", "ToggleTab",
+		               gtk.UI_MANAGER_MENUITEM, False)
 	
 	def removeMarkdownPreviewTab(self, window):
 		if markdownPanel == "side":
@@ -142,6 +167,17 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 			panel = window.get_bottom_panel()
 		
 		panel.remove_item(self.scrolledWindow)
+	
+	def toggleTab(self, window):
+		if markdownPanel == "side":
+			panel = window.get_side_panel()
+		else:
+			panel = window.get_bottom_panel()
+		
+		if panel.activate_item(self.scrolledWindow):
+			self.removeMarkdownPreviewTab(window)
+		else:
+			self.addMarkdownPreviewTab(window)
 	
 	def updatePreview(self, window):
 		view = window.get_active_view()
@@ -176,6 +212,9 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 			panel = window.get_side_panel()
 		else:
 			panel = window.get_bottom_panel()
+		
+		if not panel.activate_item(self.scrolledWindow):
+			self.addMarkdownPreviewTab(window)
 		
 		panel.show()
 		panel.activate_item(self.scrolledWindow)
