@@ -497,7 +497,7 @@ if [[ $1 == installer || $1 == install ]]; then
 			sed -i "s|^\(pythonSitePackages *= *\).*$|\1$cheminPythonSitePackages|"\
 				"$cheminFichierConfig"
 		else
-			sed -i "s|^\(\[markdown-preview\]\)$|\1\npythonSitePackages = $cheminPythonSitePackages|"\
+			sed -i "s|^\(\[python\]\)$|\1\npythonSitePackages = $cheminPythonSitePackages|"\
 				$cheminFichierConfig
 		fi
 		
