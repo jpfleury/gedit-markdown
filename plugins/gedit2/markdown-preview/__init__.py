@@ -41,6 +41,12 @@ htmlTemplate = "%s"
 
 # Configuration.
 
+markdownPanel = "bottom"
+markdownShortcut = "<Control><Alt>m"
+markdownVersion = "extra"
+markdownVisibility = "1"
+markdownVisibilityShortcut = "<Control><Alt>v"
+
 try:
 	import xdg.BaseDirectory
 except ImportError:
@@ -51,38 +57,31 @@ else:
 
 confDir =  os.path.join(xdgConfigHome, "gedit")
 confFile =  os.path.join(confDir, "gedit-markdown.ini")
-parser = SafeConfigParser()
 
-markdownPanel = "bottom"
-markdownShortcut = "<Control><Alt>m"
-markdownVersion = "extra"
-markdownVisibility = "1"
-markdownVisibilityShortcut = "<Control><Alt>v"
+parser = SafeConfigParser()
+parser.optionxform = str
+parser.add_section("markdown-preview")
+parser.set("markdown-preview", "panel", markdownPanel)
+parser.set("markdown-preview", "shortcut", markdownShortcut)
+parser.set("markdown-preview", "version", markdownVersion)
+parser.set("markdown-preview", "visibility", markdownVisibility)
+parser.set("markdown-preview", "visibilityShortcut", markdownVisibilityShortcut)
 
 if os.path.isfile(confFile):
 	parser.read(confFile)
-	
-	try:
-		markdownPanel = parser.get("markdown-preview", "panel")
-		markdownShortcut = parser.get("markdown-preview", "shortcut")
-		markdownVersion = parser.get("markdown-preview", "version")
-		markdownVisibility = parser.get("markdown-preview", "visibility")
-		markdownVisibilityShortcut = parser.get("markdown-preview", "visibilityShortcut")
-	except Exception, e:
-		print e
-else:
-	if not os.path.exists(confDir):
-		os.makedirs(confDir)
-	
-	parser.add_section("markdown-preview")
-	parser.set("markdown-preview", "panel", markdownPanel)
-	parser.set("markdown-preview", "shortcut", markdownShortcut)
-	parser.set("markdown-preview", "version", markdownVersion)
-	parser.set("markdown-preview", "visibility", markdownVisibility)
-	parser.set("markdown-preview", "visibilityShortcut", markdownVisibilityShortcut)
-	
-	with open(confFile, "wb") as confFile:
-		parser.write(confFile)
+	markdownPanel = parser.get("markdown-preview", "panel")
+	markdownShortcut = parser.get("markdown-preview", "shortcut")
+	markdownVersion = parser.get("markdown-preview", "version")
+	markdownVisibility = parser.get("markdown-preview", "visibility")
+	markdownVisibilityShortcut = parser.get("markdown-preview", "visibilityShortcut")
+	# Delete an option mistakenly added in previous versions.
+	parser.remove_option("markdown-preview", "pythonSitePackages")
+
+if not os.path.exists(confDir):
+	os.makedirs(confDir)
+
+with open(confFile, "wb") as confFile:
+	parser.write(confFile)
 
 class MarkdownPreviewPlugin(gedit.Plugin):
 	def __init__(self):
