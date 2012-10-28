@@ -233,7 +233,7 @@ fi
 cheminFichierConfig=$cheminConfig/gedit-markdown.ini
 
 if [[ -f $cheminFichierConfig ]]; then
-	ancienCheminPythonSitePackages=$(sed -n "s/^pythonSitePackages=\(.*\)$/\1/p" \
+	ancienCheminPythonSitePackages=$(sed -n "s/^pythonSitePackages *= *\(.*\)$/\1/p" \
 		< "$cheminFichierConfig")
 fi
 
@@ -470,10 +470,10 @@ if [[ $1 == installer || $1 == install ]]; then
 		fi
 		
 		# Mise à jour de la configuration.
-		if [[ -n $(grep "^version=" "$cheminFichierConfig") ]]; then
-			sed -i "s/^\(version=\).*$/\1standard/" "$cheminFichierConfig"
+		if [[ -n $(grep "^version *=" "$cheminFichierConfig") ]]; then
+			sed -i "s/^\(version *= *\).*$/\1standard/" "$cheminFichierConfig"
 		else
-			sed -i "s/^\(\[markdown-preview\]\)$/\1\nversion=standard/" "$cheminFichierConfig"
+			sed -i "s/^\(\[markdown-preview\]\)$/\1\nversion = standard/" "$cheminFichierConfig"
 		fi
 	else
 		cp -v language-specs/markdown-extra.lang "$cheminLanguageSpecs"
@@ -493,11 +493,11 @@ if [[ $1 == installer || $1 == install ]]; then
 		cp -rv "$cheminPythonMarkdown" "$cheminPythonSitePackages/markdown"
 		
 		# Mise à jour de la configuration.
-		if [[ -n $(grep "^pythonSitePackages=" "$cheminFichierConfig") ]]; then
-			sed -i "s|^\(pythonSitePackages=\).*$|\1$cheminPythonSitePackages|"\
+		if [[ -n $(grep "^pythonSitePackages *=" "$cheminFichierConfig") ]]; then
+			sed -i "s|^\(pythonSitePackages *= *\).*$|\1$cheminPythonSitePackages|"\
 				"$cheminFichierConfig"
 		else
-			sed -i "s|^\(\[markdown-preview\]\)$|\1\npythonSitePackages=$cheminPythonSitePackages|"\
+			sed -i "s|^\(\[markdown-preview\]\)$|\1\npythonSitePackages = $cheminPythonSitePackages|"\
 				$cheminFichierConfig
 		fi
 		
@@ -518,10 +518,10 @@ if [[ $1 == installer || $1 == install ]]; then
 		
 		if [[ $panneau == side ]]; then
 			# Mise à jour de la configuration.
-			if [[ -n $(grep "^panel=" "$cheminFichierConfig") ]]; then
-				sed -i "s/^\(panel=\).*$/\1side/" "$cheminFichierConfig"
+			if [[ -n $(grep "^panel *=" "$cheminFichierConfig") ]]; then
+				sed -i "s/^\(panel *= *\).*$/\1side/" "$cheminFichierConfig"
 			else
-				sed -i "s/^\(\[markdown-preview\]\)$/\1\npanel=side/" "$cheminFichierConfig"
+				sed -i "s/^\(\[markdown-preview\]\)$/\1\npanel = side/" "$cheminFichierConfig"
 			fi
 		fi
 	fi
