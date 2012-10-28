@@ -231,7 +231,7 @@ Pour l'instant, gedit-markdown est disponible en français et en anglais.
 
 ## Développement
 
-Dernière version: 1.3.2 (2012-06-14)
+Dernière version: 1.4 (2012-10-28)
 
 Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.][git]
 
