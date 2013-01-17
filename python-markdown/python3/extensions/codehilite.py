@@ -8,14 +8,14 @@ Adds code/syntax highlighting to standard Python-Markdown code blocks.
 
 Copyright 2006-2008 [Waylan Limberg](http://achinghead.com/).
 
-Project website: <http://www.freewisdom.org/project/python-markdown/CodeHilite>
+Project website: <http://packages.python.org/Markdown/extensions/code_hilite.html>
 Contact: markdown@freewisdom.org
 
-License: BSD (see ../docs/LICENSE for details)
+License: BSD (see ../LICENSE.md for details)
 
 Dependencies:
 * [Python 2.3+](http://python.org/)
-* [Markdown 2.0+](http://www.freewisdom.org/projects/python-markdown/)
+* [Markdown 2.0+](http://packages.python.org/Markdown/)
 * [Pygments](http://pygments.org/)
 
 """
@@ -40,9 +40,9 @@ class CodeHilite:
 
     * src: Source string or any object with a .readline attribute.
 
-    * linenos: (Boolen) Turn line numbering 'on' or 'off' (off by default).
+    * linenos: (Boolean) Turn line numbering 'on' or 'off' (off by default).
 
-    * guess_lang: (Boolen) Turn language auto-detection 'on' or 'off' (on by default).
+    * guess_lang: (Boolean) Turn language auto-detection 'on' or 'off' (on by default).
 
     * css_class: Set class name of wrapper div ('codehilite' by default).
 
@@ -138,7 +138,7 @@ class CodeHilite:
         fl = lines.pop(0)
 
         c = re.compile(r'''
-            (?:(?:::+)|(?P<shebang>[#]!))	# Shebang or 2 or more colons.
+            (?:(?:^::+)|(?P<shebang>^[#]!))	# Shebang or 2 or more colons.
             (?P<path>(?:/\w+)*[/ ])?        # Zero or 1 path
             (?P<lang>[\w+-]*)               # The language
             ''',  re.VERBOSE)
