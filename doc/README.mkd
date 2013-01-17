@@ -231,7 +231,7 @@ For now, gedit-markdown is available in French and English.
 
 ## Development
 
-Last version: 1.4 (2012-10-28)
+Last version: 1.4.1 (2013-01-17)
 
 Git is used for revision control. [Repository can be browsed online or cloned.][git]
 
