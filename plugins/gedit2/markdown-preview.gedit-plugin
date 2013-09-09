@@ -7,5 +7,5 @@ Name[fr]=Aperçu Markdown
 Description=Show the HTML version of the Markdown text you're editing
 Description[fr]=Affiche l'aperçu en HTML du document Markdown en cours d'édition
 Authors=Michele Campeotto <micampe@micampe.it>\nJean-Philippe Fleury <contact@jpfleury.net>
-Copyright=Copyright © 2005, 2006 Michele Campeotto\nCopyright © 2009, 2011-2012 Jean-Philippe Fleury
-Website=http://www.jpfleury.net/logiciels/gedit-markdown.php
+Copyright=Copyright © 2005, 2006 Michele Campeotto\nCopyright © 2009, 2011-2013 Jean-Philippe Fleury
+Website=http://www.jpfleury.net/en/software/gedit-markdown.php

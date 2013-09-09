@@ -2,7 +2,7 @@
 
 # Le fichier gedit-markdown.sh fait partie de gedit-markdown.
 # Auteur: Jean-Philippe Fleury <contact@jpfleury.net>
-# Copyright © Jean-Philippe Fleury, 2009, 2011-2012.
+# Copyright © Jean-Philippe Fleury, 2009, 2011-2013.
 
 # Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 # modifier suivant les termes de la GNU General Public License telle que
@@ -517,6 +517,8 @@ if [[ $1 == installer || $1 == install ]]; then
 		if [[ $binPython != /usr/bin/python ]]; then
 			sed -i "0,\|^#!/usr/bin/python$|s||#!$binPython|" "$cheminTools/export-to-html"
 		fi
+		
+		chmod +x "$cheminTools/export-to-html"
 		
 		# Greffon «Aperçu Markdown».
 		

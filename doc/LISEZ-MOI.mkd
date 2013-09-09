@@ -27,7 +27,7 @@ Plus précisément, gedit-markdown ajoute:
 
 - La désactivation de la vérification orthographique dans la coloration syntaxique pour les contextes non pertinents (par exemple dans les adresses URL) dépend de GtkSourceView >= 2.10.
 
-- Pour les utilisateurs d'Ubuntu 11.10 ou une version plus récente: le paquet `gir1.2-webkit-3.0` doit être installé pour que le greffon «Aperçu Markdown» fonctionne.
+- Pour les utilisateurs d'Ubuntu (et peut-être d'autres distributions également) 11.10 ou une version plus récente: le paquet `gir1.2-webkit-3.0` doit être installé pour que le greffon «Aperçu Markdown» fonctionne.
 
 ## Installation (ou mise à jour)
 

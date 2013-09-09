@@ -27,7 +27,7 @@ Specifically, it adds:
 
 - Deactivation of check spelling for irrelevant highlighted contexts (for example in URL) depends on GtkSourceView >= 2.10.
 
-- For users of Ubuntu 11.10 or later: the package `gir1.2-webkit-3.0` must be installed to use the plugin *Markdown Preview*.
+- For users of Ubuntu (and maybe other distributions) 11.10 or later: the package `gir1.2-webkit-3.0` must be installed to use the plugin *Markdown Preview*.
 
 ## Installation (or update)
 
