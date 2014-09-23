@@ -2,7 +2,7 @@
 
 # Le fichier gedit-markdown.sh fait partie de gedit-markdown.
 # Auteur: Jean-Philippe Fleury <contact@jpfleury.net>
-# Copyright © Jean-Philippe Fleury, 2009, 2011-2013.
+# Copyright © Jean-Philippe Fleury, 2009.
 
 # Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 # modifier suivant les termes de la GNU General Public License telle que

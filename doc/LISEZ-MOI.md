@@ -1,5 +1,3 @@
-<p lang="en"><strong><a hreflang="en" href="http://www.jpfleury.net/en/software/gedit-markdown.php">Read this page in English.</a></strong></p>
-
 ## Aperçu
 
 gedit-markdown est un ensemble de fichiers ajoutant le support du langage [Markdown] (ou de la version spéciale [Markdown Extra]) dans gedit, l'éditeur de texte par défaut de Gnome.
@@ -17,7 +15,7 @@ Plus précisément, gedit-markdown ajoute:
 [Markdown]: http://michelf.com/projets/php-markdown/concepts/
 [Markdown Extra]: http://michelf.com/projets/php-markdown/extra/
 
-<img src="https://gitorious.org/projets-divers/gedit-markdown/raw/master:doc/exemple1.png" width="684" height="779" alt="Coloration syntaxique par défaut du Markdown dans gedit." />
+<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple1.png" width="684" height="779" alt="Coloration syntaxique par défaut du Markdown dans gedit." />
 
 ## Dépendances
 
@@ -33,7 +31,7 @@ Plus précisément, gedit-markdown ajoute:
 
 ### GNU/Linux
 
-- [Télécharger l'archive de la dernière version.](https://gitorious.org/projets-divers/gedit-markdown/archive/master.zip)
+- [Télécharger l'archive de la dernière version.](https://github.com/jpfleury/gedit-markdown/archive/master.zip)
 
 - Extraire l'archive.
 
@@ -123,15 +121,15 @@ Si gedit 3 est utilisé, en cliquant droit dans la zone d'aperçu, un menu conte
 
 Voici une capture d'écran du greffon lorsqu'il est situé dans le panneau inférieur:
 
-<img src="https://gitorious.org/projets-divers/gedit-markdown/raw/master:doc/exemple3.png" width="684" height="886" alt="Aperçu en HTML d'un document Markdown dans le panneau inférieur de gedit." />
+<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple3.png" width="684" height="886" alt="Aperçu en HTML d'un document Markdown dans le panneau inférieur de gedit." />
 
 Voici maintenant le même greffon situé dans le panneau latéral (cliquer pour télécharger l'image au format original):
 
-<a href="https://gitorious.org/projets-divers/gedit-markdown/raw/master:doc/exemple4-grand.png"><img src="https://gitorious.org/projets-divers/gedit-markdown/raw/master:doc/exemple4-petit.png" width="684" height="445" alt="Aperçu en HTML d'un document Markdown dans le panneau latéral de gedit." /></a>
+<a href="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple4-grand.png"><img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple4-petit.png" width="684" height="445" alt="Aperçu en HTML d'un document Markdown dans le panneau latéral de gedit." /></a>
 
 À noter que lorsque le curseur passe au-dessus d'un lien dans la zone d'aperçu, une infobulle affiche l'URL:
 
-<img src="https://gitorious.org/projets-divers/gedit-markdown/raw/master:doc/exemple5.png" width="684" height="128" alt="Infobulle affichant l'URL lorsque le curseur passe au-dessus d'un lien." />
+<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple5.png" width="684" height="128" alt="Infobulle affichant l'URL lorsque le curseur passe au-dessus d'un lien." />
 
 ### Extraits de code
 
@@ -147,7 +145,7 @@ Pour modifier l'outil, aller dans *Outils > Gérer les outils externes...*.
 
 Un jeu de couleurs optionnel est installé automatiquement par gedit-markdown. Pour l'utiliser, aller dans le menu *Édition > Préférences > Police et couleurs > Jeu de couleurs* de gedit et sélectionner *Classic Markdown*. Cette coloration se rapproche d'un rendu HTML, par exemple les emphases fortes et les titres sont en gras et de couleur noire, les liens sont bleus et soulignés, etc. Ce jeu de couleurs resemble à ceci:
 
-<img src="https://gitorious.org/projets-divers/gedit-markdown/raw/master:doc/exemple2.png" width="684" height="779" alt="Jeu de couleurs optionnel pour la coloration syntaxique du Markdown dans gedit." />
+<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple2.png" width="684" height="779" alt="Jeu de couleurs optionnel pour la coloration syntaxique du Markdown dans gedit." />
 
 ### Fichier de configuration
 
@@ -231,14 +229,12 @@ Pour l'instant, gedit-markdown est disponible en français et en anglais.
 
 ## Développement
 
-Dernière version: 1.4.2 (2013-09-07)
-
-Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.](https://gitorious.org/projets-divers/gedit-markdown)
+Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.](https://github.com/jpfleury/gedit-markdown)
 
 ## Licence
 
 Auteur: Jean-Philippe Fleury (<http://www.jpfleury.net/contact.php>)  
-Copyright © Jean-Philippe Fleury, 2009-2013.
+Copyright © Jean-Philippe Fleury, 2009.
 
 Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 modifier suivant les termes de la GNU General Public License telle que
@@ -260,4 +256,3 @@ ce programme; si ce n'est pas le cas, consultez
 
 [Markdown Preview]: http://live.gnome.org/Gedit/MarkdownSupport
 [Python Markdown]: http://www.freewisdom.org/projects/python-markdown/
-

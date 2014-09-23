@@ -3,7 +3,7 @@
 
 # HTML preview of Markdown formatted text in gedit
 # Copyright © 2005, 2006 Michele Campeotto
-# Copyright © 2009, 2011-2012 Jean-Philippe Fleury <contact@jpfleury.net>
+# Copyright © 2009 Jean-Philippe Fleury <contact@jpfleury.net>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

@@ -42,9 +42,9 @@ __  __  __  __  __
 
 Les liens ont aussi leur syntaxe:
 
-- Lien automatique: <http://www.jpfleury.net/logiciels/gedit-markdown.php>
+- Lien automatique: <https://github.com/jpfleury/gedit-markdown>
 
-- Lien incorporé au texte: le logiciel [gedit-markdown](http://www.jpfleury.net/logiciels/gedit-markdown.php "Attribut title optionnel") permet d'ajouter le support du langage Markdown dans l'éditeur de texte gedit.
+- Lien incorporé au texte: le logiciel [gedit-markdown](https://github.com/jpfleury/gedit-markdown "Attribut title optionnel") permet d'ajouter le support du langage Markdown dans l'éditeur de texte gedit.
 
 - Lien par référence: le logiciel [gedit-markdown][1] permet entre autres d'utiliser la coloration syntaxique du Markdown dans gedit.
 
@@ -52,15 +52,15 @@ Les liens ont aussi leur syntaxe:
 
 Il ne faudrait pas oublier les images:
 
-- Image incorporée au texte: le logo du logiciel Squeletml est ![Squeletml](http://www.squeletml.net/fichiers/squeletml-logo.png)
+- Image incorporée au texte: le logo de Wikipédia est ![Wikipedia](http://upload.wikimedia.org/wikipedia/commons/5/5a/Wikipedia-logo-v2-fr.png)
 
-- Image par référence: le logo de Squeletml est ![Squeletml][logo squeletml]
+- Image par référence: le logo de Wikipédia est ![Wikipedia][logo wikipedia]
 
 Les liens par référence créés un peu plus haut peuvent être définis n'importe où dans le texte, par exemple ici:
 
-[1]: http://www.jpfleury.net/logiciels/gedit-markdown.php
-[gedit-markdown]: http://www.jpfleury.net/logiciels/gedit-markdown.php
+[1]: https://github.com/jpfleury/gedit-markdown
+[gedit-markdown]: https://github.com/jpfleury/gedit-markdown
 
 Même chose en ce qui concerne l'image par référence:
 
-[logo squeletml]: http://www.squeletml.net/fichiers/squeletml-logo.png "Attribut title optionnel"
+[logo wikipedia]: http://upload.wikimedia.org/wikipedia/commons/5/5a/Wikipedia-logo-v2-fr.png "Attribut title optionnel"

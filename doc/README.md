@@ -1,5 +1,3 @@
-<p lang="fr"><strong><a hreflang="fr" href="http://www.jpfleury.net/logiciels/gedit-markdown.php">Lire cette page en français.</a></strong></p>
-
 ## Overview
 
 gedit-markdown adds support for [Markdown][] (or [Markdown Extra][]) in gedit, the default Gnome text editor.
@@ -17,7 +15,7 @@ Specifically, it adds:
 [Markdown]: http://daringfireball.net/projects/markdown/
 [Markdown Extra]: http://michelf.com/projects/php-markdown/extra/
 
-<img src="https://gitorious.org/projets-divers/gedit-markdown/raw/master:doc/exemple1.png" width="684" height="779" alt="Default Markdown syntax highlighting in gedit." />
+<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple1.png" width="684" height="779" alt="Default Markdown syntax highlighting in gedit." />
 
 ## Requirements
 
@@ -33,7 +31,7 @@ Specifically, it adds:
 
 ### GNU/Linux
 
-- [Download the archive of the latest version.](https://gitorious.org/projets-divers/gedit-markdown/archive/master.zip)
+- [Download the archive of the latest version.](https://github.com/jpfleury/gedit-markdown/archive/master.zip)
 
 - Extract the archive.
 
@@ -123,15 +121,15 @@ If gedit 3 is used, when right clicking on the preview area, a context menu appe
 
 Here's a screenshot of the plugin when it's displayed in the bottom panel:
 
-<img src="https://gitorious.org/projets-divers/gedit-markdown/raw/master:doc/exemple3.png" width="684" height="886" alt="Markdown Preview in the bottom panel of gedit." />
+<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple3.png" width="684" height="886" alt="Markdown Preview in the bottom panel of gedit." />
 
 Now the same plugin displayed in the side panel (click to download the original image):
 
-<a href="https://gitorious.org/projets-divers/gedit-markdown/raw/master:doc/exemple4-grand.png"><img src="https://gitorious.org/projets-divers/gedit-markdown/raw/master:doc/exemple4-petit.png" width="684" height="445" alt="Markdown Preview in the side panel of gedit." /></a>
+<a href="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple4-grand.png"><img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple4-petit.png" width="684" height="445" alt="Markdown Preview in the side panel of gedit." /></a>
 
 Note that when the cursor passes over a link in the preview area, a tooltip displays the URL:
 
-<img src="https://gitorious.org/projets-divers/gedit-markdown/raw/master:doc/exemple5.png" width="684" height="128" alt="Tooltip displaying URL when the cursor passes over a link." />
+<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple5.png" width="684" height="128" alt="Tooltip displaying URL when the cursor passes over a link." />
 
 ### Snippets
 
@@ -147,7 +145,7 @@ To edit the tool, go to *Tools > Manage External Tools...*.
 
 An optional color scheme is installed by gedit-markdown. To use it, go to *Edit > Preferences > Font & Colors > Color Scheme* in gedit and select *Classic Markdown*. This color scheme is more similar to an HTML rendering, for example strong emphases and headers are in bold and black font, links are blue and underlined, etc. Here's a screenshot of a Markdown document highlighted with this color scheme:
 
-<img src="https://gitorious.org/projets-divers/gedit-markdown/raw/master:doc/exemple2.png" width="684" height="779" alt="Optional color scheme for Markdown syntax highlighting in gedit." />
+<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple2.png" width="684" height="779" alt="Optional color scheme for Markdown syntax highlighting in gedit." />
 
 ### Configuration file
 
@@ -231,14 +229,12 @@ For now, gedit-markdown is available in French and English.
 
 ## Development
 
-Last version: 1.4.2 (2013-09-07)
-
-Git is used for revision control. [Repository can be browsed online or cloned.](https://gitorious.org/projets-divers/gedit-markdown)
+Git is used for revision control. [Repository can be browsed online or cloned.](https://github.com/jpfleury/gedit-markdown)
 
 ## License
 
 Author: Jean-Philippe Fleury (<http://www.jpfleury.net/en/contact.php>)  
-Copyright © 2009-2013 Jean-Philippe Fleury
+Copyright © 2009 Jean-Philippe Fleury
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -259,4 +255,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 [Markdown Preview]: http://live.gnome.org/Gedit/MarkdownSupport
 [Python Markdown]: http://www.freewisdom.org/projects/python-markdown/
-
