@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # [Gedit Tool]
 # Name=Export to HTML
@@ -14,7 +14,7 @@ import codecs
 import os
 import sys
 import markdown
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 
 # Configuration.
 
@@ -36,12 +36,11 @@ if os.path.isfile(confFile):
 else:
 	markdownVersion = "extra"
 
-text = sys.stdin.read().decode("utf-8")
-print "<!-- Markdown => HTML -->"
+text = sys.stdin.read()
+print("<!-- Markdown => HTML -->")
 
 if markdownVersion == "standard":
-	print markdown.markdown(text, smart_emphasis=False).encode("utf-8")
+	print(markdown.markdown(text, smart_emphasis=False))
 else:
-	print markdown.markdown(text, extensions=["extra",
-	                        "headerid(forceid=False)"]).encode("utf-8")
-
+	print(markdown.markdown(text, extensions=["extra",
+	                        "headerid(forceid=False)"]))
