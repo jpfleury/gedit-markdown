@@ -1,3 +1,5 @@
+**Note: si vous utilisez gedit 3.8 ou une version plus récente, veuillez vous référer à la [documentation de gedit-markdown v2](https://github.com/jpfleury/gedit-markdown). Ce qui suit est la documentation de la version 1.**
+
 ## Aperçu
 
 gedit-markdown est un ensemble de fichiers ajoutant le support du langage [Markdown] (ou de la version spéciale [Markdown Extra]) dans gedit, l'éditeur de texte par défaut de Gnome.
@@ -19,7 +21,7 @@ Plus précisément, gedit-markdown ajoute:
 
 ## Dépendances
 
-- gedit-markdown supporte gedit 2 et gedit 3. Il est livré avec un installateur pour GNU/Linux. Sous Windows XP, seuls certains fichiers fonctionnent, et doivent être installés à la main.
+- gedit-markdown v1 supporte gedit 2 et gedit 3.0 à 3.6. Il est livré avec un installateur pour GNU/Linux. Sous Windows XP, seuls certains fichiers fonctionnent, et doivent être installés à la main.
 
 - Le greffon «Aperçu Markdown» dépend de Python 2 (>= 2.6) ou de Python 3 (>= 3.1), bien que pour l'instant, gedit ne supporte que Python 2. L'installateur va copier le greffon seulement si la bonne version de Python est installée.
 
