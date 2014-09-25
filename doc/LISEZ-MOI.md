@@ -31,7 +31,7 @@ Plus précisément, gedit-markdown ajoute:
 
 ### GNU/Linux
 
-- [Télécharger l'archive de la dernière version.](https://github.com/jpfleury/gedit-markdown/archive/master.zip)
+- [Télécharger l'archive de gedit-markdown v1.](https://github.com/jpfleury/gedit-markdown/archive/v1.zip)
 
 - Extraire l'archive.
 
