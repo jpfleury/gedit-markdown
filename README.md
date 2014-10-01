@@ -1,4 +1,4 @@
-**Note: if you use gedit 3.8 or newer, please refer to the [documentation of gedit-markdown v2](https://github.com/jpfleury/gedit-markdown). Below is the documentation of the version 1.**
+**Note: if you use gedit 3.8 or 3.10, please refer to the [documentation of gedit-markdown v2](https://github.com/jpfleury/gedit-markdown). Below is the documentation of the version 1.**
 
 ## Overview
 
