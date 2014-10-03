@@ -1,3 +1,5 @@
+**Note: if you use gedit 2 or gedit 3.0 to 3.6, please refer to the [documentation of gedit-markdown v1](https://github.com/jpfleury/gedit-markdown/tree/v1#readme). Below is the documentation of the version 2 for gedit 3.8 and 3.10.**
+
 ## Overview
 
 gedit-markdown adds support for [Markdown][] (or [Markdown Extra][]) in gedit, the default Gnome text editor.
@@ -19,9 +21,7 @@ Specifically, it adds:
 
 ## Requirements
 
-**Note: if you use gedit 2 or gedit 3.0 to 3.6, please refer to the [documentation of gedit-markdown v1](https://github.com/jpfleury/gedit-markdown/tree/v1#readme). Below is the documentation of the version 2.**
-
-- gedit-markdown v2 supports gedit 3.8 and newer. It's shipped with an installer for GNU/Linux.
+- gedit-markdown v2 supports gedit 3.8 and 3.10. It's shipped with an installer for GNU/Linux.
 
 - The plugin *Markdown Preview* depends on the package `python3-markdown`.
 
@@ -29,7 +29,7 @@ Specifically, it adds:
 
 ## Installation (or update)
 
-- [Download the archive of the latest version.](https://github.com/jpfleury/gedit-markdown/archive/master.zip)
+- [Download the archive of gedit-markdown v2.](https://github.com/jpfleury/gedit-markdown/archive/master.zip)
 
 - Extract the archive.
 
