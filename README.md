@@ -69,13 +69,13 @@ Two items are added in the gedit menu *Tools*:
 	
 	  - with the keyboard shortcut *Ctrl+Alt+m* (can be changed in the configuration file);
 	
-	  - by right clicking on the preview area (side or bottom panel) and selecting the item *Update Preview* (gedit 3 only).
+	  - by right clicking on the preview area (side or bottom panel) and selecting the item *Update Preview*.
 
 - *Toggle Markdown Preview visibility*: allows to display or hide the Markdown Preview panel tab.
 
 	Note: the keyboard shortcut *Ctrl+Alt+v* (can be changed in the configuration file) can be used to do the same.
 
-If gedit 3 is used, when right clicking on the preview area, a context menu appears and lists several options. Besides the default ones (previous page, next page, copy, etc.), we have:
+When right clicking on the preview area, a context menu appears and lists several options. Besides the default ones (previous page, next page, copy, etc.), we have:
 
 - *Copy the current URL*: copy in the clipboard the URL of the document or the page being displayed in the preview tab. If it's a document that has not yet been saved to disk, this menu item is disabled.
 
