@@ -69,13 +69,13 @@ Deux éléments sont ajoutés dans le menu *Outils* de gedit:
 	
 	  - par le raccourci-clavier *Ctrl+Alt+m* (peut être modifié dans le fichier de configuration);
 	
-	  - en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Actualiser l'aperçu* (gedit 3 seulement).
+	  - en cliquant droit dans la zone d'aperçu (panneau latéral ou inférieur) et en sélectionnant l'élément *Actualiser l'aperçu*.
 
 - *Afficher ou cacher l'aperçu Markdown*: permet d'afficher ou de cacher l'onglet d'aperçu dans le panneau de gedit.
 
 	Note: le raccourci-clavier *Ctrl+Alt+v* (peut être modifié dans le fichier de configuration) peut être utilisé pour effectuer la même action.
 
-Si gedit 3 est utilisé, en cliquant droit dans la zone d'aperçu, un menu contextuel apparaît et offre plusieurs options. Outre celles par défaut (page suivante, page précédente, copie, etc.), on trouve:
+En cliquant droit dans la zone d'aperçu, un menu contextuel apparaît et offre plusieurs options. Outre celles par défaut (page suivante, page précédente, copie, etc.), on trouve:
 
 - *Copier l'URL courante*: permet de copier dans le presse-papiers l'adresse du document ou de la page dont le contenu est actuellement affiché dans l'onglet d'aperçu. S'il s'agit d'un document qui n'a pas encore été sauvegardé sur le disque, cet élément de menu est désactivé.
 
