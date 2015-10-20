@@ -169,6 +169,8 @@ if [[ $1 == install ]]; then
 	mkdir -pv "$cheminTools"
 	cp -v tools/export-to-html "$cheminTools"
 	chmod +x "$cheminTools/export-to-html"
+	cp -v tools/export-to-pdf "$cheminTools"
+	chmod +x "$cheminTools/export-to-pdf"
 	
 	# Greffon «Aperçu Markdown».
 	cp -rv plugins/markdown-preview/* "$cheminPlugins"
