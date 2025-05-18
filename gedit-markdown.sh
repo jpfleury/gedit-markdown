@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This file is part of gedit-markdown.
-# Author: Jean-Philippe Fleury <contact@jpfleury.net>
+# Author: Jean-Philippe Fleury <https://github.com/jpfleury>
 # Copyright © 2009 Jean-Philippe Fleury
 
 # This program is free software: you can redistribute it and/or modify
@@ -17,18 +17,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-########################################################################
-##
-## Fonctions.
-##
-########################################################################
+################################################################################
+## @title Functions
+################################################################################
 
 # Note that if a directory doesn't have read permissions, the function can't
 # test if it contains files.
-isEmpty()
-{
+is_empty() {
 	if [[ -d $1 && -r $1 ]]; then
 		shopt -s nullglob dotglob
+		declare -a files
 		files=("$1"/*)
 		shopt -u nullglob dotglob
 
@@ -40,154 +38,127 @@ isEmpty()
 	return 1
 }
 
-supprimerDossiersVides()
-{
-	for dossier in "$@"; do
-		while isEmpty "$dossier"; do
-			rmdir -v "$dossier"
-			dossier=$(dirname "$dossier")
+remove_empty_dirs() {
+	local dir
+	
+	# --------------------
+	
+	for dir in "$@"; do
+		while is_empty "$dir"; do
+			rmdir -v "$dir"
+			
+			dir=$(dirname "$dir")
 		done
 	done
 }
 
-supprimerGreffon()
-{
-	# Suppression des fichiers.
-	for fichier in "${fichiersAsupprimer[@]}"; do
-		rm -vf "$fichier"
+remove_plugin() {
+	local file
+	declare -a files_to_remove
+	declare -a empty_dirs_to_remove
+	
+	# --------------------
+	
+	# Remove files
+	##############
+	
+	files_to_remove=(
+		"$PATH_PLUGIN/markdown-preview.gedit-plugin"
+		"$PATH_SNIPPETS/markdown.xml"
+		"$PATH_TOOLS/export-to-html"
+		"$PATH_TOOLS/export-to-pdf"
+	)
+	
+	for file in "${files_to_remove[@]}"; do
+		if [[ -f $file ]]; then
+			rm -v "$file"
+		fi
 	done
 
-	# Suppression des dossiers.
-
-	rm -rfv "$cheminPluginsMarkdownPreview"
-	dossiersVidesAsupprimer=()
-
-	dossiersVidesAsupprimer+=(
-		"$cheminConfig"
-		"$cheminPlugins"
-		"$cheminPluginsMarkdownPreview"
-		"$cheminSnippets"
-		"$cheminTools"
+	# Remove directories
+	####################
+	
+	empty_dirs_to_remove=(
+		"$PATH_CONFIG"
+		"$PATH_PLUGIN"
+		"$PATH_MARKDOWN_PREVIEW_PLUGIN"
+		"$PATH_SNIPPETS"
+		"$PATH_TOOLS"
 	)
-
-	supprimerDossiersVides "${dossiersVidesAsupprimer[@]}"
+	
+	if [[ -d $PATH_MARKDOWN_PREVIEW_PLUGIN ]]; then
+		rm -rv "$PATH_MARKDOWN_PREVIEW_PLUGIN"
+	fi
+	
+	remove_empty_dirs "${empty_dirs_to_remove[@]}"
 }
 
-########################################################################
-##
-## Variables.
-##
-########################################################################
+################################################################################
+## @title Constants
+################################################################################
 
-####################################
-## Mise en forme de l'affichage.
-####################################
+PATH_PLUGIN=${XDG_DATA_HOME:-$HOME/.local/share}/gedit/plugins
+PATH_MARKDOWN_PREVIEW_PLUGIN=$PATH_PLUGIN/markdown-preview
 
-gras=$(tput bold)
-normal=$(tput sgr0)
+PATH_CONFIG_GEDIT=${XDG_CONFIG_HOME:-$HOME/.config}
 
-####################################
-## Chemins.
-####################################
+PATH_CONFIG=$PATH_CONFIG_GEDIT/markdown-preview
+PATH_SNIPPETS=$PATH_CONFIG_GEDIT/snippets
+PATH_TOOLS=$PATH_CONFIG_GEDIT/tools
 
-if [[ -n $XDG_DATA_HOME ]]; then
-	cheminPlugins=$XDG_DATA_HOME/gedit/plugins
-	cheminPluginsMarkdownPreview=$XDG_DATA_HOME/gedit/plugins/markdown-preview
-else
-	cheminPlugins=$HOME/.local/share/gedit/plugins
-	cheminPluginsMarkdownPreview=$HOME/.local/share/gedit/plugins/markdown-preview
-fi
+declare -r PATH_PLUGIN PATH_MARKDOWN_PREVIEW_PLUGIN PATH_CONFIG_GEDIT
+declare -r PATH_CONFIG PATH_SNIPPETS PATH_TOOLS
 
-cheminSystemeSnippets=/usr/share/gedit/plugins/snippets
+################################################################################
+## @title Script
+################################################################################
 
-if [[ -n $XDG_CONFIG_HOME ]]; then
-	cheminSnippets=$XDG_CONFIG_HOME/gedit/snippets
-	cheminTools=$XDG_CONFIG_HOME/gedit/tools
-else
-	cheminSnippets=$HOME/.config/gedit/snippets
-	cheminTools=$HOME/.config/gedit/tools
-fi
-
-if [[ -n $XDG_CONFIG_HOME ]]; then
-	cheminConfig=$XDG_CONFIG_HOME/gedit/markdown-preview
-else
-	cheminConfig=$HOME/.config/gedit/markdown-preview
-fi
-
-cheminFichierConfig=$cheminConfig/gedit-markdown.ini
-
-####################################
-## Fichiers à supprimer.
-####################################
-
-fichiersAsupprimer=(
-	"$cheminPlugins/markdown-preview.gedit-plugin"
-	"$cheminSnippets/markdown.xml"
-	"$cheminTools/export-to-html"
-	"$cheminTools/export-to-pdf"
-)
-
-########################################################################
-##
-## Début du script.
-##
-########################################################################
-
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || { echo >&2 "Can't access $0"; exit 1; }
 
 if [[ $1 == install ]]; then
-	echo "############################################################"
-	echo "##"
-	echo "## Installation of gedit-markdown"
-	echo "##"
-	echo "############################################################"
-	echo
-	# Au cas où il s'agit d'une mise à jour et non d'une première installation.
-	supprimerGreffon
+	echo "# gedit-markdown install"
+	echo "########################"
+	echo ""
+	
+	# Just in case it's an update (not first install)
+	remove_plugin
 
-	# Configuratión.
-	mkdir -pv "$cheminConfig"
-	cp -rnv config/* "$cheminConfig"  # don't overwrite
+	# Configuration
+	mkdir -pv "$PATH_CONFIG"
+	cp -rnv config/* "$PATH_CONFIG"
 
-	# Copie des extraits de code.
-	mkdir -pv "$cheminSnippets"
-	cp -v snippets/markdown.xml "$cheminSnippets"
+	# Code snippets
+	mkdir -pv "$PATH_SNIPPETS"
+	cp -v snippets/markdown.xml "$PATH_SNIPPETS"
 
-	# Outil externe.
-	mkdir -pv "$cheminTools"
-	cp -v tools/export-to-html "$cheminTools"
-	chmod +x "$cheminTools/export-to-html"
-	cp -v tools/export-to-pdf "$cheminTools"
-	chmod +x "$cheminTools/export-to-pdf"
+	# External tools
+	mkdir -pv "$PATH_TOOLS"
+	cp -v tools/export-to-html "$PATH_TOOLS"
+	chmod +x "$PATH_TOOLS/export-to-html"
+	cp -v tools/export-to-pdf "$PATH_TOOLS"
+	chmod +x "$PATH_TOOLS/export-to-pdf"
 
-	# Greffon «Aperçu Markdown».
-	mkdir -pv "$cheminPlugins"
-	cp -rv plugins/markdown-preview/* "$cheminPlugins"
-	rm -v "$cheminPluginsMarkdownPreview/locale/markdown-preview.pot"
-	find "$cheminPluginsMarkdownPreview/locale/" -name "*.po" -exec rm -vf {} \;
+	# Markdown Preview plugin
+	mkdir -pv "$PATH_PLUGIN"
+	cp -rv plugins/markdown-preview/* "$PATH_PLUGIN"
+	rm -v "$PATH_MARKDOWN_PREVIEW_PLUGIN/locale/markdown-preview.pot"
+	find "$PATH_MARKDOWN_PREVIEW_PLUGIN/locale/" -name "*.po" -exec rm -v {} \;
 
-	echo "$gras"
 	echo "Installation successful. Please restart gedit (if it's already running)."
-	echo "$normal"
 
 	exit 0
 elif [[ $1 == uninstall ]]; then
-	echo "############################################################"
-	echo "##"
-	echo "## Uninstallation of gedit-markdown"
-	echo "##"
-	echo "############################################################"
-	echo
-	supprimerGreffon
-	echo "$gras"
+	echo "# gedit-markdown uninstall"
+	echo "##########################"
+	echo ""
+	
+	remove_plugin
+	
 	echo "Uninstallation successful. Please restart gedit (if it's already running)."
-	echo "$normal"
 
 	exit 0
 else
-	echo "$gras"
 	echo "Usage: $0 [install|uninstall]"
-	echo "$normal"
 
 	exit 1
 fi

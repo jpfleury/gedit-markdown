@@ -1,5 +1,5 @@
 # Traduction en français de Markdown Preview.
-# Copyright (C) 2011 Jean-Philippe Fleury <contact@jpfleury.net>
+# Copyright (C) 2011 Jean-Philippe Fleury <https://github.com/jpfleury>
 # This file is distributed under the same license as the PACKAGE package.
 #
 msgid ""
@@ -8,7 +8,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-21 09:59+0100\n"
 "PO-Revision-Date: 2012-06-08 15:50-0400\n"
-"Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
+"Last-Translator: Jean-Philippe Fleury <https://github.com/jpfleury>\n"
 "Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"

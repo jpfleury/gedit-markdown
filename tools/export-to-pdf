@@ -1,6 +1,8 @@
 #!/bin/bash
+
 # [Gedit Tool]
 # Name=Export to PDF
+# Name[fr]=Exporter en PDF
 # Shortcut=<Control><Alt>p
 # Languages=markdown
 # Applicability=all
@@ -8,21 +10,29 @@
 # Output=output-panel
 # Save-files=nothing
 
-# Verify that we have 'pandoc' installed
-command -v pandoc >/dev/null 2>&1 || 
-    { 
-        echo >&2 "I require Pandoc, but it's not installed. Aborting.";
-        echo >&2 "";
+if ! command -v pandoc >/dev/null 2>&1; then
+    echo >&2 'pandoc is not installed.'
+    echo >&2 '"sudo apt-get install pandoc texlive" should fix this on Ubuntu / Debian systems.'
+    exit 1
+fi
 
-        echo >&2 "Hint: 'sudo apt-get install pandoc texlive' should fix"; 
-        echo >&2 "       this for Ubuntu / Debian Linux"; 
-        exit 1;
-    }
+if [[ -z $GEDIT_CURRENT_DOCUMENT_NAME || -z $GEDIT_CURRENT_DOCUMENT_PATH ]]; then
+    echo >&2 'gedit environment variables are missing.'
+    exit 1
+fi
 
 FILENAME=$GEDIT_CURRENT_DOCUMENT_NAME
 FILEPATH=$GEDIT_CURRENT_DOCUMENT_PATH
+NEW_FILENAME=${FILENAME%%.*}.pdf
 
-NEW_FILENAME="${FILENAME%%.*}.pdf"
-echo "Exporting to $FILEPATH/$NEW_FILENAME"
+echo "Exporting to $FILEPATH/$NEW_FILENAME..."
 
-pandoc $FILENAME -o $NEW_FILENAME
+pandoc "$FILEPATH/$FILENAME" -o "$FILEPATH/$NEW_FILENAME"
+exit_code=$?
+
+if [[ $exit_code == 0 ]]; then
+    echo 'Export successful.'
+else
+    echo >&2 "pandoc didn't complete successfully (exit code $exit_code)."
+    exit 1
+fi

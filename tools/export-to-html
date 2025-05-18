@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+
 # [Gedit Tool]
 # Name=Export to HTML
 # Name[fr]=Exporter en HTML
@@ -10,37 +11,35 @@
 # Output=new-document
 # Save-files=nothing
 
-import codecs
 import os
 import sys
-import markdown
 from configparser import ConfigParser
 
-# Configuration.
+import markdown
 
 try:
-	import xdg.BaseDirectory
+    import xdg.BaseDirectory
 except ImportError:
-	homeDir = os.environ.get("HOME")
-	xdgConfigHome = os.path.join(homeDir, ".config")
+    homeDir = os.environ.get("HOME")
+    xdgConfigHome = os.path.join(homeDir, ".config")
 else:
-	xdgConfigHome = xdg.BaseDirectory.xdg_config_home
+    xdgConfigHome = xdg.BaseDirectory.xdg_config_home
 
-confDir =  os.path.join(xdgConfigHome, "gedit/markdown-preview")
-confFile =  os.path.join(confDir, "preferences.ini")
+confDir = os.path.join(xdgConfigHome, "gedit/markdown-preview")
+confFile = os.path.join(confDir, "preferences.ini")
 parser = ConfigParser()
 
 if os.path.isfile(confFile):
-	parser.read(confFile)
-	markdownExtensions = parser.get("markdown-preview", "extensions")
+    parser.read(confFile)
+    markdownExtensions = parser.get("markdown-preview", "extensions")
 else:
-	markdownExtensions = "extra toc"
+    markdownExtensions = "extra toc"
 markdownExtensionsList = markdownExtensions.split()
 
 htmlTemplate = ""
 templateFile = os.path.join(confDir, "template.html")
-with open(templateFile, 'r') as f:
-	htmlTemplate = f.read()
+with open(templateFile, "r") as f:
+    htmlTemplate = f.read()
 
 text = sys.stdin.read()
 print("<!-- Markdown => HTML -->")
