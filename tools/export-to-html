@@ -14,7 +14,7 @@ import codecs
 import os
 import sys
 import markdown
-from configparser import SafeConfigParser
+from configparser import ConfigParser
 
 # Configuration.
 
@@ -26,21 +26,23 @@ except ImportError:
 else:
 	xdgConfigHome = xdg.BaseDirectory.xdg_config_home
 
-confDir =  os.path.join(xdgConfigHome, "gedit")
-confFile =  os.path.join(confDir, "gedit-markdown.ini")
-parser = SafeConfigParser()
+confDir =  os.path.join(xdgConfigHome, "gedit/markdown-preview")
+confFile =  os.path.join(confDir, "preferences.ini")
+parser = ConfigParser()
 
 if os.path.isfile(confFile):
 	parser.read(confFile)
-	markdownVersion = parser.get("markdown-preview", "version")
+	markdownExtensions = parser.get("markdown-preview", "extensions")
 else:
-	markdownVersion = "extra"
+	markdownExtensions = "extra toc"
+markdownExtensionsList = markdownExtensions.split()
+
+htmlTemplate = ""
+templateFile = os.path.join(confDir, "template.html")
+with open(templateFile, 'r') as f:
+	htmlTemplate = f.read()
 
 text = sys.stdin.read()
 print("<!-- Markdown => HTML -->")
 
-if markdownVersion == "standard":
-	print(markdown.markdown(text, smart_emphasis=False))
-else:
-	print(markdown.markdown(text, extensions=["extra",
-	                        "headerid(forceid=False)"]))
+print(htmlTemplate % markdown.markdown(text, extensions=markdownExtensionsList))

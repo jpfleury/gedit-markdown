@@ -1,6 +1,10 @@
 Titre de style Setext avec un attribut `id` {#idTitre1}
 ===========================================
 
+**Contents**
+
+[TOC]
+
 ## Titre de style atx avec un attribut `id` ## {#idTitre2}
 
 Les barres de soulignement ne génèrent plus d'emphase à l'intérieur d'un mot:

@@ -1,0 +1,28 @@
+#!/bin/bash
+# [Gedit Tool]
+# Name=Export to PDF
+# Shortcut=<Control><Alt>p
+# Languages=markdown
+# Applicability=all
+# Input=selection-document
+# Output=output-panel
+# Save-files=nothing
+
+# Verify that we have 'pandoc' installed
+command -v pandoc >/dev/null 2>&1 || 
+    { 
+        echo >&2 "I require Pandoc, but it's not installed. Aborting.";
+        echo >&2 "";
+
+        echo >&2 "Hint: 'sudo apt-get install pandoc texlive' should fix"; 
+        echo >&2 "       this for Ubuntu / Debian Linux"; 
+        exit 1;
+    }
+
+FILENAME=$GEDIT_CURRENT_DOCUMENT_NAME
+FILEPATH=$GEDIT_CURRENT_DOCUMENT_PATH
+
+NEW_FILENAME="${FILENAME%%.*}.pdf"
+echo "Exporting to $FILEPATH/$NEW_FILENAME"
+
+pandoc $FILENAME -o $NEW_FILENAME

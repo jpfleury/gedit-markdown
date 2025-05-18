@@ -31,12 +31,12 @@ isEmpty()
 		shopt -s nullglob dotglob
 		files=("$1"/*)
 		shopt -u nullglob dotglob
-		
+
 		if [[ ${#files[@]} == 0 ]]; then
 			return 0
 		fi
 	fi
-	
+
 	return 1
 }
 
@@ -56,22 +56,20 @@ supprimerGreffon()
 	for fichier in "${fichiersAsupprimer[@]}"; do
 		rm -vf "$fichier"
 	done
-	
+
 	# Suppression des dossiers.
-	
+
 	rm -rfv "$cheminPluginsMarkdownPreview"
 	dossiersVidesAsupprimer=()
-	
+
 	dossiersVidesAsupprimer+=(
 		"$cheminConfig"
-		"$cheminLanguageSpecs"
 		"$cheminPlugins"
 		"$cheminPluginsMarkdownPreview"
 		"$cheminSnippets"
-		"$cheminStyles"
 		"$cheminTools"
 	)
-	
+
 	supprimerDossiersVides "${dossiersVidesAsupprimer[@]}"
 }
 
@@ -93,18 +91,13 @@ normal=$(tput sgr0)
 ####################################
 
 if [[ -n $XDG_DATA_HOME ]]; then
-	cheminLanguageSpecs=$XDG_DATA_HOME/gtksourceview-3.0/language-specs
 	cheminPlugins=$XDG_DATA_HOME/gedit/plugins
 	cheminPluginsMarkdownPreview=$XDG_DATA_HOME/gedit/plugins/markdown-preview
-	cheminStyles=$XDG_DATA_HOME/gtksourceview-3.0/styles
 else
-	cheminLanguageSpecs=$HOME/.local/share/gtksourceview-3.0/language-specs
 	cheminPlugins=$HOME/.local/share/gedit/plugins
 	cheminPluginsMarkdownPreview=$HOME/.local/share/gedit/plugins/markdown-preview
-	cheminStyles=$HOME/.local/share/gtksourceview-3.0/styles
 fi
 
-cheminSystemeLanguageSpecs=/usr/share/gtksourceview-3.0/language-specs
 cheminSystemeSnippets=/usr/share/gedit/plugins/snippets
 
 if [[ -n $XDG_CONFIG_HOME ]]; then
@@ -116,9 +109,9 @@ else
 fi
 
 if [[ -n $XDG_CONFIG_HOME ]]; then
-	cheminConfig=$XDG_CONFIG_HOME/gedit
+	cheminConfig=$XDG_CONFIG_HOME/gedit/markdown-preview
 else
-	cheminConfig=$HOME/.config/gedit
+	cheminConfig=$HOME/.config/gedit/markdown-preview
 fi
 
 cheminFichierConfig=$cheminConfig/gedit-markdown.ini
@@ -128,13 +121,10 @@ cheminFichierConfig=$cheminConfig/gedit-markdown.ini
 ####################################
 
 fichiersAsupprimer=(
-	"$cheminLanguageSpecs/markdown.lang"
-	"$cheminLanguageSpecs/markdown-extra.lang"
 	"$cheminPlugins/markdown-preview.gedit-plugin"
 	"$cheminSnippets/markdown.xml"
-	"$cheminSnippets/markdown-extra.xml"
-	"$cheminStyles/classic-markdown.xml"
 	"$cheminTools/export-to-html"
+	"$cheminTools/export-to-pdf"
 )
 
 ########################################################################
@@ -154,33 +144,32 @@ if [[ $1 == install ]]; then
 	echo
 	# Au cas où il s'agit d'une mise à jour et non d'une première installation.
 	supprimerGreffon
-	
-	# Création des répertoires s'ils n'existent pas déjà.
-	mkdir -pv "$cheminConfig" "$cheminLanguageSpecs" "$cheminPlugins" "$cheminSnippets" \
-		"$cheminStyles"
-	
-	# Copie des fichiers.
-	cp -v config/gedit-markdown.ini "$cheminFichierConfig"
-	cp -v language-specs/markdown-extra.lang "$cheminLanguageSpecs"
-	cheminLanguageSpecsMarkdownLang=$cheminLanguageSpecs/markdown-extra.lang
-	cp -v snippets/markdown-extra.xml "$cheminSnippets"
-	
+
+	# Configuratión.
+	mkdir -pv "$cheminConfig"
+	cp -rnv config/* "$cheminConfig"  # don't overwrite
+
+	# Copie des extraits de code.
+	mkdir -pv "$cheminSnippets"
+	cp -v snippets/markdown.xml "$cheminSnippets"
+
 	# Outil externe.
 	mkdir -pv "$cheminTools"
 	cp -v tools/export-to-html "$cheminTools"
 	chmod +x "$cheminTools/export-to-html"
-	
+	cp -v tools/export-to-pdf "$cheminTools"
+	chmod +x "$cheminTools/export-to-pdf"
+
 	# Greffon «Aperçu Markdown».
+	mkdir -pv "$cheminPlugins"
 	cp -rv plugins/markdown-preview/* "$cheminPlugins"
 	rm -v "$cheminPluginsMarkdownPreview/locale/markdown-preview.pot"
 	find "$cheminPluginsMarkdownPreview/locale/" -name "*.po" -exec rm -vf {} \;
-	
-	cp -v styles/classic-markdown.xml "$cheminStyles"
-	
+
 	echo "$gras"
 	echo "Installation successful. Please restart gedit (if it's already running)."
 	echo "$normal"
-	
+
 	exit 0
 elif [[ $1 == uninstall ]]; then
 	echo "############################################################"
@@ -193,12 +182,12 @@ elif [[ $1 == uninstall ]]; then
 	echo "$gras"
 	echo "Uninstallation successful. Please restart gedit (if it's already running)."
 	echo "$normal"
-	
+
 	exit 0
 else
 	echo "$gras"
 	echo "Usage: $0 [install|uninstall]"
 	echo "$normal"
-	
+
 	exit 1
 fi

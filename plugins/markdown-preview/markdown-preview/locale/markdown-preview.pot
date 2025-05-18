@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-24 22:20-0400\n"
+"POT-Creation-Date: 2018-12-21 09:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,55 +17,57 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:139
+#: plugins/markdown-preview/markdown-preview/__init__.py:152
 msgid "Markdown Preview"
 msgstr ""
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:149
+#: plugins/markdown-preview/markdown-preview/__init__.py:169
+#: plugins/markdown-preview/markdown-preview/__init__.py:435
 msgid "Update Markdown Preview"
 msgstr ""
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:151
+#: plugins/markdown-preview/markdown-preview/__init__.py:171
 msgid "Preview in HTML of the current document or the selection"
 msgstr ""
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:159
-msgid "Toggle Markdown Preview visibility"
+#: plugins/markdown-preview/markdown-preview/__init__.py:179
+#: plugins/markdown-preview/markdown-preview/__init__.py:436
+msgid "Toggle Markdown Preview Visibility"
 msgstr ""
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:161
+#: plugins/markdown-preview/markdown-preview/__init__.py:181
 msgid "Display or hide the Markdown Preview panel tab"
 msgstr ""
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:194
-#: plugins/markdown-preview/markdown-preview/__init__.py:195
+#: plugins/markdown-preview/markdown-preview/__init__.py:205
+#: plugins/markdown-preview/markdown-preview/__init__.py:206
 msgid "Enter URL"
 msgstr ""
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:196
+#: plugins/markdown-preview/markdown-preview/__init__.py:207
 msgid "Enter the URL (local or distant) of the document or page to display."
 msgstr ""
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:308
+#: plugins/markdown-preview/markdown-preview/__init__.py:319
 msgid "Open in the embedded browser"
 msgstr ""
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:311
+#: plugins/markdown-preview/markdown-preview/__init__.py:322
 msgid "Open in an external browser"
 msgstr ""
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:316
+#: plugins/markdown-preview/markdown-preview/__init__.py:327
 msgid "Copy the current URL"
 msgstr ""
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:324
+#: plugins/markdown-preview/markdown-preview/__init__.py:335
 msgid "Go to another URL"
 msgstr ""
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:328
+#: plugins/markdown-preview/markdown-preview/__init__.py:339
 msgid "Update Preview"
 msgstr ""
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:338
+#: plugins/markdown-preview/markdown-preview/__init__.py:349
 msgid "Clear Preview"
 msgstr ""
