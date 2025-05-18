@@ -20,7 +20,7 @@ Specifically, it adds:
 
 ## Requirements
 
-- gedit-markdown v3 supports gedit 3.8 and 3.10. It's shipped with an installer for GNU/Linux.
+- gedit-markdown v3 supports gedit 3.28 to 3.38. It's shipped with an installer for GNU/Linux.
 
 - The plugin *Markdown Preview* depends on the packages `python3-markdown` and `gir1.2-webkit2-4.0`.
 
