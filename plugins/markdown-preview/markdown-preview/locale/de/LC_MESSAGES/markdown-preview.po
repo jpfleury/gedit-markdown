@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Markdown Preview\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-21 09:59+0100\n"
+"POT-Creation-Date: 2025-05-18 23:39-0400\n"
 "PO-Revision-Date: 2018-12-13 15:21+0100\n"
 "Last-Translator: Erich Küster <erich.kuester@arcor.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,60 +17,48 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:152
+#: plugins/markdown-preview/markdown-preview/__init__.py:227
 msgid "Markdown Preview"
 msgstr "Markdown Vorschau"
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:169
-#: plugins/markdown-preview/markdown-preview/__init__.py:435
-msgid "Update Markdown Preview"
-msgstr "Markdown Vorschau aktualisieren"
-
-#: plugins/markdown-preview/markdown-preview/__init__.py:171
-msgid "Preview in HTML of the current document or the selection"
-msgstr "Vorschau des aktuellen Dokuments oder der Auswahl in HTML anzeigen"
-
-#: plugins/markdown-preview/markdown-preview/__init__.py:179
-#: plugins/markdown-preview/markdown-preview/__init__.py:436
-msgid "Toggle Markdown Preview Visibility"
-msgstr "Sichtbarkeit der Vorschau umschalten"
-
-#: plugins/markdown-preview/markdown-preview/__init__.py:181
-msgid "Display or hide the Markdown Preview panel tab"
-msgstr "Reiter der Markdown Vorschau anzeigen oder verbergen"
-
-#: plugins/markdown-preview/markdown-preview/__init__.py:205
-#: plugins/markdown-preview/markdown-preview/__init__.py:206
-msgid "Enter URL"
-msgstr "URL eingeben"
-
-#: plugins/markdown-preview/markdown-preview/__init__.py:207
-msgid "Enter the URL (local or distant) of the document or page to display."
-msgstr "URL des Dokumentes oder der Seite (lokal oder entfernt) eingeben"
-
-#: plugins/markdown-preview/markdown-preview/__init__.py:319
-msgid "Open in the embedded browser"
-msgstr "In eingebettetem Browser öffnen"
-
-#: plugins/markdown-preview/markdown-preview/__init__.py:322
-msgid "Open in an external browser"
-msgstr "In externem Browser öffnen"
-
-#: plugins/markdown-preview/markdown-preview/__init__.py:327
-msgid "Copy the current URL"
-msgstr "Momentane URL kopieren"
-
-#: plugins/markdown-preview/markdown-preview/__init__.py:335
-msgid "Go to another URL"
-msgstr "Zu anderer URL gehen"
-
-#: plugins/markdown-preview/markdown-preview/__init__.py:339
+#: plugins/markdown-preview/markdown-preview/__init__.py:390
 msgid "Update Preview"
 msgstr "Vorschau aktualisieren"
 
-#: plugins/markdown-preview/markdown-preview/__init__.py:349
-msgid "Clear Preview"
-msgstr "Vorschau löschen"
+#: plugins/markdown-preview/markdown-preview/__init__.py:480
+msgid "Update Markdown Preview"
+msgstr "Markdown Vorschau aktualisieren"
+
+#: plugins/markdown-preview/markdown-preview/__init__.py:483
+msgid "Toggle Markdown Preview Visibility"
+msgstr "Sichtbarkeit der Vorschau umschalten"
+
+#~ msgid "Preview in HTML of the current document or the selection"
+#~ msgstr "Vorschau des aktuellen Dokuments oder der Auswahl in HTML anzeigen"
+
+#~ msgid "Display or hide the Markdown Preview panel tab"
+#~ msgstr "Reiter der Markdown Vorschau anzeigen oder verbergen"
+
+#~ msgid "Enter URL"
+#~ msgstr "URL eingeben"
+
+#~ msgid "Enter the URL (local or distant) of the document or page to display."
+#~ msgstr "URL des Dokumentes oder der Seite (lokal oder entfernt) eingeben"
+
+#~ msgid "Open in the embedded browser"
+#~ msgstr "In eingebettetem Browser öffnen"
+
+#~ msgid "Open in an external browser"
+#~ msgstr "In externem Browser öffnen"
+
+#~ msgid "Copy the current URL"
+#~ msgstr "Momentane URL kopieren"
+
+#~ msgid "Go to another URL"
+#~ msgstr "Zu anderer URL gehen"
+
+#~ msgid "Clear Preview"
+#~ msgstr "Vorschau löschen"
 
 #~ msgid "Toggle Markdown Preview"
 #~ msgstr "Markdown Vorschau ein-/ausblenden"
