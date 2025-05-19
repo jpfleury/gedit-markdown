@@ -1,21 +1,21 @@
-menagePot:
-	rm -f plugins/markdown-preview/markdown-preview/locale/markdown-preview.pot
-	# À faire, sinon `xgettext -j` va planter en précisant que le fichier est introuvable.
-	touch plugins/markdown-preview/markdown-preview/locale/markdown-preview.pot
+LOCALEDIR = plugins/markdown-preview/markdown-preview/locale
+INITPY = plugins/markdown-preview/markdown-preview/__init__.py
 
-mo:
-	for po in $(shell find plugins/markdown-preview/markdown-preview/locale/ -name *.po);\
-	do\
-		msgfmt -o $${po%\.*}.mo $$po;\
-	done
+clean-pot:
+	rm -f "$(LOCALEDIR)/markdown-preview.pot"
+	touch "$(LOCALEDIR)/markdown-preview.pot"
+
+pot: clean-pot
+	xgettext -j -o "$(LOCALEDIR)/markdown-preview.pot" -L Python "$(INITPY)"
 
 po: pot
-	for po in $(shell find plugins/markdown-preview/markdown-preview/locale/ -name *.po);\
-	do\
-		msgmerge -o tempo $$po plugins/markdown-preview/markdown-preview/locale/markdown-preview.pot;\
-		rm $$po;\
-		mv tempo $$po;\
+	for po in $(shell find "$(LOCALEDIR)" -name '*.po'); do \
+		msgmerge -o tempo "$$po" "$(LOCALEDIR)/markdown-preview.pot"; \
+		rm "$$po"; \
+		mv tempo "$$po"; \
 	done
 
-pot: menagePot
-	xgettext -j -o plugins/markdown-preview/markdown-preview/locale/markdown-preview.pot -L Python plugins/markdown-preview/markdown-preview/__init__.py
+mo:
+	for po in $(shell find "$(LOCALEDIR)" -name '*.po'); do \
+		msgfmt -o "$${po%.*}.mo" "$$po"; \
+	done
