@@ -15,7 +15,7 @@ It provides:
 * A *Markdown Preview* plugin for gedit, shown in the side or bottom panel, that renders the current document or selection in HTML
 * An *external tool* for exporting the current document or selection to HTML or PDF
 
-<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple1.png" width="684" height="779" alt="Default Markdown syntax highlighting in gedit.">
+![Markdown Preview in gedit's side panel](https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/markdown-preview-side-panel.png)
 
 ## Requirements
 
@@ -73,15 +73,7 @@ Local files will be opened in the preview area, while external files will be ope
 
 Here's a screenshot of the plugin in the bottom panel:
 
-<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple3.png" width="684" height="886" alt="Markdown Preview in the bottom panel of gedit.">
-
-Now the same plugin displayed in the side panel (click to see the full-size image):
-
-<a href="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple4-grand.png"><img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple4-petit.png" width="684" height="445" alt="Markdown Preview in the side panel of gedit."></a>
-
-When you hover over a link in the preview, a tooltip shows the URL:
-
-<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple5.png" width="684" height="128" alt="Tooltip displaying URL when the cursor passes over a link.">
+![Markdown Preview in gedit's bottom panel](https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/markdown-preview-bottom-panel.png)
 
 ### Table of contents
 
