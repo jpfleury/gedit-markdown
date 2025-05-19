@@ -1,166 +1,148 @@
 **Versions:**
 
-- For gedit 2 and gedit 3.0 to 3.6, please refer to the [documentation of gedit-markdown v1](https://github.com/jpfleury/gedit-markdown/tree/v1#readme).
-- For gedit 3.8 to 3.12, please refer to the [documentation of gedit-markdown v2](https://github.com/jpfleury/gedit-markdown/tree/v2#readme).
-- For gedit 3.28 to 3.38, see the documentation below (gedit-markdown v3).
+* For gedit 2 and gedit 3.0 to 3.6, see the [gedit-markdown v1 documentation](https://github.com/jpfleury/gedit-markdown/tree/v1#readme).
+* For gedit 3.8 to 3.12, see the [gedit-markdown v2 documentation](https://github.com/jpfleury/gedit-markdown/tree/v2#readme).
+* For gedit 3.28 to 3.38, see the [gedit-markdown v3 documentation](https://github.com/jpfleury/gedit-markdown/tree/v3#readme).
+* For gedit 41 and later, see the documentation below (gedit-markdown v4).
 
 ## Overview
 
-gedit-markdown adds support for Markdown in gedit, the default Gnome text editor.
+gedit-markdown adds Markdown support to gedit, the default GNOME text editor.
 
-Specifically, it adds:
+It provides:
 
-- Markdown *snippets*
+* Markdown *snippets*
+* A *Markdown Preview* plugin for gedit, shown in the side or bottom panel, that renders the current document or selection in HTML
+* An *external tool* for exporting the current document or selection to HTML or PDF
 
-- plugin *Markdown Preview* for gedit, displayed in the side panel or the bottom panel and previewing in HTML the current document or selection
-
-- an *external tool* for exporting to HTML or PDF the current document or selection
-
-<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple1.png" width="684" height="779" alt="Default Markdown syntax highlighting in gedit." />
+<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple1.png" width="684" height="779" alt="Default Markdown syntax highlighting in gedit.">
 
 ## Requirements
 
-- gedit-markdown v3 supports gedit 3.28 to 3.38. It's shipped with an installer for GNU/Linux.
-
-- The plugin *Markdown Preview* depends on the packages `python3-markdown` and `gir1.2-webkit2-4.0`.
+* gedit-markdown v4 supports gedit 41 and later, and comes with an installer for GNU/Linux.
+* The *Markdown Preview* plugin requires the packages `python3-markdown` and `gir1.2-webkit2-4.0`.
 
 ## Installation (or update)
 
-- [Download the archive of gedit-markdown v3.](https://github.com/jpfleury/gedit-markdown/archive/master.zip)
-
-- Extract the archive.
-
-- Open a terminal in the extracted folder.
-
-- Run the installer in the terminal:
+* [Download the gedit-markdown v4 archive.](https://github.com/jpfleury/gedit-markdown/archive/master.zip)
+* Extract the archive.
+* Open a terminal in the extracted folder.
+* Run the installer:
 
 		./gedit-markdown.sh install
 
-Markdown support will be added for the current user (so no need root privileges). The folder created by the extraction can be deleted after installation.
+Markdown support will be installed for the current user (no root privileges needed). You can delete the extracted folder after installation.
 
 ## Uninstallation
 
-- Open a terminal in the extracted folder.
-
-- Run the uninstaller in the terminal:
+* Open a terminal in the extracted folder.
+* Run the uninstaller:
 
 		./gedit-markdown.sh uninstall
 
 ## Usage
 
-First of all, restart gedit if it's already running.
+First, restart gedit if it's already running.
 
 ### Syntax highlighting
 
-Syntax highlighting should automatically be activated for files recognized as Markdown files (extensions `.markdown`, `.md` or `.mkd`), otherwise choose it manually by going to *View > Highlight Mode > Markup* and selecting *Markdown*.
+Syntax highlighting should be automatically activated for files recognized as Markdown (extensions `.markdown`, `.md`, or `.mkd`). Otherwise, activate it manually via *View > Highlight Mode > Markup* and select *Markdown*.
 
 ### Plugin *Markdown Preview*
 
 To enable this plugin, go to *Edit > Preferences > Plugins* and check *Markdown Preview*.
 
-Two items are added in the gedit menu *Tools*:
+Two items are added to the gedit *Tools* menu:
 
-- *Update Markdown Preview*: displays in the side panel or in the bottom panel a preview in HTML of the current document or selection.
+* *Update Markdown Preview*: displays a preview of the current document or selection in the side panel or bottom panel.
 
-	Note: there are two other ways to update preview:
-	
-	  - with the keyboard shortcut *Ctrl+Alt+m* (can be changed in the configuration file);
-	
-	  - by right clicking on the preview area (side or bottom panel) and selecting the item *Update Preview*.
+	Note: There are two other ways to update the preview:
 
-- *Toggle Markdown Preview visibility*: allows to display or hide the Markdown Preview panel tab.
+	 - Using the keyboard shortcut *Ctrl+Alt+m* (can be changed in the configuration file)
+	 - Right-clicking in the preview area (side or bottom panel) and selecting *Update Preview*
 
-	Note: the keyboard shortcut *Ctrl+Alt+v* (can be changed in the configuration file) can be used to do the same.
+* *Toggle Markdown Preview visibility*: toggles the Markdown Preview panel tab.
 
-When right clicking on the preview area, a context menu appears and lists several options. Besides the default ones (previous page, next page, copy, etc.), we have:
+	Note: The keyboard shortcut *Ctrl+Alt+v* (configurable) does the same.
 
-- *Update Preview*: reloads in the side panel or in the bottom panel the preview in HTML of the current document or selection.
+When right-clicking in the preview area, a context menu appears with several options. Besides the default ones (previous page, next page, copy, etc.), it includes:
 
-Local files will be followed in the preview area while global ones will be opened with your default web browser.
+* *Update Preview*: reloads the preview of the current document or selection in the side or bottom panel.
 
-Here's a screenshot of the plugin when it's displayed in the bottom panel:
+Local files will be opened in the preview area, while external files will be opened in your default web browser.
 
-<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple3.png" width="684" height="886" alt="Markdown Preview in the bottom panel of gedit." />
+Here's a screenshot of the plugin in the bottom panel:
 
-Now the same plugin displayed in the side panel (click to see the original image):
+<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple3.png" width="684" height="886" alt="Markdown Preview in the bottom panel of gedit.">
 
-<a href="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple4-grand.png"><img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple4-petit.png" width="684" height="445" alt="Markdown Preview in the side panel of gedit." /></a>
+Now the same plugin displayed in the side panel (click to see the full-size image):
 
-Note that when the cursor passes over a link in the preview area, a tooltip displays the URL:
+<a href="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple4-grand.png"><img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple4-petit.png" width="684" height="445" alt="Markdown Preview in the side panel of gedit."></a>
 
-<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple5.png" width="684" height="128" alt="Tooltip displaying URL when the cursor passes over a link." />
+When you hover over a link in the preview, a tooltip shows the URL:
+
+<img src="https://raw.githubusercontent.com/jpfleury/gedit-markdown/master/doc/exemple5.png" width="684" height="128" alt="Tooltip displaying URL when the cursor passes over a link.">
 
 ### Table of contents
 
-When the Markdown extension `toc` is enabled (see _Configuration file_, default), add `[TOC]` to your Markdown source to generate a table of contents with clickable links.
+When the `toc` Markdown extension is enabled (see *Configuration file*; enabled by default), add `[TOC]` to your Markdown source to generate a clickable table of contents.
 
 ### Snippets
 
-To use Markdown snippets, activate the plugin *Snippets* in *Edit > Preferences > Plugins*. Then, go to *Tools > Manage Snippets...* to see the possibilities.
+To use Markdown snippets, activate the *Snippets* plugin via *Edit > Preferences > Plugins*. Then go to *Tools > Manage Snippets...* to explore the options.
 
 ### Converters (external tools)
 
 The following tools are included:
 
-- Export to HTML
-- Export to PDF
+* Export to HTML
+* Export to PDF
 
-To use the external tool, activate the plugin *External Tools* in *Edit > Preferences > Plugins*. Then, go to *Tools > External Tools > Export to HTML* to access the tool. The keyboard shortcut *Ctrl+Alt+h* does the same. The code of the currently opened Markdown file or the selection will be converted in HTML/PDF, and the result will be put in a new document.
+To use an external tool, activate the *External Tools* plugin via *Edit > Preferences > Plugins*. Then go to *Tools > External Tools > Export to HTML* to run it. The shortcut *Ctrl+Alt+h* does the same. The content of the current Markdown file or selection will be converted to HTML or PDF, and the result opened in a new document.
 
 To edit the tool, go to *Tools > Manage External Tools...*.
 
 ### Configuration file
 
-The configuration file of gedit-markdown is located at:
+The configuration file is located at:
 
 	$XDG_CONFIG_HOME/gedit/gedit-markdown.ini
 
-Most of the time, it will correspond to:
+This usually corresponds to:
 
 	$HOME/.config/gedit/gedit-markdown.ini
 
-The section `markdown-preview` contains several properties:
+The `[markdown-preview]` section contains several properties:
 
-- `panel`: emplacement of the preview. Possibles values: `bottom` (default value) or `side`.
+* `panel`: position of the preview. Possible values: `bottom` (default) or `side`.
+* `shortcut`: shortcut to refresh the preview. Default: `<Control><Alt>m`.
+* `extensions`: a list separated by spaces of [Markdown extensions](https://python-markdown.github.io/extensions/#officially-supported-extensions). Default: `extra toc`.
+* `visibility`: whether to show the Markdown Preview panel tab at startup. Values: `0` (hidden) or `1` (shown; default).
+* `visibilityShortcut`: shortcut to toggle visibility. Default: `<Control><Alt>v`.
+* `autoIdle`: idle time before updating the preview (ms). Values: `0` (immediate), `250` (default), or any positive float.
+* `autoReloadActivate`: reload preview when plugin is activated. `0` (off) or `1` (on; default).
+* `autoReloadOpen`: reload preview when document is opened. `0` (off) or `1` (on; default).
+* `autoReloadSave`: reload preview on save. `0` (off) or `1` (on; default).
+* `autoReloadTabs`: reload preview on tab switch. `0` (off) or `1` (on; default).
+* `autoReloadEdit`: reload preview on edit. `0` (off) or `1` (on; default).
+* `autoReloadSelection`: reload preview on selection change. `0` (off; default) or `1` (on).
 
-- `shortcut`: shortcut to refresh the preview. The default value is `<Control><Alt>m`.
+If the file or any property is missing, default values will be generated on startup.
 
-- `extensions`: a whitespace separated list of [Markdown extensions](https://python-markdown.github.io/extensions/#officially-supported-extensions). See link for possible values. Defaults to "extra toc".
+### Markdown demo
 
-- `visibility`: visibility of the Markdown Preview panel tab when gedit starts. Possible values: `0` (hidden) or `1` (displayed; default value).
-
-- `visibilityShortcut`: shortcut to toggle Markdown Preview visibility. The default value is `<Control><Alt>v`.
-
-- `autoIdle`: only update markdown after this idle time (in milliseconds). Possible values: `0` (update immediately), `250` (default), any positive `float`.
-
-- `autoReloadActivate`: automatically reload the preview when the plugin is activated. Possible values: `0` (disabled) or `1` (enabled; default value).
-
-- `autoReloadOpen`: automatically reload the preview when the document is opened. Possible values: `0` (disabled) or `1` (enabled; default value).
-
-- `autoReloadSave`: automatically reload the preview when the document is saved. Possible values: `0` (disabled) or `1` (enabled; default value).
-
-- `autoReloadTabs`: automatically reload the preview when the active tab is changed. Possible values: `0` (disabled) or `1` (enabled; default value).
-
-- `autoReloadEdit`: automatically reload the preview when the text is changed. Possible values: `0` (disabled) or `1` (enabled; default value).
-
-- `autoReloadSelection`: automatically reload the preview when the selection is changed. Possible values: `0` (disabled; default value) or `1` (enabled).
-
-Non-existent properties (as well as the whole file) will be generated with default values on startup.
-
-### Examples
-
-- [Demo 1](doc/demo-markdown.md)
-- [Demo 2](doc/demo-markdown-extra.md)
+* [Demo 1](doc/demo-markdown.md)
+* [Demo 2](doc/demo-markdown-extra.md)
 
 ## Details and limitations
 
-- Syntax highlighting and snippets for standard Markdown were officially added in GtkSourceView and gedit > 3.1.1.
+* Syntax highlighting and snippets for standard Markdown were officially added in GtkSourceView and gedit > 3.1.1.
 
-- Older versions of gedit-markdown also added Markdown MIME type and recognition of an additional extension (`.mdtxt`). Since Markdown support was added directly into the shared MIME database `shared-mime-info` ([see the bug report][bug27441]), gedit-markdown no longer adds its own Markdown MIME type file. Also, for purposes of compliance with the specification, the extension `.mdtxt` is no longer supported.
+* Older versions of gedit-markdown also added a custom Markdown MIME type and support for the `.mdtxt` extension. Since Markdown support was added to `shared-mime-info` ([see the bug report](https://bugs.freedesktop.org/show_bug.cgi?id=27441)), gedit-markdown no longer provides its own MIME type. For compliance, `.mdtxt` is no longer supported.
 
-- Since HTML code can be directly used in a text written in Markdown, HTML syntax highlighting was added to Markdown syntax highlighting. However, keep in mind that, even if they're highlighted, Markdown syntax within HTML blocks (e.g. `<div>`) and Markdown Extra syntax within HTML blocks without `markdown` attribute set to 1 (e.g., `<div markdown="1">`) are not processed.
+* Since HTML code can be embedded in Markdown, HTML highlighting was added. However, Markdown inside HTML blocks (e.g., `<div>`) or Markdown Extra inside HTML blocks without the `markdown="1"` attribute is not processed, even if highlighted.
 
-- Within a paragraph, text wrapped with backticks indicates a code span. Markdown allows to use one or more backticks to wrap text, provided that the number is identical on both sides, and the same number of consecutive backticks is not present within the text. Examples:
+* Inline code spans are wrapped in backticks. Markdown allows using any number of matching backticks as long as the same number isn't inside the text. Examples:
 
 		`lorem lorem lorem lorem`
 		
@@ -174,13 +156,13 @@ Non-existent properties (as well as the whole file) will be generated with defau
 		
 		``lorem lorem ````` lorem lorem``
 
-	Syntax highlighting in gedit supports code span highlighting with up to 2 backticks surrounding text.
+	Syntax highlighting in gedit supports up to two backticks.
 
-- Blockquote can contain block-level and inline Markdown elements, but gedit-markdown only highlights inline ones (emphasis, link, etc.).
+* Blockquotes can contain both inline and block elements, but only inline ones (e.g., emphasis, links) are highlighted.
 
-- A full context analysis can't be done (because line break can't be used in regex). Here are some consequences:
+* Full context analysis is not possible (regex can't span multiple lines). As a result:
 
-	- According to the Markdown syntax, to write several paragraphs in a list item, we have to indent each paragraph. Example:
+	* Multiple paragraphs in a list item must be indented. For example:
 
 			- Item A (paragraph 1).
 
@@ -190,25 +172,23 @@ Non-existent properties (as well as the whole file) will be generated with defau
 
 			- Item B.
 
-		So there is a conflict in terms of syntax highlighting between an indented paragraph inside a list item (4 spaces or 1 tab) and an indented line of code outside a list (also 4 spaces or 1 tab). The choice was made ​​​​to highlight code block only from 2 levels of indentation.
+		There's a conflict between indented list content and indented code blocks. The choice was made to only highlight code blocks from two indentation levels.
 
-	- Only the underline of a Setext-style header is matched and highlighted, so there's no guarantee that it's indeed a title underline.
+	* Only the underline of Setext-style headers is matched, so it may not truly indicate a title.
 
-	- With Markdown Extra, some elements are matched and highlighted with no guarantee that they're in the right context: Setext-style header id attribute, colon used as separator in a definition list and separator line of a table.
-
-[bug27441]: https://bugs.freedesktop.org/show_bug.cgi?id=27441
+	* Some Markdown Extra elements are highlighted even if the context is incorrect: Setext header IDs, colons in definition lists, and table separators.
 
 ## Development
 
-Git is used for revision control. [Repository can be browsed online or cloned.](https://github.com/jpfleury/gedit-markdown)
+Git is used for version control. [Browse or clone the repository here.](https://github.com/jpfleury/gedit-markdown)
 
 ### Localization
 
-The plugin *Markdown Preview* is localizable. The file containing strings is `plugins/markdown-preview/locale/markdown-preview.pot`.
+The *Markdown Preview* plugin is localizable. Strings are in `plugins/markdown-preview/locale/markdown-preview.pot`.
 
 ## License
 
-Maintener: Jean-Philippe Fleury  
+Maintainer: Jean-Philippe Fleury  
 Copyright © 2009-2014, 2025 Jean-Philippe Fleury <https://github.com/jpfleury>  
 Copyright © 2018, 2020 darkdragon-001 <https://github.com/darkdragon-001>  
 Copyright © 2005, 2006 Michele Campeotto <micampe@micampe.it>
