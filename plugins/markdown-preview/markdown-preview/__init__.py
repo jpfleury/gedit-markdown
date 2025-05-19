@@ -219,23 +219,34 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
     def addMarkdownPreviewTab(self):
         panel = self.getMarkdownPanel()
         panel.set_visible(True)
-        try:
-            self.panel_item = Tepl.Panel.add(
-                panel,
+        if isinstance(panel, Gtk.Stack):
+            panel.add_titled(
                 self.scrolledWindow,
                 "MarkdownPreview",
                 _("Markdown Preview"),
-                None,
             )
-        except Exception as e:
-            print("Erreur Tepl.Panel.add :", e)
             self.panel_item = None
-            return
+        else:
+            try:
+                self.panel_item = Tepl.Panel.add(
+                    panel,
+                    self.scrolledWindow,
+                    "MarkdownPreview",
+                    _("Markdown Preview"),
+                    None,
+                )
+            except Exception as e:
+                print("Error Tepl.Panel.add:", e)
+                self.panel_item = None
+                return
         self.updatePreview(reason="previewVisible")
 
     def removeMarkdownPreviewTab(self):
         panel = self.getMarkdownPanel()
-        if self.panel_item:
+        if isinstance(panel, Gtk.Stack):
+            panel.remove(self.scrolledWindow)
+            panel.set_visible(False)
+        elif self.panel_item:
             try:
                 Tepl.Panel.remove(panel, self.panel_item)
                 panel.set_visible(False)
