@@ -31,9 +31,9 @@ trap 'exit 1' INT TERM
 
 is_empty_dir() {
 	local dir=$1
-	
+
 	# --------------------
-	
+
 	# Return false if:
 	# - not a directory, or
 	# - not readable (we can't test its contents), or
@@ -57,17 +57,17 @@ is_empty_dir() {
 
 remove_empty_dirs() {
 	local dir parent
-	
+
 	# --------------------
-	
+
 	for dir in "$@"; do
 		while is_empty_dir "$dir"; do
 			rmdir -v "$dir" || break
-			
+
 			parent=$(dirname -- "$dir")
-			
+
 			[[ $parent == "$dir" || $parent == / ]] && break
-			
+
 			dir=$parent
 		done
 	done
@@ -88,7 +88,7 @@ remove_plugin() {
 		"$PATH_TOOLS_GEDIT/export-to-html"
 		"$PATH_TOOLS_GEDIT/export-to-pdf"
 		"$PATH_PLUGINS_GEDIT/markdown-preview.plugin"
-		
+
 		# Obsolete
 		"$PATH_CONFIG_GEDIT/gedit-markdown.ini"
 		"$PATH_PLUGINS_GEDIT/markdown-preview.gedit-plugin"
@@ -97,16 +97,16 @@ remove_plugin() {
 	for file in "${files_to_remove[@]}"; do
 		if [[ ! -e $file ]]; then
 			echo "File not found: $file"
-			
+
 			continue
 		fi
-		
+
 		if [[ ! -f $file || -L $file ]]; then
 			echo "Ignoring file: $file"
-			
+
 			continue
 		fi
-		
+
 		rm -v "$file"
 	done
 
@@ -120,7 +120,7 @@ remove_plugin() {
 		"$PATH_SNIPPETS_GEDIT"
 		"$PATH_TOOLS_GEDIT"
 	)
-	
+
 	if [[ ! -e $PATH_CONFIG ]]; then
 		echo "Directory not found: $PATH_CONFIG"
 	elif [[ ! -d $PATH_CONFIG || -L $PATH_CONFIG ]]; then
@@ -128,7 +128,7 @@ remove_plugin() {
 	else
 		rm -rv "$PATH_CONFIG"
 	fi
-	
+
 	if [[ ! -e $PATH_PLUGIN_MARKDOWN_PREVIEW ]]; then
 		echo "Directory not found: $PATH_PLUGIN_MARKDOWN_PREVIEW"
 	elif [[ ! -d $PATH_PLUGIN_MARKDOWN_PREVIEW || -L $PATH_PLUGIN_MARKDOWN_PREVIEW ]]; then
@@ -185,14 +185,14 @@ if [[ $action == install ]]; then
 
 	# In case this is an update
 	###########################
-	
+
 	echo "Removing previous installation (if any)..."
 	remove_plugin
 	echo
-	
+
 	# Configuration
 	###############
-	
+
 	echo "Proceeding with installation..."
 	mkdir -pv "$PATH_CONFIG"
 	cp -rv --update=none config/* "$PATH_CONFIG"
@@ -218,16 +218,38 @@ if [[ $action == install ]]; then
 	#########################
 
 	mkdir -pv "$PATH_PLUGINS_GEDIT"
-	
+
 	if [[ ! -L $PATH_PLUGINS_GEDIT/markdown-preview.plugin ]]; then
 		cp -v plugins/markdown-preview/markdown-preview.plugin "$PATH_PLUGINS_GEDIT"
 	fi
-	
+
 	mkdir -pv "$PATH_PLUGIN_MARKDOWN_PREVIEW"
-	
+
 	if [[ ! -L $PATH_PLUGIN_MARKDOWN_PREVIEW ]]; then
 		cp -rv plugins/markdown-preview/markdown-preview/* "$PATH_PLUGIN_MARKDOWN_PREVIEW"
+
+		# locale
+		########
+
 		rm -v "$PATH_PLUGIN_MARKDOWN_PREVIEW/locale/markdown-preview.pot"
+
+		if command -v msgfmt >/dev/null 2>&1; then
+			echo "Compiling .po files to .mo files..."
+
+			find "$PATH_PLUGIN_MARKDOWN_PREVIEW/locale/" -name "*.po" -print0 | \
+			while IFS= read -r -d '' po; do
+				mo=${po%.*}.mo
+
+				if msgfmt -o "$mo" "$po"; then
+					echo "Compiled: $mo"
+				else
+					echo "Compilation failed: $mo"
+				fi
+			done
+		else
+			echo "msgfmt not found. Skipping .po compilation."
+		fi
+
 		find "$PATH_PLUGIN_MARKDOWN_PREVIEW/locale/" -name "*.po" -exec rm -v {} \;
 	fi
 
