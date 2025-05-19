@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-HTML preview of Markdown formatted text in gedit
+This file is part of gedit-markdown.
 Copyright © 2009-2014, 2025 Jean-Philippe Fleury <https://github.com/jpfleury>
 Copyright © 2018, 2020 darkdragon-001 <https://github.com/darkdragon-001>
 Copyright © 2005, 2006 Michele Campeotto <micampe@micampe.it>
@@ -21,125 +21,138 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import os
+from __future__ import annotations
+
 import gettext
+import os
 import timeit
+import urllib.parse
 import webbrowser
 from configparser import ConfigParser
 from threading import Timer
 
-import markdown
 import gi
 
-gi.require_version("WebKit2", "4.0")
-from gi.repository import Gdk, Gtk, GtkSource, Gedit, GObject, WebKit2, Gio
-
-try:
-    appName = "markdown-preview"
-    fileDir = os.path.dirname(__file__)
-    localePath = os.path.join(fileDir, "locale")
-    gettext.bindtextdomain(appName, localePath)
-    gettext.textdomain(appName)
-    _ = gettext.gettext
-except:
-    _ = lambda s: s
-
-# Configuration
-
-markdownPanel = "bottom"
-markdownShortcut = "<Control><Alt>m"
-markdownExtensions = "extra toc"
-markdownVisibility = "0"  # @todo Bug: crash on startup when markdownAutoReloadTabs="0"
-markdownVisibilityShortcut = "<Control><Alt>v"
-markdownAutoIdle = "250"
-markdownAutoReloadActivate = "1"
-markdownAutoReloadOpen = "1"
-markdownAutoReloadSave = "1"
-markdownAutoReloadTabs = (
-    "0"  # @todo Bug: https://gitlab.gnome.org/GNOME/gedit/-/issues/322
-)
-markdownAutoReloadEdit = "1"
-markdownAutoReloadSelection = "0"
-
-try:
-    import xdg.BaseDirectory
-except ImportError:
-    homeDir = os.environ.get("HOME")
-    xdgConfigHome = os.path.join(homeDir, ".config")
+for wkVersion in ["4.1", "4.0"]:
+    try:
+        gi.require_version("WebKit2", wkVersion)
+        break
+    except ValueError:
+        continue
 else:
-    xdgConfigHome = xdg.BaseDirectory.xdg_config_home
+    raise ImportError("No compatible version of WebKit2 found")
 
-confDir = os.path.join(xdgConfigHome, "gedit/markdown-preview")
-confFile = os.path.join(confDir, "preferences.ini")
+from gi.repository import (
+    Gedit,
+    Gio,
+    GObject,
+    Gtk,
+    GtkSource,
+    Tepl,
+    WebKit2,
+)
 
-parser = ConfigParser()
-parser.optionxform = str
-parser.add_section("markdown-preview")
-parser.set("markdown-preview", "panel", markdownPanel)
-parser.set("markdown-preview", "shortcut", markdownShortcut)
-parser.set("markdown-preview", "extensions", markdownExtensions)
-parser.set("markdown-preview", "visibility", markdownVisibility)
-parser.set("markdown-preview", "visibilityShortcut", markdownVisibilityShortcut)
-parser.set("markdown-preview", "autoIdle", markdownAutoIdle)
-parser.set("markdown-preview", "autoReloadActivate", markdownAutoReloadActivate)
-parser.set("markdown-preview", "autoReloadOpen", markdownAutoReloadOpen)
-parser.set("markdown-preview", "autoReloadSave", markdownAutoReloadSave)
-parser.set("markdown-preview", "autoReloadTabs", markdownAutoReloadTabs)
-parser.set("markdown-preview", "autoReloadEdit", markdownAutoReloadEdit)
-parser.set("markdown-preview", "autoReloadSelection", markdownAutoReloadSelection)
+try:
+    import markdown
+except ImportError as exc:
+    raise ImportError(
+        "The python-markdown package is required for markdown-preview."
+    ) from exc
 
-if os.path.isfile(confFile):
-    parser.read(confFile)
-    markdownPanel = parser.get("markdown-preview", "panel")
-    markdownShortcut = parser.get("markdown-preview", "shortcut")
-    markdownExtensions = parser.get("markdown-preview", "extensions")
-    markdownVisibility = parser.get("markdown-preview", "visibility")
-    markdownVisibilityShortcut = parser.get("markdown-preview", "visibilityShortcut")
-    markdownAutoIdle = parser.get("markdown-preview", "autoIdle")
-    markdownAutoReloadActivate = parser.get("markdown-preview", "autoReloadActivate")
-    markdownAutoReloadOpen = parser.get("markdown-preview", "autoReloadOpen")
-    markdownAutoReloadSave = parser.get("markdown-preview", "autoReloadSave")
-    markdownAutoReloadTabs = parser.get("markdown-preview", "autoReloadTabs")
-    markdownAutoReloadEdit = parser.get("markdown-preview", "autoReloadEdit")
-    markdownAutoReloadSelection = parser.get("markdown-preview", "autoReloadSelection")
+try:
+    from pymdownx.pathconverter import PathConverterExtension
 
-if not os.path.exists(confDir):
-    os.makedirs(confDir)
+    _PATHCONVERTER = True
+except ImportError:
+    _PATHCONVERTER = False
 
-with open(confFile, "w") as confFile:
-    parser.write(confFile)
+APP_NAME = "markdown-preview"
+LOCALE_DIR = os.path.join(os.path.dirname(__file__), "locale")
+gettext.bindtextdomain(APP_NAME, LOCALE_DIR)
+gettext.textdomain(APP_NAME)
+_ = gettext.gettext
+
+
+def _xdg_config_home() -> str:
+    try:
+        import xdg.BaseDirectory as _xdg
+
+        return _xdg.xdg_config_home
+    except Exception:
+        return os.path.join(os.environ.get("HOME", "~"), ".config")
+
+
+CONF_DIR = os.path.join(_xdg_config_home(), "gedit", APP_NAME)
+CONF_FILE = os.path.join(CONF_DIR, "preferences.ini")
+TEMPLATE_FILE = os.path.join(CONF_DIR, "template.html")
+
+_DEFAULTS: dict[str, str] = {
+    "panel": "bottom",
+    "shortcut": "<Control><Alt>m",
+    "extensions": "extra toc",
+    "visibility": "0",
+    "visibilityShortcut": "<Control><Alt>v",
+    "autoIdle": "250",
+    "autoReloadActivate": "1",
+    "autoReloadOpen": "1",
+    "autoReloadSave": "1",
+    "autoReloadTabs": "0",
+    "autoReloadEdit": "1",
+    "autoReloadSelection": "0",
+}
+
+cfg = ConfigParser()
+cfg.optionxform = str  # Keep key case
+cfg.add_section(APP_NAME)
+for k, v in _DEFAULTS.items():
+    cfg.set(APP_NAME, k, v)
+if os.path.isfile(CONF_FILE):
+    cfg.read(CONF_FILE)
+os.makedirs(CONF_DIR, exist_ok=True)
+with open(CONF_FILE, "w", encoding="utf-8") as _fp:
+    cfg.write(_fp)
+
+P = lambda k: cfg.get(APP_NAME, k)
+
+markdownPanel = P("panel")
+markdownShortcut = P("shortcut")
+markdownExtensions = P("extensions")
+markdownVisibility = P("visibility")
+markdownVisibilityShortcut = P("visibilityShortcut")
+markdownAutoIdle = P("autoIdle")
+markdownAutoReloadActivate = P("autoReloadActivate")
+markdownAutoReloadOpen = P("autoReloadOpen")
+markdownAutoReloadSave = P("autoReloadSave")
+markdownAutoReloadTabs = P("autoReloadTabs")
+markdownAutoReloadEdit = P("autoReloadEdit")
+markdownAutoReloadSelection = P("autoReloadSelection")
 
 markdownExtensionsList = markdownExtensions.split()
 markdownAutoIdleSeconds = float(markdownAutoIdle) / 1000.0
 
-# HTML template
-htmlTemplate = ""
-templateFile = os.path.join(confDir, "template.html")
-with open(templateFile, "r") as f:
-    htmlTemplate = f.read()
-
-# Path converter for absolute paths if available
 try:
-    from pymdownx.pathconverter import PathConverterExtension
-
-    pathConverterAvailable = True
-except:
-    pathConverterAvailable = False
+    with open(TEMPLATE_FILE, "r", encoding="utf-8") as _fp:
+        htmlTemplate = _fp.read()
+except FileNotFoundError:
+    htmlTemplate = """<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>%s</body></html>"""
 
 
 class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
     __gtype_name__ = "MarkdownPreviewPlugin"
-    window = GObject.property(type=Gedit.Window)
 
-    def __init__(self):
-        GObject.Object.__init__(self)
+    window: Gedit.Window = GObject.Property(type=Gedit.Window)
+
+    lastUpdate: float = 0.0
+    scrollRestore: bool = False
+    scrollPosition: int | None = None
+    activeSelection: bool = False
 
     def do_activate(self):
-        self.scrolledWindow = (
-            Gtk.ScrolledWindow()
-        )  # @todo Replace by something simpler (scroll is handled by WebKit2.WebView)
-        self.scrolledWindow.set_property("hscrollbar-policy", Gtk.PolicyType.AUTOMATIC)
-        self.scrolledWindow.set_property("vscrollbar-policy", Gtk.PolicyType.AUTOMATIC)
+        self.panel_item = None
+        self.scrolledWindow = Gtk.ScrolledWindow()
+        self.scrolledWindow.set_policy(
+            Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC
+        )
         self.scrolledWindow.set_property("shadow-type", Gtk.ShadowType.IN)
 
         self.htmlView = WebKit2.WebView()
@@ -148,8 +161,6 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
         self.htmlView.connect("mouse-target-changed", self.onMouseTargetChangedCb)
         self.htmlView.connect("decide-policy", self.onDecidePolicyCb)
         self.htmlView.connect("context-menu", self.onContextMenuCb)
-        if markdownAutoReloadActivate == "1":
-            self.updatePreview(reason="pluginActivated")
 
         self.scrolledWindow.add(self.htmlView)
         self.scrolledWindow.show_all()
@@ -158,7 +169,6 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
             self.addMarkdownPreviewTab()
 
         self.addWindowActions()
-
         self.handleTabChanged = self.window.connect(
             "active-tab-changed", self.onTabChangedCb
         )
@@ -167,69 +177,73 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
         )
         self.addBufferSignals()
 
-    # Called every time the document is changed
-    def do_update_state(self, *args):
-        if markdownAutoReloadEdit == "1":
-            self.autoUpdate(self.window)
+        if markdownAutoReloadActivate == "1":
+            self.updatePreview(reason="pluginActivated")
 
     def do_deactivate(self):
-        # Remove signals
         self.removeBufferSignals()
         self.window.disconnect(self.handleTabChanged)
         self.window.disconnect(self.handleTabStateChanged)
-
-        # Remove actions
         self.window.remove_action("MarkdownPreview")
         self.window.remove_action("ToggleTab")
-        self.action_update = None
-        self.action_toggle = None
-
-        # Remove Markdown Preview from the panel
         self.removeMarkdownPreviewTab()
-
-        # Delete instance variables
-        self.scrolledWindow = None
+        if self.htmlView is not None:
+            self.htmlView.destroy()
+        if self.scrolledWindow is not None:
+            self.scrolledWindow.destroy()
         self.htmlView = None
-
-    # Windows and signals
+        self.scrolledWindow = None
 
     def getMarkdownPanel(self):
-        if markdownPanel == "side":
-            panel = self.window.get_side_panel()
-        else:
-            panel = self.window.get_bottom_panel()
-        return panel
+        return (
+            self.window.get_side_panel()
+            if markdownPanel == "side"
+            else self.window.get_bottom_panel()
+        )
 
     def isMarkdownPreviewTabAdded(self):
-        panel = self.getMarkdownPanel()
-        return panel.get_child_by_name("MarkdownPreview") is not None
+        return self.scrolledWindow.get_parent() is not None
 
     def isMarkdownPreviewTabVisible(self):
         panel = self.getMarkdownPanel()
-        return panel.get_visible_child_name() == "MarkdownPreview"
+        if hasattr(panel, "get_visible_child"):
+            return panel.get_visible_child() == self.scrolledWindow
+        if hasattr(panel, "get_visible_child_name"):
+            return panel.get_visible_child_name() == "MarkdownPreview"
+        return False
 
     def isMarkdownPreviewVisible(self):
-        return self.scrolledWindow.get_mapped()  # self and all parents visible
+        """Return True if the preview widget is currently mapped (visible)."""
+        return self.scrolledWindow.get_mapped()
 
     def addMarkdownPreviewTab(self):
         panel = self.getMarkdownPanel()
-        if not panel.is_visible():
-            panel.show()
-        if not self.isMarkdownPreviewTabAdded():
-            panel.add_titled(
-                self.scrolledWindow, "MarkdownPreview", _("Markdown Preview")
+        panel.set_visible(True)
+        try:
+            self.panel_item = Tepl.Panel.add(
+                panel,
+                self.scrolledWindow,
+                "MarkdownPreview",
+                _("Markdown Preview"),
+                None,
             )
-        if not self.isMarkdownPreviewTabVisible():
-            panel.set_visible_child_name("MarkdownPreview")
+        except Exception as e:
+            print("Erreur Tepl.Panel.add :", e)
+            self.panel_item = None
+            return
         self.updatePreview(reason="previewVisible")
 
     def removeMarkdownPreviewTab(self):
         panel = self.getMarkdownPanel()
-        if self.isMarkdownPreviewTabAdded():
-            panel.remove(self.scrolledWindow)
-        panel.hide()
+        if self.panel_item:
+            try:
+                Tepl.Panel.remove(panel, self.panel_item)
+                panel.set_visible(False)
+            except Exception as e:
+                print("Error Tepl.Panel.remove:", e)
 
     def toggleTab(self):
+        """Toggle visibility of the preview tab."""
         if not self.isMarkdownPreviewVisible():
             self.addMarkdownPreviewTab()
         else:
@@ -238,17 +252,15 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
     def addWindowActions(self):
         self.action_update = Gio.SimpleAction(name="MarkdownPreview")
         self.action_update.connect(
-            "activate", lambda x, y: self.updatePreview(reason="userAction")
+            "activate", lambda *_: self.updatePreview(reason="userAction")
         )
         self.window.add_action(self.action_update)
-
         self.action_toggle = Gio.SimpleAction(name="ToggleTab")
-        self.action_toggle.connect("activate", lambda x, y: self.toggleTab())
+        self.action_toggle.connect("activate", lambda *_: self.toggleTab())
         self.window.add_action(self.action_toggle)
 
     def addBufferSignals(self):
         self.removeBufferSignals()
-
         view = self.window.get_active_view()
         if view:
             self.handleBuffer = view.get_buffer()
@@ -261,264 +273,218 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
             )
 
     def removeBufferSignals(self):
-        if (
-            hasattr(self, "handleMarkSet")
-            and self.handleMarkSet is not None
-            and hasattr(self, "handleBuffer")
-            and self.handleBuffer is not None
-        ):
+        if hasattr(self, "handleBuffer") and self.handleBuffer is not None:
             self.handleBuffer.disconnect(self.handleMarkSet)
             self.handleBuffer.disconnect(self.handleDocumentLoaded)
             self.handleBuffer.disconnect(self.handleDocumentSaved)
-            del self.handleBuffer
-            del self.handleMarkSet
-            del self.handleDocumentLoaded
-            del self.handleDocumentSaved
+            del (
+                self.handleBuffer,
+                self.handleMarkSet,
+                self.handleDocumentLoaded,
+                self.handleDocumentSaved,
+            )
 
-    def rememberScroll(self, *args):
+    def rememberScroll(self, *_):
         js = "window.document.body.scrollTop"
         self.htmlView.run_javascript(js, None, self.onRememberScrollFinished, None)
 
-    def restoreScroll(self, *args):
-        # Only restore on reload, not on navigation
-        if hasattr(self, "scrollRestore") and self.scrollRestore:
-            if hasattr(self, "scrollPosition") and self.scrollPosition:
-                js = "window.document.body.scrollTop = " + str(self.scrollPosition)
-                self.htmlView.run_javascript(js, None, None, None)
+    def restoreScroll(self, *_):
+        if self.scrollRestore and self.scrollPosition is not None:
+            js = f"window.document.body.scrollTop = {self.scrollPosition}"
+            self.htmlView.run_javascript(js, None, None, None)
             self.scrollRestore = False
 
-    def onRememberScrollFinished(self, webview, result, user_data):
-        js_result = webview.run_javascript_finish(result)
-        if js_result is not None:
-            value = js_result.get_js_value()
+    def onRememberScrollFinished(self, webview, result, _):
+        res = webview.run_javascript_finish(result)
+        if res is not None:
+            value = res.get_js_value()
             if not value.is_undefined():
                 self.scrollPosition = value.to_int32()
 
-    # Callbacks
-
-    def onTabChangedCb(self, *args):
+    def onTabChangedCb(self, *_):
         self.addBufferSignals()
-
         if markdownAutoReloadTabs == "1":
             self.updatePreview(reason="tabChanged")
 
-    def onMarkSetCb(self, buf, loc, mark):
-        if markdownAutoReloadSelection == "1":
-            if mark.get_name() == "insert":
-                doc = self.handleBuffer
-                start = doc.get_iter_at_mark(doc.get_selection_bound())
-                end = doc.get_iter_at_mark(mark)
-                if not start.equal(end):
-                    # Selection changed
-                    self.autoUpdate()
-                    self.activeSelection = True
-                else:
-                    if hasattr(self, "activeSelection") and self.activeSelection:
-                        # Selection removed
-                        self.autoUpdate()
-                        self.activeSelection = False
+    def onMarkSetCb(self, _buf, _loc, mark):
+        if markdownAutoReloadSelection == "1" and mark.get_name() == "insert":
+            doc = self.handleBuffer
+            start = doc.get_iter_at_mark(doc.get_selection_bound())
+            end = doc.get_iter_at_mark(mark)
+            if not start.equal(end):
+                self.autoUpdate()
+                self.activeSelection = True
+            elif self.activeSelection:
+                self.autoUpdate()
+                self.activeSelection = False
 
-    def onDocumentLoadedCb(self, *args):
+    def onDocumentLoadedCb(self, *_):
         if markdownAutoReloadOpen == "1":
             self.updatePreview(reason="documentLoaded")
 
-    def onDocumentSavedCb(self, *args):
+    def onDocumentSavedCb(self, *_):
         if markdownAutoReloadSave == "1":
             self.updatePreview(reason="documentSaved")
 
-    def onLoadChanged(self, view, loadEvent):
+    def onLoadChanged(self, *_):
         self.restoreScroll()
 
-    def onMouseTargetChangedCb(self, view, hitTestResult, modifiers):
-        self.rememberScroll()  # @todo Find better event for scrolling with keyboard, scrollbar, etc.
-
+    def onMouseTargetChangedCb(self, _view, hitTestResult, _):
+        self.rememberScroll()
         if hitTestResult.context_is_link():
             url = hitTestResult.get_link_uri()
-            text = (url[:75] + "...") if len(url) > 75 else url
+            text = (url[:75] + "…") if len(url) > 75 else url
             self.window.set_tooltip_text(text)
         else:
             self.window.set_has_tooltip(False)
 
-    def onDecidePolicyCb(self, view, decision, decisionType):
-        # type(decision) == WebKit2.NavigationPolicyDecision
+    def onDecidePolicyCb(self, _view, decision, decisionType):
         if decisionType == WebKit2.PolicyDecisionType.NAVIGATION_ACTION:
-            # Navigate to new uri
             currentUri = decision.get_request().get_uri()
             if currentUri.startswith("file:///"):
-                # Allow navigating local files
                 if currentUri.startswith(self.getActiveUri()):
-                    # Re-render current document to allow "back" functionality and avoid confusion on unsaved files
                     self.updatePreview(reason="navigation")
                     decision.ignore()
                 else:
-                    # Render other local files
                     lang = GtkSource.LanguageManager.get_default().guess_language(
                         currentUri, None
                     )
-                    if lang is None:
-                        self.render()
-                    if lang.get_id() == "html":
+                    if lang and lang.get_id() == "html":
                         decision.use()
-                    elif lang.get_id() == "markdown":
-                        with open(currentUri[7:], "r") as file:  # Remove "file://"
-                            text = file.read()
+                    elif lang and lang.get_id() == "markdown":
+                        with open(currentUri[7:], "r", encoding="utf-8") as _fp:
+                            text = _fp.read()
                             self.render(text, currentUri, True)
+                        decision.ignore()
                     else:
                         self.render()
+                        decision.ignore()
             else:
-                # Open in new browser tab
                 webbrowser.open_new_tab(currentUri)
                 decision.ignore()
-        # type(decision) == WebKit2.NavigationPolicyDecision
         elif decisionType == WebKit2.PolicyDecisionType.NEW_WINDOW_ACTION:
-            # Forbid new windows
             decision.ignore()
-        # type(decision) == WebKit2.ResponsePolicyDecision
         elif decisionType == WebKit2.PolicyDecisionType.RESPONSE:
-            # Allow all responses
             decision.use()
-        # WebKit2.PolicyDecision
         else:
-            # Forbid everything else
             decision.ignore()
-
         return True
 
-    def onContextMenuCb(self, view, menu, event, hitTestResult):
+    def onContextMenuCb(self, _view, menu, _event, hitTestResult):
         for item in menu.get_items():
             try:
-                stockAction = item.get_stock_action()
-                if (
-                    stockAction == WebKit2.ContextMenuAction.OPEN_LINK
-                    or stockAction == WebKit2.ContextMenuAction.COPY_LINK_TO_CLIPBOARD
-                    or stockAction == WebKit2.ContextMenuAction.GO_BACK
-                    or stockAction == WebKit2.ContextMenuAction.GO_FORWARD
+                act = item.get_stock_action()
+                if act in (
+                    WebKit2.ContextMenuAction.OPEN_LINK,
+                    WebKit2.ContextMenuAction.COPY_LINK_TO_CLIPBOARD,
+                    WebKit2.ContextMenuAction.GO_BACK,
+                    WebKit2.ContextMenuAction.GO_FORWARD,
                 ):
                     continue
-                else:
-                    menu.remove(item)
-            except:
                 menu.remove(item)
-
+            except Exception:
+                menu.remove(item)
         if not hitTestResult.context_is_link():
-            item = WebKit2.ContextMenuItem.new_from_gaction(
-                self.action_update, _("Update Preview")
+            menu.append(
+                WebKit2.ContextMenuItem.new_from_gaction(
+                    self.action_update, _("Update Preview")
+                )
             )
-            menu.append(item)
 
-    # Rendering
-
-    lastUpdate = 0.0
-
-    def autoUpdate(self, *args):
+    def autoUpdate(self, *_):
         if markdownAutoIdleSeconds > 0:
             self.lastUpdate = timeit.default_timer()
-            Timer(
-                markdownAutoIdleSeconds, self.autoUpdateTimerCb, args=[self, *args]
-            ).start()
+            Timer(markdownAutoIdleSeconds, self.autoUpdateTimerCb).start()
         else:
-            self.updatePreview(self, *args, reason="editor")
+            self.updatePreview(reason="editor")
 
-    def autoUpdateTimerCb(self, *args):
-        markdownAutoIdleSeconds = float(markdownAutoIdle) / 1000.0
+    def autoUpdateTimerCb(self):
         if (timeit.default_timer() - self.lastUpdate) >= markdownAutoIdleSeconds:
-            self.updatePreview(self, *args, reason="editor")
+            self.updatePreview(reason="editor")
 
-    def updatePreview(self, *args, **kwargs):
+    def updatePreview(self, *_, **kwargs):
         view = self.window.get_active_view()
         if not view:
             return
         doc = view.get_buffer()
         lang = doc.get_language()
-        if lang and lang.get_id() in ["markdown", "html"]:
+        if lang and lang.get_id() in ("markdown", "html"):
             start = doc.get_start_iter()
             end = doc.get_end_iter()
-
             if markdownAutoReloadSelection == "1" and doc.get_selection_bounds():
                 start = doc.get_iter_at_mark(doc.get_selection_bound())
                 end = doc.get_iter_at_mark(doc.get_insert())
-
             text = doc.get_text(start, end, True)
-
-            if lang.get_id() == "html":
-                isMarkdown = False
-            elif lang.get_id() == "markdown":
-                isMarkdown = True
-
-            activeUri = self.getActiveUri()
-
-            self.render(text, activeUri, isMarkdown)
-
-            if "reason" in kwargs and kwargs["reason"] != "navigation":
-                self.scrollRestore = True  # Note: This is not called after "onDecidePolicyCb" when navigating
+            isMarkdown = lang.get_id() == "markdown"
+            self.render(text, self.getActiveUri(), isMarkdown)
+            if kwargs.get("reason") != "navigation":
+                self.scrollRestore = True
         else:
-            self.render()  # Empty page
+            self.render()
 
-    def render(self, html=None, activeUri=None, isMarkdown=False):
+    def render(
+        self, html: str = "", activeUri: str | None = None, isMarkdown: bool = False
+    ):
         if not self.isMarkdownPreviewVisible():
             return
-
-        if html is None:
-            html = ""
-        if activeUri is None:
-            activeUri = "file:///"
-
+        activeUri = activeUri or "file:///"
         basePathWebView = self.uriToBase(activeUri)
         if isMarkdown:
-            extensions = markdownExtensionsList
-            # Use PathConverter extension if available.
-            # This avoids the WebView restriction of only accessing files *below* "base_path".
-            # https://lazka.github.io/pgi-docs/#WebKit2-4.0/classes/WebView.html#WebKit2.WebView.load_html
-            if pathConverterAvailable:
+            ext = list(markdownExtensionsList)
+            if _PATHCONVERTER:
                 basePathWebView = "file:///"
-                # Bug: "base_path" can't be prefixed with "file://".
-                # https://github.com/facelessuser/pymdown-extensions/issues/921
-                basePathConverter = self.uriToBase(activeUri)[
-                    7:
-                ]  # Remove "file://" because of bug above
-                extensions.append(
-                    PathConverterExtension(base_path=basePathConverter, absolute=True)
-                )
-            html = htmlTemplate % markdown.markdown(html, extensions=extensions)
+                baseConv = self.uriToBase(activeUri)[7:]
+                ext.append(PathConverterExtension(base_path=baseConv, absolute=True))
+            html = htmlTemplate % markdown.markdown(html, extensions=ext)
         self.htmlView.load_alternate_html(html, activeUri, basePathWebView)
 
-    def getActiveUri(self):
-        activeUri = (
-            self.window.get_active_document().get_uri_for_display()
-        )  # Absolute paths when existing file
-        if len(activeUri) < 1 or activeUri[0] != "/":  # File does not exist
-            activeUri = "/" + activeUri  # Force valid local URI
-        return "file://" + activeUri
+    def getActiveUri(self) -> str:
+        doc = self.window.get_active_document()
+        if doc is None:
+            return "file:///"
+        if hasattr(doc, "get_file"):
+            tfile = doc.get_file()
+            if tfile is not None:
+                loc = tfile.get_location()
+                if loc is not None:
+                    return loc.get_uri()
+        if hasattr(doc, "get_location"):
+            loc = doc.get_location()
+            if loc is not None:
+                return loc.get_uri()
+        if hasattr(doc, "get_uri_for_display"):
+            uri = doc.get_uri_for_display()
+            if uri:
+                return uri if uri.startswith("file://") else "file://" + uri
+        title = doc.get_short_title() if hasattr(doc, "get_short_title") else "untitled"
+        return f"file:///{urllib.parse.quote(title)}"
 
-    def uriToBase(self, uri):
-        # Cases: "file:///", "file:///path/to/file", "file:///Untitled Document 1"
+    @staticmethod
+    def uriToBase(uri: str) -> str:
         return uri.rpartition("/")[0] + "/"
 
 
 class MarkdownPreviewMenu(GObject.Object, Gedit.AppActivatable):
-    app = GObject.property(type=Gedit.App)
+    """Adds 'Update Markdown Preview' and 'Toggle Markdown Preview Visibility' to the Tools menu."""
 
-    def __init__(self):
-        GObject.Object.__init__(self)
+    app: Gedit.App = GObject.Property(type=Gedit.App)
 
     def do_activate(self):
+        # Shortcuts
         self.app.set_accels_for_action("win.MarkdownPreview", [markdownShortcut])
         self.app.set_accels_for_action("win.ToggleTab", [markdownVisibilityShortcut])
 
+        # Menu items
         self.tools_menu_ext = self.extend_menu("tools-section")
-
-        md_prev_update = Gio.MenuItem.new(
-            _("Update Markdown Preview"), "win.MarkdownPreview"
+        self.tools_menu_ext.append_menu_item(
+            Gio.MenuItem.new(_("Update Markdown Preview"), "win.MarkdownPreview")
         )
-        md_prev_toggle = Gio.MenuItem.new(
-            _("Toggle Markdown Preview Visibility"), "win.ToggleTab"
+        self.tools_menu_ext.append_menu_item(
+            Gio.MenuItem.new(_("Toggle Markdown Preview Visibility"), "win.ToggleTab")
         )
-
-        self.tools_menu_ext.append_menu_item(md_prev_update)
-        self.tools_menu_ext.append_menu_item(md_prev_toggle)
 
     def do_deactivate(self):
+        # Remove shortcuts
         self.app.set_accels_for_action("win.MarkdownPreview", [])
         self.app.set_accels_for_action("win.ToggleTab", [])
-
         self.tools_menu_ext = None
