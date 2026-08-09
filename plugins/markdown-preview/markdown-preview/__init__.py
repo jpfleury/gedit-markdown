@@ -172,9 +172,6 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
         self.handleTabChanged = self.window.connect(
             "active-tab-changed", self.onTabChangedCb
         )
-        self.handleTabStateChanged = self.window.connect(
-            "active-tab-state-changed", self.onTabChangedCb
-        )
         self.addBufferSignals()
 
         if markdownAutoReloadActivate == "1":
@@ -183,7 +180,6 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
     def do_deactivate(self):
         self.removeBufferSignals()
         self.window.disconnect(self.handleTabChanged)
-        self.window.disconnect(self.handleTabStateChanged)
         self.window.remove_action("MarkdownPreview")
         self.window.remove_action("ToggleTab")
         self.removeMarkdownPreviewTab()
@@ -218,8 +214,9 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
 
     def addMarkdownPreviewTab(self):
         panel = self.getMarkdownPanel()
-        panel.set_visible(True)
+
         if isinstance(panel, Gtk.Stack):
+            panel.set_visible(True)
             panel.add_titled(
                 self.scrolledWindow,
                 "MarkdownPreview",
@@ -227,38 +224,33 @@ class MarkdownPreviewPlugin(GObject.Object, Gedit.WindowActivatable):
             )
             self.panel_item = None
         else:
-            try:
-                self.panel_item = Tepl.Panel.add(
-                    panel,
-                    self.scrolledWindow,
-                    "MarkdownPreview",
-                    _("Markdown Preview"),
-                    None,
-                )
-            except Exception as e:
-                print("Error Tepl.Panel.add:", e)
-                self.panel_item = None
-                return
+            self.panel_item = Tepl.PanelItem.new(
+                self.scrolledWindow,
+                "MarkdownPreview",
+                _("Markdown Preview"),
+                None,
+                0,
+            )
+            Tepl.Panel.add(panel, self.panel_item)
+            Tepl.Panel.set_active(panel, self.panel_item)
+
         self.updatePreview(reason="previewVisible")
 
     def removeMarkdownPreviewTab(self):
         panel = self.getMarkdownPanel()
+
         if isinstance(panel, Gtk.Stack):
             panel.remove(self.scrolledWindow)
             panel.set_visible(False)
-        elif self.panel_item:
-            try:
-                Tepl.Panel.remove(panel, self.panel_item)
-                panel.set_visible(False)
-            except Exception as e:
-                print("Error Tepl.Panel.remove:", e)
+        elif self.panel_item is not None:
+            Tepl.Panel.remove(panel, self.panel_item)
+            self.panel_item = None
 
     def toggleTab(self):
-        """Toggle visibility of the preview tab."""
-        if not self.isMarkdownPreviewVisible():
-            self.addMarkdownPreviewTab()
-        else:
+        if self.isMarkdownPreviewTabAdded():
             self.removeMarkdownPreviewTab()
+        else:
+            self.addMarkdownPreviewTab()
 
     def addWindowActions(self):
         self.action_update = Gio.SimpleAction(name="MarkdownPreview")

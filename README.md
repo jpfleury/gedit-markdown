@@ -3,7 +3,9 @@
 * For gedit 2 and gedit 3.0 to 3.6, see the [gedit-markdown v1 documentation](https://github.com/jpfleury/gedit-markdown/tree/v1#readme).
 * For gedit 3.8 to 3.12, see the [gedit-markdown v2 documentation](https://github.com/jpfleury/gedit-markdown/tree/v2#readme).
 * For gedit 3.28 to 3.38, see the [gedit-markdown v3 documentation](https://github.com/jpfleury/gedit-markdown/tree/v3#readme).
-* For gedit 41 and later, see the documentation below (gedit-markdown v4).
+* For gedit 41 to 48.1, see the documentation below (gedit-markdown v4).
+
+[gedit 48.2 and later no longer support Python plugins](https://gedit-text-editor.org/blog/2025-04-30-no-more-pythons-in-gedit.html), so the Markdown Preview plugin included with gedit-markdown won't work with those versions.
 
 ## Overview
 
